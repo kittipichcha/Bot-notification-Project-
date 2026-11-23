@@ -27,7 +27,7 @@ The EP-01 tracker remains active until all five children complete.
 
 ## IN_REVIEW
 
-- [EP01-01 / #1: Monorepo and fork setup](https://github.com/kittipichcha/Bot-notification-Project-/issues/1) — P0. Implemented and verified locally; independent review has no remaining findings. Commit-backed publication remains pending. See [verification evidence](../test-evidence/EP01-01.md).
+None.
 
 ## BLOCKED
 
@@ -35,4 +35,4 @@ None. Projects access is repaired. The board includes all seven requested workfl
 
 ## DONE
 
-None. Completion requires verified acceptance and review with immutable commit evidence.
+- [EP01-01 / #1: Monorepo and fork setup](https://github.com/kittipichcha/Bot-notification-Project-/issues/1) — P0. Published in [ee1316c](https://github.com/kittipichcha/Bot-notification-Project-/commit/ee1316c82cdc99f09463c8b2f050a73d560db226); fresh-clone setup checks pass and independent review has no remaining findings. See [verification evidence](../test-evidence/EP01-01.md).
