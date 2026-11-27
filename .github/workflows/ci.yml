@@ -32,7 +32,7 @@ jobs:
           persist-credentials: false
 
       - name: Set up Node.js
-        uses: actions/setup-node@949feb293bb85df64835a646c0d60c7f1a30a133 # v7.1.0
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: "24"
 
@@ -67,7 +67,7 @@ jobs:
           persist-credentials: false
 
       - name: Set up Node.js
-        uses: actions/setup-node@949feb293bb85df64835a646c0d60c7f1a30a133 # v7.1.0
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: "24"
 
@@ -151,7 +151,7 @@ jobs:
           echo "Gitleaks synthetic fixture check passed with redacted failure."
 
       - name: Set up Node.js
-        uses: actions/setup-node@949feb293bb85df64835a646c0d60c7f1a30a133 # v7.1.0
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: "24"
 
