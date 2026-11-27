@@ -4,8 +4,8 @@ function validate(env = process.env) {
   const errors = [];
   const value = (key, fallback) => env[key] === undefined ? fallback : env[key].trim();
   const check = (key, allowed, fallback) => { const v = value(key, fallback); if (!allowed.includes(v)) errors.push(key); return v; };
-  check('APP_MODE', ['self_hosted'], 'self_hosted');
-  check('NETWORK_POLICY', ['local_only'], 'local_only');
+  check('APP_MODE', ['managed', 'self_hosted'], 'managed');
+  check('NETWORK_POLICY', ['local_only', 'outbound_only'], 'local_only');
   const discord = check('DISCORD_ENABLED', ['true', 'false'], 'false');
   const line = check('LINE_ENABLED', ['false'], 'false');
   const tracing = check('TRACING_ENABLED', ['false'], 'false');
@@ -22,4 +22,4 @@ function validate(env = process.env) {
   }
   return { errors, host, port: Number(port) };
 }
-module.exports = { validate };
+module.exports = { validate, ...require('./registry') };

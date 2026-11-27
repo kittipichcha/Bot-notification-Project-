@@ -1,0 +1,235 @@
+{
+  "schema_version": "1.0.0",
+  "platforms": [
+    {
+      "enabled": false,
+      "capabilities": {
+        "setup": false,
+        "invoke": false,
+        "connection": false,
+        "tool": false,
+        "trigger": false,
+        "response": false
+      },
+      "setup_flow": {
+        "adapter": "authenticated_react_oauth2",
+        "status": null,
+        "permission": null,
+        "bootstrap": null
+      },
+      "invoke_adapter": "a2a_or_local",
+      "connection_adapter": "discord_gateway",
+      "trigger_adapter": "discord_gateway",
+      "response_adapter": "discord_response",
+      "scheduler_support": false,
+      "supported_response_components": [],
+      "tool_registry": {
+        "adapter": "discord_safe",
+        "tools": []
+      },
+      "oauth_requirements": {
+        "required": false,
+        "scopes": []
+      },
+      "event_source_type": "gateway",
+      "default_event_policy": [
+        {
+          "event_slug": "help",
+          "source": "gateway",
+          "payload_schema_ref": "https://notification.local/contracts/1.0.0/trigger.schema.json#/definitions/SystemEvent",
+          "filters": {},
+          "eligible_roles": [
+            "ADMIN",
+            "MEMBER"
+          ],
+          "default_on_action": "help",
+          "filter_schema_ref": "https://notification.local/contracts/1.0.0/trigger.schema.json#/definitions/SystemFilter"
+        },
+        {
+          "event_slug": "mention",
+          "source": "gateway",
+          "payload_schema_ref": "https://notification.local/contracts/1.0.0/trigger.schema.json#/definitions/SystemEvent",
+          "filters": {},
+          "eligible_roles": [
+            "ADMIN",
+            "MEMBER"
+          ],
+          "default_on_action": "mention",
+          "filter_schema_ref": "https://notification.local/contracts/1.0.0/trigger.schema.json#/definitions/SystemFilter"
+        }
+      ],
+      "platform_key": "discord",
+      "display_name": "Discord",
+      "release": "P0"
+    },
+    {
+      "enabled": false,
+      "capabilities": {
+        "setup": false,
+        "invoke": false,
+        "connection": false,
+        "tool": false,
+        "trigger": false,
+        "response": false
+      },
+      "setup_flow": {
+        "adapter": null,
+        "status": "LINE_SETUP_DISABLED",
+        "permission": null,
+        "bootstrap": null
+      },
+      "invoke_adapter": null,
+      "connection_adapter": null,
+      "trigger_adapter": "line_webhook",
+      "response_adapter": "line_safe_text",
+      "scheduler_support": false,
+      "supported_response_components": [],
+      "tool_registry": {
+        "adapter": null,
+        "tools": []
+      },
+      "oauth_requirements": {
+        "required": false,
+        "scopes": []
+      },
+      "event_source_type": "webhook",
+      "default_event_policy": [
+        {
+          "event_slug": "help",
+          "source": "webhook",
+          "payload_schema_ref": "https://notification.local/contracts/1.0.0/trigger.schema.json#/definitions/SystemEvent",
+          "filters": {},
+          "eligible_roles": [
+            "ADMIN",
+            "MEMBER"
+          ],
+          "default_on_action": "help",
+          "filter_schema_ref": "https://notification.local/contracts/1.0.0/trigger.schema.json#/definitions/SystemFilter"
+        },
+        {
+          "event_slug": "status",
+          "source": "webhook",
+          "payload_schema_ref": "https://notification.local/contracts/1.0.0/trigger.schema.json#/definitions/SystemEvent",
+          "filters": {},
+          "eligible_roles": [
+            "ADMIN",
+            "MEMBER"
+          ],
+          "default_on_action": "status",
+          "filter_schema_ref": "https://notification.local/contracts/1.0.0/trigger.schema.json#/definitions/SystemFilter"
+        }
+      ],
+      "platform_key": "line",
+      "display_name": "LINE",
+      "release": "P2"
+    },
+    {
+      "enabled": false,
+      "capabilities": {
+        "setup": false,
+        "invoke": false,
+        "connection": false,
+        "tool": false,
+        "trigger": false,
+        "response": false
+      },
+      "setup_flow": {
+        "adapter": "composio_oauth",
+        "status": null,
+        "permission": null,
+        "bootstrap": null
+      },
+      "invoke_adapter": null,
+      "connection_adapter": "composio",
+      "trigger_adapter": "composio",
+      "response_adapter": null,
+      "scheduler_support": false,
+      "supported_response_components": [],
+      "tool_registry": {
+        "adapter": "gmail_safe",
+        "tools": []
+      },
+      "oauth_requirements": {
+        "required": false,
+        "scopes": []
+      },
+      "event_source_type": "composio",
+      "default_event_policy": [],
+      "platform_key": "gmail",
+      "display_name": "Gmail",
+      "release": "P2"
+    },
+    {
+      "enabled": false,
+      "capabilities": {
+        "setup": false,
+        "invoke": false,
+        "connection": false,
+        "tool": false,
+        "trigger": false,
+        "response": false
+      },
+      "setup_flow": {
+        "adapter": "composio_oauth",
+        "status": null,
+        "permission": null,
+        "bootstrap": null
+      },
+      "invoke_adapter": null,
+      "connection_adapter": "composio",
+      "trigger_adapter": "composio",
+      "response_adapter": null,
+      "scheduler_support": false,
+      "supported_response_components": [],
+      "tool_registry": {
+        "adapter": "calendar_safe",
+        "tools": []
+      },
+      "oauth_requirements": {
+        "required": false,
+        "scopes": []
+      },
+      "event_source_type": "composio",
+      "default_event_policy": [],
+      "platform_key": "calendar",
+      "display_name": "Calendar",
+      "release": "P1"
+    },
+    {
+      "enabled": false,
+      "capabilities": {
+        "setup": false,
+        "invoke": false,
+        "connection": false,
+        "tool": false,
+        "trigger": false,
+        "response": false
+      },
+      "setup_flow": {
+        "adapter": "composio_oauth",
+        "status": null,
+        "permission": null,
+        "bootstrap": null
+      },
+      "invoke_adapter": null,
+      "connection_adapter": "composio",
+      "trigger_adapter": "composio",
+      "response_adapter": null,
+      "scheduler_support": false,
+      "supported_response_components": [],
+      "tool_registry": {
+        "adapter": "github_safe",
+        "tools": []
+      },
+      "oauth_requirements": {
+        "required": false,
+        "scopes": []
+      },
+      "event_source_type": "composio",
+      "default_event_policy": [],
+      "platform_key": "github",
+      "display_name": "GitHub",
+      "release": "P2"
+    }
+  ]
+}

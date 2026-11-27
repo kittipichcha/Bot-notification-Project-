@@ -1,0 +1,170 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://notification.local/contracts/1.0.0/tool.schema.json",
+  "title": "ToolContract",
+  "oneOf": [
+    {
+      "$ref": "#/definitions/ToolSpec"
+    },
+    {
+      "$ref": "#/definitions/ToolResult"
+    }
+  ],
+  "definitions": {
+    "ToolSpec": {
+      "type": "object",
+      "properties": {
+        "tool_id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*$"
+        },
+        "version": {
+          "const": "1.0.0"
+        },
+        "provider_action": {
+          "type": "string",
+          "minLength": 1
+        },
+        "operation": {
+          "enum": [
+            "READ",
+            "WRITE"
+          ]
+        },
+        "adapter": {
+          "type": "string",
+          "minLength": 1
+        },
+        "input_schema_ref": {
+          "type": "string",
+          "pattern": "^https://notification\\.local/contracts/1\\.0\\.0/[a-z][a-z0-9-]*\\.schema\\.json#/definitions/[A-Za-z][A-Za-z0-9]*$"
+        },
+        "result_schema_ref": {
+          "type": "string",
+          "pattern": "^https://notification\\.local/contracts/1\\.0\\.0/[a-z][a-z0-9-]*\\.schema\\.json#/definitions/[A-Za-z][A-Za-z0-9]*$"
+        },
+        "required_scopes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "rate_limit": {
+          "type": "object",
+          "properties": {
+            "max_calls": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "window_ms": {
+              "type": "integer",
+              "minimum": 1
+            }
+          },
+          "required": [
+            "max_calls",
+            "window_ms"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "tool_id",
+        "version",
+        "provider_action",
+        "operation",
+        "adapter",
+        "input_schema_ref",
+        "result_schema_ref",
+        "required_scopes",
+        "rate_limit"
+      ],
+      "additionalProperties": false
+    },
+    "ToolResult": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "status": {
+              "const": "success"
+            },
+            "data_ref": {
+              "type": "string",
+              "minLength": 1
+            },
+            "source": {
+              "type": "string",
+              "minLength": 1
+            },
+            "timestamp": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "error_code": {
+              "type": "null"
+            },
+            "retryable": {
+              "const": false
+            }
+          },
+          "required": [
+            "status",
+            "data_ref",
+            "source",
+            "timestamp",
+            "error_code",
+            "retryable"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "status": {
+              "const": "failed"
+            },
+            "data_ref": {
+              "type": "null"
+            },
+            "source": {
+              "type": "string",
+              "minLength": 1
+            },
+            "timestamp": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "error_code": {
+              "enum": [
+                "AUTH_REQUIRED",
+                "INVALID_CREDENTIAL",
+                "RATE_LIMITED",
+                "UNAVAILABLE",
+                "BAD_INPUT",
+                "NOT_AUTHORIZED",
+                "BUDGET_EXHAUSTED",
+                "TIMEOUT",
+                "INTERNAL_ERROR"
+              ]
+            },
+            "retryable": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "status",
+            "data_ref",
+            "source",
+            "timestamp",
+            "error_code",
+            "retryable"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    }
+  }
+}

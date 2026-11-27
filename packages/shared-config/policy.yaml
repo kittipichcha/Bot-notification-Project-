@@ -1,0 +1,50 @@
+{
+  "schema_version": "1.0.0",
+  "release": "P0",
+  "tool": {
+    "default_access": "DENY"
+  },
+  "trigger": {
+    "personal_watches_by_default": false,
+    "ignore_own_messages": true,
+    "schedule_enabled": false,
+    "deduplicate_events": true
+  },
+  "model": {
+    "allowed_models": []
+  },
+  "agent": {
+    "default_mode": "SIMPLE",
+    "enabled_modes": [
+      "SIMPLE"
+    ],
+    "role_definitions": {},
+    "max_model_calls": 4
+  },
+  "request": {
+    "execution_enabled": false,
+    "retry_policy": {
+      "model_retries": 1,
+      "tool_retries": 0
+    }
+  },
+  "approval": {
+    "enabled": false,
+    "mutation_policy": "EXACT_ACTION"
+  },
+  "bot_connection": {
+    "enabled_modes": [
+      "SAME_BOT"
+    ]
+  },
+  "response": {
+    "supported_components": [
+      "TEXT",
+      "EMBED",
+      "RESULT_CARD",
+      "APPROVAL_BUTTON",
+      "PRIVATE_FORM_LINK",
+      "ERROR_NOTICE"
+    ]
+  }
+}

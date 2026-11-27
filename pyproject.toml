@@ -5,3 +5,8 @@ requires-python = ">=3.12,<3.13"
 
 [tool.uv.workspace]
 members = ["services/*"]
+
+[dependency-groups]
+dev = [
+    "datamodel-code-generator==0.35.0",
+]

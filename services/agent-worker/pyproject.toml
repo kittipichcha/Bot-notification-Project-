@@ -2,6 +2,9 @@
 name = "agent-worker"
 version = "0.1.0"
 requires-python = ">=3.12,<3.13"
+dependencies = [
+    "jsonschema[format-nongpl]==4.25.1",
+]
 
 [build-system]
 requires = ["hatchling"]

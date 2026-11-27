@@ -1,0 +1,280 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://notification.local/contracts/1.0.0/platform.schema.json",
+  "title": "PlatformContract",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0",
+      "type": "string"
+    },
+    "platforms": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "platform_key": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^[a-z][a-z0-9_]*$"
+          },
+          "display_name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "capabilities": {
+            "type": "object",
+            "properties": {
+              "setup": {
+                "type": "boolean"
+              },
+              "invoke": {
+                "type": "boolean"
+              },
+              "connection": {
+                "type": "boolean"
+              },
+              "tool": {
+                "type": "boolean"
+              },
+              "trigger": {
+                "type": "boolean"
+              },
+              "response": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "setup",
+              "invoke",
+              "connection",
+              "tool",
+              "trigger",
+              "response"
+            ],
+            "additionalProperties": false
+          },
+          "setup_flow": {
+            "type": "object",
+            "properties": {
+              "adapter": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "minLength": 1,
+                    "pattern": "^[a-z][a-z0-9_]*$"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "status": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "permission": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "bootstrap": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "adapter",
+              "status",
+              "permission",
+              "bootstrap"
+            ],
+            "additionalProperties": false
+          },
+          "invoke_adapter": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "^[a-z][a-z0-9_]*$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "connection_adapter": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "^[a-z][a-z0-9_]*$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "trigger_adapter": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "^[a-z][a-z0-9_]*$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "response_adapter": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "^[a-z][a-z0-9_]*$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "scheduler_support": {
+            "type": "boolean"
+          },
+          "supported_response_components": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "TEXT",
+                "EMBED",
+                "RESULT_CARD",
+                "APPROVAL_BUTTON",
+                "PRIVATE_FORM_LINK",
+                "ERROR_NOTICE"
+              ]
+            },
+            "uniqueItems": true
+          },
+          "tool_registry": {
+            "type": "object",
+            "properties": {
+              "adapter": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "minLength": 1,
+                    "pattern": "^[a-z][a-z0-9_]*$"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "tools": {
+                "type": "array",
+                "items": {
+                  "$ref": "https://notification.local/contracts/1.0.0/tool.schema.json#/definitions/ToolSpec"
+                }
+              }
+            },
+            "required": [
+              "adapter",
+              "tools"
+            ],
+            "additionalProperties": false
+          },
+          "oauth_requirements": {
+            "type": "object",
+            "properties": {
+              "required": {
+                "type": "boolean"
+              },
+              "scopes": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "uniqueItems": true
+              }
+            },
+            "required": [
+              "required",
+              "scopes"
+            ],
+            "additionalProperties": false
+          },
+          "event_source_type": {
+            "enum": [
+              "gateway",
+              "webhook",
+              "composio",
+              "none"
+            ]
+          },
+          "default_event_policy": {
+            "type": "array",
+            "items": {
+              "$ref": "https://notification.local/contracts/1.0.0/trigger.schema.json"
+            }
+          },
+          "release": {
+            "enum": [
+              "P0",
+              "P1",
+              "P2"
+            ]
+          }
+        },
+        "required": [
+          "platform_key",
+          "display_name",
+          "enabled",
+          "capabilities",
+          "setup_flow",
+          "invoke_adapter",
+          "connection_adapter",
+          "trigger_adapter",
+          "response_adapter",
+          "scheduler_support",
+          "supported_response_components",
+          "tool_registry",
+          "oauth_requirements",
+          "event_source_type",
+          "default_event_policy",
+          "release"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "schema_version",
+    "platforms"
+  ],
+  "additionalProperties": false
+}
