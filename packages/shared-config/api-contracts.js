@@ -245,4 +245,3 @@ function createApiValidators(root = path.join(__dirname, '../contracts')) {
 }
 
 module.exports = { ...createApiValidators(), createApiValidators, validateRouteRegistration };
-
