@@ -14,10 +14,10 @@ EP01-02 acceptance was updated on 2026-11-27 to the [revised specification](http
 
 | Revised verification | Status / ownership |
 | --- | --- |
-| TC-CONTRACT-002: schema-version agreement and bidirectional serialization/validation round trips; EV-CONTRACT-002. | `tests/contract-parity.test.js`, `tests/contracts/roundtrip.ts` and `roundtrip.py`; results recorded in evidence after generation completes. |
+| TC-CONTRACT-002: schema-version agreement and bidirectional serialization/validation round trips; EV-CONTRACT-002. | `tests/contract-parity.test.js`, `tests/contracts/roundtrip.ts` and `roundtrip.py`; verified on `aa74d94` in [EP01-02 evidence](test-evidence/EP01-02.md). |
 | TC-PLATFORM-005: six registry roles plus a distinct reviewed tool and argument/result schema, not only empty mock tool lists. | `tests/registry.test.js`, `tests/catalogue.test.js`; mock callbacks establish the extension boundary. |
 | TC-API-000: canonical P0 API inventory, DTOs, common errors and release-aware registration rules. | `tests/api-contracts.test.js`, `tests/contracts.test.js`; authorization/redaction and feature integration stay with EP11-05, EP12-01 and mapped API owners. |
 | Canonical FinalResponse and rejected model-forged action references; TC-FORMAT-002/003 contract slice. | `tests/response.test.js`; renderer/approval/delivery behavior stays with EP05-05, EP07 and EP08. |
 | TC-DOC-001: revised clauses, generated artifacts, tests, runtime owners and commit-backed evidence agree. | [Clause mapping](test-evidence/EP01-02-traceability.md), generation tests and generated consumers; whole-project traceability/CI automation remains EP01-04/03. |
 
-Revised acceptance is changes requested. No revised criterion is marked passed solely from the 2026-11-24 evidence; implementation, regeneration, focused tests and a fresh review are required before completion.
+Revised EP01-02 acceptance (AC1–AC8) is verified on `feat/ep01-02-contracts` (`aa74d94`) with 98/98 Node tests, 3/3 Python contract tests (35 shared fixtures), zero generation drift, and all 6 Python service scaffold checks recorded in [EP01-02 evidence](test-evidence/EP01-02.md). Runtime integration assertions for TC-API-000, TC-FORMAT-002/003 and downstream features remain with their mapped owners.
