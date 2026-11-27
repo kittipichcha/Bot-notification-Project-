@@ -1,0 +1,3876 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://notification.local/contracts/1.0.0/api.schema.json",
+  "title": "ApiContract",
+  "anyOf": [
+    {
+      "$ref": "#/definitions/LegacyHealthResponse"
+    },
+    {
+      "$ref": "#/definitions/CanonicalError"
+    },
+    {
+      "$ref": "#/definitions/Api017NotReadyResponse"
+    },
+    {
+      "$ref": "#/definitions/Api001Response"
+    },
+    {
+      "$ref": "#/definitions/EmptyBody"
+    },
+    {
+      "$ref": "#/definitions/BotPage"
+    },
+    {
+      "$ref": "#/definitions/Api004Response"
+    },
+    {
+      "$ref": "#/definitions/Api005Request"
+    },
+    {
+      "$ref": "#/definitions/Api005Response"
+    },
+    {
+      "$ref": "#/definitions/Api006Response"
+    },
+    {
+      "$ref": "#/definitions/Api007Response"
+    },
+    {
+      "$ref": "#/definitions/AccountPage"
+    },
+    {
+      "$ref": "#/definitions/Api009Response"
+    },
+    {
+      "$ref": "#/definitions/ToolGrantPage"
+    },
+    {
+      "$ref": "#/definitions/ApprovalPage"
+    },
+    {
+      "$ref": "#/definitions/Api012Response"
+    },
+    {
+      "$ref": "#/definitions/RequestPage"
+    },
+    {
+      "$ref": "#/definitions/Api014Response"
+    },
+    {
+      "$ref": "#/definitions/Api015Response"
+    },
+    {
+      "$ref": "#/definitions/Api016Response"
+    },
+    {
+      "$ref": "#/definitions/Api017ReadyResponse"
+    },
+    {
+      "$ref": "#/definitions/Api018Response"
+    },
+    {
+      "$ref": "#/definitions/Api019Request"
+    },
+    {
+      "$ref": "#/definitions/Api020Request"
+    },
+    {
+      "$ref": "#/definitions/Api020Response"
+    },
+    {
+      "$ref": "#/definitions/Api023Response"
+    },
+    {
+      "$ref": "#/definitions/Api027Response"
+    },
+    {
+      "$ref": "#/definitions/Api028Response"
+    },
+    {
+      "$ref": "#/definitions/Api030Request"
+    },
+    {
+      "$ref": "#/definitions/Api030Response"
+    },
+    {
+      "$ref": "#/definitions/Api031Request"
+    },
+    {
+      "$ref": "#/definitions/Api031Response"
+    },
+    {
+      "$ref": "#/definitions/Api032Request"
+    },
+    {
+      "$ref": "#/definitions/RequestAcceptedResponse"
+    },
+    {
+      "$ref": "#/definitions/Api033Response"
+    },
+    {
+      "$ref": "#/definitions/BotTransitionResponse"
+    },
+    {
+      "$ref": "#/definitions/ApprovalDecisionRequest"
+    },
+    {
+      "$ref": "#/definitions/ApprovalDecisionResponse"
+    },
+    {
+      "$ref": "#/definitions/Api040Request"
+    },
+    {
+      "$ref": "#/definitions/GrantResponse"
+    },
+    {
+      "$ref": "#/definitions/Api041Response"
+    },
+    {
+      "$ref": "#/definitions/Api043Request"
+    },
+    {
+      "$ref": "#/definitions/Api043Response"
+    },
+    {
+      "$ref": "#/definitions/HealthSummary"
+    },
+    {
+      "$ref": "#/definitions/ModeResponse"
+    },
+    {
+      "$ref": "#/definitions/ModeRequest"
+    },
+    {
+      "$ref": "#/definitions/Api047Request"
+    },
+    {
+      "$ref": "#/definitions/Api048Request"
+    },
+    {
+      "$ref": "#/definitions/ValidationChecks"
+    },
+    {
+      "$ref": "#/definitions/Api049Request"
+    },
+    {
+      "$ref": "#/definitions/Api049Response"
+    },
+    {
+      "$ref": "#/definitions/Api050Response"
+    },
+    {
+      "$ref": "#/definitions/Api051Request"
+    },
+    {
+      "$ref": "#/definitions/Api052Request"
+    },
+    {
+      "$ref": "#/definitions/Api052Response"
+    },
+    {
+      "$ref": "#/definitions/Api053Request"
+    },
+    {
+      "$ref": "#/definitions/Api053Response"
+    },
+    {
+      "$ref": "#/definitions/AccountSummary"
+    },
+    {
+      "$ref": "#/definitions/Api057Request"
+    },
+    {
+      "$ref": "#/definitions/JobResponse"
+    },
+    {
+      "$ref": "#/definitions/Api058Request"
+    },
+    {
+      "$ref": "#/definitions/Api058Response"
+    },
+    {
+      "$ref": "#/definitions/Api060Response"
+    },
+    {
+      "$ref": "#/definitions/Api061Response"
+    },
+    {
+      "$ref": "#/definitions/FormSubmission"
+    },
+    {
+      "$ref": "#/definitions/Api062Response"
+    },
+    {
+      "$ref": "#/definitions/Api064Request"
+    }
+  ],
+  "definitions": {
+    "LegacyHealthResponse": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "const": "ok"
+        },
+        "service": {
+          "const": "api"
+        },
+        "readiness": {
+          "const": "scaffold"
+        }
+      },
+      "required": [
+        "status",
+        "service",
+        "readiness"
+      ],
+      "additionalProperties": false
+    },
+    "FieldError": {
+      "type": "object",
+      "properties": {
+        "field": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "field",
+        "message"
+      ],
+      "additionalProperties": false
+    },
+    "CanonicalError": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        },
+        "field_errors": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/FieldError"
+          }
+        },
+        "trace_id": {
+          "type": "string"
+        },
+        "retryable": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "code",
+        "message",
+        "field_errors",
+        "trace_id",
+        "retryable"
+      ],
+      "additionalProperties": false
+    },
+    "Mode": {
+      "type": "string",
+      "enum": [
+        "normal",
+        "langgraph"
+      ]
+    },
+    "InternalMode": {
+      "type": "string",
+      "enum": [
+        "SIMPLE",
+        "MULTI_AGENT"
+      ]
+    },
+    "SafeScope": {
+      "type": "object",
+      "properties": {
+        "platforms": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "tool_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "operations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "resource_labels": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "audience": {
+          "$ref": "#/definitions/Audience"
+        },
+        "expires_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time",
+              "pattern": "Z$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "platforms",
+        "tool_ids",
+        "operations",
+        "resource_labels",
+        "audience",
+        "expires_at"
+      ],
+      "additionalProperties": false
+    },
+    "ModelSummary": {
+      "type": "object",
+      "properties": {
+        "provider": {
+          "type": "string"
+        },
+        "model_name": {
+          "type": "string"
+        },
+        "role": {
+          "$ref": "#/definitions/ModelRole"
+        },
+        "credential_configured": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "provider",
+        "model_name",
+        "role",
+        "credential_configured"
+      ],
+      "additionalProperties": false
+    },
+    "HealthSummary": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string"
+        },
+        "components": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "status": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "name",
+              "status"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "status",
+        "components"
+      ],
+      "additionalProperties": false
+    },
+    "FeatureSummary": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "release": {
+          "$ref": "#/definitions/Release"
+        },
+        "count": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "reason_code": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "enabled",
+        "release",
+        "count",
+        "reason_code"
+      ],
+      "additionalProperties": false
+    },
+    "StorageSummary": {
+      "type": "object",
+      "properties": {
+        "managed_selected": {
+          "type": "boolean"
+        },
+        "app_data": {
+          "type": "object",
+          "properties": {
+            "location": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "HOSTED"
+                  ]
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "status": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "location",
+            "status"
+          ],
+          "additionalProperties": false
+        },
+        "checkpoint": {
+          "type": "object",
+          "properties": {
+            "location": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "HOSTED"
+                  ]
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "status": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "location",
+            "status"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "managed_selected",
+        "app_data",
+        "checkpoint"
+      ],
+      "additionalProperties": false
+    },
+    "ConnectionSummary": {
+      "type": "object",
+      "properties": {
+        "connection_id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "bot_label": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "scope": {
+          "$ref": "#/definitions/SafeScope"
+        },
+        "expires_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time",
+              "pattern": "Z$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "connection_id",
+        "bot_label",
+        "status",
+        "scope",
+        "expires_at"
+      ],
+      "additionalProperties": false
+    },
+    "RequestCounts": {
+      "type": "object",
+      "properties": {
+        "queued": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "running": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "waiting_approval": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "queued",
+        "running",
+        "waiting_approval"
+      ],
+      "additionalProperties": false
+    },
+    "ApprovalCounts": {
+      "type": "object",
+      "properties": {
+        "pending": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "pending"
+      ],
+      "additionalProperties": false
+    },
+    "Counts": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/RequestCounts"
+        },
+        {
+          "$ref": "#/definitions/ApprovalCounts"
+        }
+      ]
+    },
+    "EmptyBody": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "Api001Response": {
+      "type": "object",
+      "properties": {
+        "user_ref": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "display_name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "platform": {
+          "type": "string",
+          "enum": [
+            "DISCORD"
+          ]
+        },
+        "expires_at": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        }
+      },
+      "required": [
+        "user_ref",
+        "display_name",
+        "platform",
+        "expires_at"
+      ],
+      "additionalProperties": false
+    },
+    "Api005Request": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80,
+          "pattern": "^[^\\u0000-\\u001f\\u007f]+$"
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "name",
+        "revision"
+      ],
+      "additionalProperties": false
+    },
+    "Api014Response": {
+      "type": "object",
+      "properties": {
+        "managed_selected": {
+          "type": "boolean"
+        },
+        "app_data": {
+          "type": "object",
+          "properties": {
+            "location": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "HOSTED"
+                  ]
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "status": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "location",
+            "status"
+          ],
+          "additionalProperties": false
+        },
+        "checkpoint": {
+          "type": "object",
+          "properties": {
+            "location": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "HOSTED"
+                  ]
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "status": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "location",
+            "status"
+          ],
+          "additionalProperties": false
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "managed_selected",
+        "app_data",
+        "checkpoint",
+        "revision"
+      ],
+      "additionalProperties": false
+    },
+    "Api015Response": {
+      "type": "object",
+      "properties": {
+        "job_id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "status": {
+          "type": "string"
+        },
+        "completed_classes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "pending_classes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "error_code": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        }
+      },
+      "required": [
+        "job_id",
+        "status",
+        "completed_classes",
+        "pending_classes",
+        "error_code",
+        "updated_at"
+      ],
+      "additionalProperties": false
+    },
+    "Api016Response": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "UP"
+          ]
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "Api017ReadyResponse": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "READY"
+          ]
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "Api017NotReadyResponse": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "NOT_READY"
+          ]
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "Api018Response": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "export_mode": {
+          "type": "string",
+          "enum": [
+            "OFF",
+            "METADATA_ONLY"
+          ]
+        },
+        "key_configured": {
+          "type": "boolean"
+        },
+        "workspace": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "project": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "destination_label": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "retention_notice": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "enabled",
+        "export_mode",
+        "key_configured",
+        "workspace",
+        "project",
+        "destination_label",
+        "retention_notice",
+        "revision"
+      ],
+      "additionalProperties": false
+    },
+    "Api019Request": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "export_mode": {
+          "type": "string",
+          "enum": [
+            "OFF",
+            "METADATA_ONLY"
+          ]
+        },
+        "workspace": {
+          "type": "string"
+        },
+        "project": {
+          "type": "string"
+        },
+        "endpoint": {
+          "type": "string"
+        },
+        "api_key": {
+          "type": "string"
+        },
+        "remove_key": {
+          "type": "boolean"
+        },
+        "consent_confirmed": {
+          "type": "boolean"
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "enabled",
+        "export_mode",
+        "revision"
+      ],
+      "additionalProperties": false
+    },
+    "Api032Request": {
+      "type": "object",
+      "properties": {
+        "session_ref": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "message": {
+          "type": "string"
+        },
+        "client_event_ref": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "session_ref",
+        "message",
+        "client_event_ref"
+      ],
+      "additionalProperties": false
+    },
+    "RequestAcceptedResponse": {
+      "type": "object",
+      "properties": {
+        "request_id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "status": {
+          "$ref": "#/definitions/RequestStatus"
+        },
+        "execution_mode": {
+          "$ref": "#/definitions/Mode"
+        },
+        "trace_id": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "request_id",
+        "status",
+        "execution_mode",
+        "trace_id"
+      ],
+      "additionalProperties": false
+    },
+    "Api033Response": {
+      "type": "object",
+      "properties": {
+        "request_id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "status": {
+          "$ref": "#/definitions/RequestStatus"
+        },
+        "queue_position": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "execution_mode": {
+          "$ref": "#/definitions/Mode"
+        },
+        "error_code": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "can_control": {
+          "type": "boolean"
+        },
+        "trace_id": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "request_id",
+        "status",
+        "queue_position",
+        "execution_mode",
+        "error_code",
+        "can_control",
+        "trace_id"
+      ],
+      "additionalProperties": false
+    },
+    "BotTransitionResponse": {
+      "type": "object",
+      "properties": {
+        "bot_id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "status": {
+          "$ref": "#/definitions/BotStatus"
+        },
+        "trace_id": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "bot_id",
+        "status",
+        "trace_id"
+      ],
+      "additionalProperties": false
+    },
+    "ApprovalDecisionRequest": {
+      "type": "object",
+      "properties": {
+        "decision": {
+          "type": "string",
+          "enum": [
+            "APPROVE",
+            "REJECT"
+          ]
+        }
+      },
+      "required": [
+        "decision"
+      ],
+      "additionalProperties": false
+    },
+    "ApprovalDecisionResponse": {
+      "type": "object",
+      "properties": {
+        "approval_id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "approval_type": {
+          "$ref": "#/definitions/ApprovalType"
+        },
+        "status": {
+          "$ref": "#/definitions/ApprovalStatus"
+        },
+        "activation_status": {
+          "type": "string"
+        },
+        "trace_id": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "approval_id",
+        "approval_type",
+        "status",
+        "trace_id"
+      ],
+      "additionalProperties": false
+    },
+    "ModeResponse": {
+      "type": "object",
+      "properties": {
+        "current_mode": {
+          "$ref": "#/definitions/Mode"
+        }
+      },
+      "required": [
+        "current_mode"
+      ],
+      "additionalProperties": false
+    },
+    "ModeRequest": {
+      "type": "object",
+      "properties": {
+        "mode": {
+          "$ref": "#/definitions/Mode"
+        }
+      },
+      "required": [
+        "mode"
+      ],
+      "additionalProperties": false
+    },
+    "GrantResponse": {
+      "type": "object",
+      "properties": {
+        "grant_id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "status": {
+          "type": "string"
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "grant_id",
+        "status",
+        "revision"
+      ],
+      "additionalProperties": false
+    },
+    "Api048Request": {
+      "type": "object",
+      "properties": {
+        "managed_selected": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "managed_selected"
+      ],
+      "additionalProperties": false
+    },
+    "Api049Request": {
+      "type": "object",
+      "properties": {
+        "managed_selected": {
+          "type": "boolean"
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "managed_selected",
+        "revision"
+      ],
+      "additionalProperties": false
+    },
+    "Api049Response": {
+      "type": "object",
+      "properties": {
+        "managed_selected": {
+          "type": "boolean"
+        },
+        "app_data": {
+          "type": "object",
+          "properties": {
+            "location": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "HOSTED"
+                  ]
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "status": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "location",
+            "status"
+          ],
+          "additionalProperties": false
+        },
+        "checkpoint": {
+          "type": "object",
+          "properties": {
+            "location": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "HOSTED"
+                  ]
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "status": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "location",
+            "status"
+          ],
+          "additionalProperties": false
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "managed_selected",
+        "app_data",
+        "checkpoint",
+        "revision"
+      ],
+      "additionalProperties": false
+    },
+    "JobResponse": {
+      "type": "object",
+      "properties": {
+        "job_id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "status": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "job_id",
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "OAuthCallbackQuery": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "code": {
+              "type": "string",
+              "minLength": 1
+            },
+            "state": {
+              "type": "string",
+              "minLength": 1
+            },
+            "iss": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "code",
+            "state"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "error": {
+              "type": "string",
+              "minLength": 1
+            },
+            "state": {
+              "type": "string",
+              "minLength": 1
+            },
+            "iss": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "error",
+            "state"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "Platform": {
+      "type": "string",
+      "enum": [
+        "DISCORD",
+        "LINE",
+        "GMAIL",
+        "GOOGLE_CALENDAR",
+        "GITHUB"
+      ]
+    },
+    "Release": {
+      "type": "string",
+      "enum": [
+        "P0",
+        "P1",
+        "P2"
+      ]
+    },
+    "ModelRole": {
+      "type": "string",
+      "enum": [
+        "SIMPLE",
+        "ORCHESTRATOR",
+        "REVIEWER",
+        "DISCORD",
+        "LINE",
+        "GMAIL",
+        "GOOGLE_CALENDAR",
+        "GITHUB"
+      ]
+    },
+    "BotStatus": {
+      "type": "string",
+      "enum": [
+        "UNCONFIGURED",
+        "PENDING_STORAGE",
+        "READY",
+        "STOPPED",
+        "DELETING",
+        "REMOVED",
+        "SETUP_DISABLED"
+      ]
+    },
+    "RequestStatus": {
+      "type": "string",
+      "enum": [
+        "QUEUED",
+        "RUNNING",
+        "WAITING_APPROVAL",
+        "PAUSE_REQUESTED",
+        "PAUSED",
+        "CANCEL_REQUESTED",
+        "CANCELLED",
+        "COMPLETED",
+        "FAILED",
+        "EXPIRED",
+        "REJECTED",
+        "RECOVERY_REQUIRED"
+      ]
+    },
+    "ApprovalType": {
+      "type": "string",
+      "enum": [
+        "TOOL_ACTION",
+        "TRIGGER_POLICY_CREATE",
+        "TRIGGER_POLICY_UPDATE"
+      ]
+    },
+    "Audience": {
+      "type": "string",
+      "enum": [
+        "PRIVATE",
+        "GROUP"
+      ]
+    },
+    "GrantStatus": {
+      "type": "string",
+      "enum": [
+        "ACTIVE",
+        "REVOKED",
+        "EXPIRED"
+      ]
+    },
+    "ApprovalStatus": {
+      "type": "string",
+      "enum": [
+        "PENDING",
+        "APPROVED",
+        "REJECTED",
+        "EXPIRED",
+        "REVOKED",
+        "CONSUMED"
+      ]
+    },
+    "FormAction": {
+      "type": "string",
+      "enum": [
+        "SETUP",
+        "GUILD_BOOTSTRAP",
+        "DM_ENROLLMENT",
+        "APPROVAL",
+        "ACCOUNT_CONSENT",
+        "BOT_CONNECTION",
+        "PEOPLE_EDIT",
+        "TRIGGER_POLICY",
+        "DELETION",
+        "TOOL_GRANT",
+        "MODEL_CONFIG",
+        "STORAGE_CONFIG"
+      ]
+    },
+    "ScalarParameter": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "number"
+        },
+        {
+          "type": "boolean"
+        }
+      ]
+    },
+    "JsonValue": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "number"
+        },
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        },
+        {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/JsonValue"
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/JsonValue"
+          }
+        }
+      ]
+    },
+    "ModelParameters": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/definitions/ScalarParameter"
+      }
+    },
+    "ReviewedJsonSchema": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "type": {
+              "type": "string",
+              "enum": [
+                "string",
+                "boolean",
+                "number",
+                "integer",
+                "null"
+              ]
+            },
+            "enum": {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "minItems": 1,
+              "uniqueItems": true
+            },
+            "const": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "format": {
+              "type": "string",
+              "enum": [
+                "uuid",
+                "date-time",
+                "uri",
+                "email"
+              ]
+            },
+            "pattern": {
+              "type": "string"
+            },
+            "minLength": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "maxLength": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "minimum": {
+              "type": "number"
+            },
+            "maximum": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "type"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "type": {
+              "type": "string",
+              "enum": [
+                "object"
+              ]
+            },
+            "properties": {
+              "type": "object",
+              "propertyNames": {
+                "pattern": "^(?!__proto__$|constructor$|prototype$)[A-Za-z_][A-Za-z0-9_-]*$"
+              },
+              "additionalProperties": {
+                "$ref": "#/definitions/ReviewedJsonSchema"
+              }
+            },
+            "required": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
+              "uniqueItems": true
+            },
+            "additionalProperties": {
+              "const": false
+            }
+          },
+          "required": [
+            "type",
+            "properties",
+            "additionalProperties"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "type": {
+              "type": "string",
+              "enum": [
+                "array"
+              ]
+            },
+            "items": {
+              "$ref": "#/definitions/ReviewedJsonSchema"
+            },
+            "minItems": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "maxItems": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "uniqueItems": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "type",
+            "items"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "anyOf": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ReviewedJsonSchema"
+              },
+              "minItems": 1
+            }
+          },
+          "required": [
+            "anyOf"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "oneOf": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ReviewedJsonSchema"
+              },
+              "minItems": 1
+            }
+          },
+          "required": [
+            "oneOf"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "BotSummary": {
+      "type": "object",
+      "properties": {
+        "bot_id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "name": {
+          "type": "string"
+        },
+        "platform": {
+          "$ref": "#/definitions/Platform"
+        },
+        "status": {
+          "$ref": "#/definitions/BotStatus"
+        },
+        "conversation_label": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "bot_id",
+        "name",
+        "platform",
+        "status",
+        "conversation_label"
+      ],
+      "additionalProperties": false
+    },
+    "CommandSync": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "PENDING",
+            "SYNCED",
+            "FALLBACK"
+          ]
+        },
+        "reason_code": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "status",
+        "reason_code"
+      ],
+      "additionalProperties": false
+    },
+    "ConnectionDashboard": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "incoming": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ConnectionSummary"
+          }
+        },
+        "outgoing": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ConnectionSummary"
+          }
+        },
+        "pending_count": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "enabled",
+        "incoming",
+        "outgoing",
+        "pending_count"
+      ],
+      "additionalProperties": false
+    },
+    "SafePreview": {
+      "type": "object",
+      "properties": {
+        "field": {
+          "type": "string",
+          "minLength": 1
+        },
+        "before": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "after": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "field",
+        "before",
+        "after"
+      ],
+      "additionalProperties": false
+    },
+    "ToolActionPreview": {
+      "type": "object",
+      "properties": {
+        "tool_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "operation": {
+          "type": "string",
+          "minLength": 1
+        },
+        "target": {
+          "type": "string"
+        },
+        "changes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/SafePreview"
+          }
+        }
+      },
+      "required": [
+        "tool_id",
+        "version",
+        "operation",
+        "target",
+        "changes"
+      ],
+      "additionalProperties": false
+    },
+    "TriggerPolicyPreview": {
+      "type": "object",
+      "properties": {
+        "event_type": {
+          "type": "string",
+          "minLength": 1
+        },
+        "filters": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/ScalarParameter"
+          }
+        },
+        "account": {
+          "type": "string"
+        },
+        "resource": {
+          "type": "string"
+        },
+        "action": {
+          "type": "string",
+          "minLength": 1
+        },
+        "argument_bounds": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/ScalarParameter"
+          }
+        },
+        "destination": {
+          "type": "string"
+        },
+        "audience": {
+          "$ref": "#/definitions/Audience"
+        },
+        "recurrence": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "timezone": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "expires_at": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "quota": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "policy_revision": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "event_type",
+        "filters",
+        "account",
+        "resource",
+        "action",
+        "argument_bounds",
+        "destination",
+        "audience",
+        "recurrence",
+        "timezone",
+        "expires_at",
+        "quota",
+        "policy_revision"
+      ],
+      "additionalProperties": false
+    },
+    "SafeLogEvent": {
+      "type": "object",
+      "properties": {
+        "timestamp": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "level": {
+          "type": "string",
+          "minLength": 1
+        },
+        "service": {
+          "type": "string",
+          "minLength": 1
+        },
+        "event_type": {
+          "type": "string",
+          "minLength": 1
+        },
+        "trace_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "reason_code": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "safe_metadata": {
+          "type": "object",
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/ScalarParameter"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        }
+      },
+      "required": [
+        "timestamp",
+        "level",
+        "service",
+        "event_type",
+        "trace_id",
+        "reason_code",
+        "safe_metadata"
+      ],
+      "additionalProperties": false
+    },
+    "BotPage": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "bot_id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "name": {
+                "type": "string"
+              },
+              "platform": {
+                "$ref": "#/definitions/Platform"
+              },
+              "conversation_label": {
+                "type": "string"
+              },
+              "status": {
+                "$ref": "#/definitions/BotStatus"
+              },
+              "can_setup": {
+                "const": true
+              },
+              "model": {
+                "anyOf": [
+                  {
+                    "$ref": "#/definitions/ModelSummary"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "bot_id",
+              "name",
+              "platform",
+              "conversation_label",
+              "status",
+              "can_setup",
+              "model"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 50
+        },
+        "next_cursor": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "items",
+        "next_cursor"
+      ],
+      "additionalProperties": false
+    },
+    "Api004Response": {
+      "type": "object",
+      "properties": {
+        "bot": {
+          "$ref": "#/definitions/BotSummary"
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "models": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ModelSummary"
+          }
+        },
+        "sessions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "session_ref": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "execution_mode": {
+                "$ref": "#/definitions/Mode"
+              }
+            },
+            "required": [
+              "session_ref",
+              "execution_mode"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "storage": {
+          "$ref": "#/definitions/StorageSummary"
+        },
+        "health": {
+          "$ref": "#/definitions/HealthSummary"
+        },
+        "requests": {
+          "$ref": "#/definitions/RequestCounts"
+        },
+        "approvals": {
+          "$ref": "#/definitions/ApprovalCounts"
+        },
+        "triggers": {
+          "$ref": "#/definitions/FeatureSummary"
+        },
+        "connections": {
+          "$ref": "#/definitions/ConnectionDashboard"
+        },
+        "command_sync": {
+          "$ref": "#/definitions/CommandSync"
+        }
+      },
+      "required": [
+        "bot",
+        "revision",
+        "models",
+        "sessions",
+        "storage",
+        "health",
+        "requests",
+        "approvals",
+        "triggers",
+        "connections",
+        "command_sync"
+      ],
+      "additionalProperties": false
+    },
+    "Api005Response": {
+      "type": "object",
+      "properties": {
+        "bot": {
+          "$ref": "#/definitions/BotSummary"
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "command_sync": {
+          "$ref": "#/definitions/CommandSync"
+        }
+      },
+      "required": [
+        "bot",
+        "revision",
+        "command_sync"
+      ],
+      "additionalProperties": false
+    },
+    "Api006Response": {
+      "type": "object",
+      "properties": {
+        "agents": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "role": {
+                "$ref": "#/definitions/ModelRole"
+              },
+              "model": {
+                "$ref": "#/definitions/ModelSummary"
+              },
+              "parameters": {
+                "$ref": "#/definitions/ModelParameters"
+              },
+              "credential_configured": {
+                "type": "boolean"
+              },
+              "revision": {
+                "type": "integer",
+                "minimum": 0
+              }
+            },
+            "required": [
+              "role",
+              "model",
+              "parameters",
+              "credential_configured",
+              "revision"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "supported_modes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Mode"
+          },
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "agents",
+        "supported_modes"
+      ],
+      "additionalProperties": false
+    },
+    "Api007Response": {
+      "type": "object",
+      "properties": {
+        "platforms": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "platform": {
+                "$ref": "#/definitions/Platform"
+              },
+              "label": {
+                "type": "string",
+                "minLength": 1
+              },
+              "release": {
+                "$ref": "#/definitions/Release"
+              },
+              "enabled": {
+                "type": "boolean"
+              },
+              "setup_available": {
+                "type": "boolean"
+              },
+              "reason_code": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "platform",
+              "label",
+              "release",
+              "enabled",
+              "setup_available",
+              "reason_code"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "platforms"
+      ],
+      "additionalProperties": false
+    },
+    "AccountSummary": {
+      "type": "object",
+      "properties": {
+        "account_ref": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "platform": {
+          "$ref": "#/definitions/Platform"
+        },
+        "label": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "PENDING",
+            "ACTIVE",
+            "REVOKED",
+            "UNAVAILABLE"
+          ]
+        },
+        "visible_scopes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "audience": {
+          "$ref": "#/definitions/Audience"
+        },
+        "can_revoke": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "account_ref",
+        "platform",
+        "label",
+        "status",
+        "visible_scopes",
+        "audience",
+        "can_revoke"
+      ],
+      "additionalProperties": false
+    },
+    "AccountPage": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/AccountSummary"
+          },
+          "maxItems": 50
+        },
+        "next_cursor": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "items",
+        "next_cursor"
+      ],
+      "additionalProperties": false
+    },
+    "Api009Response": {
+      "type": "object",
+      "properties": {
+        "platform": {
+          "$ref": "#/definitions/Platform"
+        },
+        "tools": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "tool_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "version": {
+                "type": "string",
+                "minLength": 1
+              },
+              "label": {
+                "type": "string"
+              },
+              "operation": {
+                "type": "string",
+                "enum": [
+                  "READ",
+                  "WRITE"
+                ]
+              },
+              "input_schema": {
+                "$ref": "#/definitions/ReviewedJsonSchema"
+              },
+              "approval_required": {
+                "type": "boolean"
+              },
+              "sensitive": {
+                "type": "boolean"
+              },
+              "enabled": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "tool_id",
+              "version",
+              "label",
+              "operation",
+              "input_schema",
+              "approval_required",
+              "sensitive",
+              "enabled"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "platform",
+        "tools"
+      ],
+      "additionalProperties": false
+    },
+    "ToolGrantPage": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "grant_id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "tool_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "scope": {
+                "$ref": "#/definitions/SafeScope"
+              },
+              "status": {
+                "$ref": "#/definitions/GrantStatus"
+              },
+              "expires_at": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "format": "date-time",
+                    "pattern": "Z$"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "approval_required": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "grant_id",
+              "tool_id",
+              "scope",
+              "status",
+              "expires_at",
+              "approval_required"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 50
+        },
+        "next_cursor": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "items",
+        "next_cursor"
+      ],
+      "additionalProperties": false
+    },
+    "ApprovalPage": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "approval_id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "request_ref": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "approval_type": {
+                "$ref": "#/definitions/ApprovalType"
+              },
+              "operation_label": {
+                "type": "string"
+              },
+              "status": {
+                "$ref": "#/definitions/ApprovalStatus"
+              },
+              "expires_at": {
+                "type": "string",
+                "format": "date-time",
+                "pattern": "Z$"
+              },
+              "can_decide": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "approval_id",
+              "request_ref",
+              "approval_type",
+              "operation_label",
+              "status",
+              "expires_at",
+              "can_decide"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 50
+        },
+        "next_cursor": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "items",
+        "next_cursor"
+      ],
+      "additionalProperties": false
+    },
+    "Api012Response": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "approval_id": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "status": {
+              "$ref": "#/definitions/ApprovalStatus"
+            },
+            "approval_type": {
+              "type": "string",
+              "enum": [
+                "TOOL_ACTION"
+              ]
+            },
+            "preview": {
+              "$ref": "#/definitions/ToolActionPreview"
+            },
+            "digest": {
+              "type": "string",
+              "minLength": 1
+            },
+            "expires_at": {
+              "type": "string",
+              "format": "date-time",
+              "pattern": "Z$"
+            },
+            "can_decide": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "approval_id",
+            "status",
+            "approval_type",
+            "preview",
+            "digest",
+            "expires_at",
+            "can_decide"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "approval_id": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "status": {
+              "$ref": "#/definitions/ApprovalStatus"
+            },
+            "approval_type": {
+              "type": "string",
+              "enum": [
+                "TRIGGER_POLICY_CREATE",
+                "TRIGGER_POLICY_UPDATE"
+              ]
+            },
+            "preview": {
+              "$ref": "#/definitions/TriggerPolicyPreview"
+            },
+            "digest": {
+              "type": "string",
+              "minLength": 1
+            },
+            "expires_at": {
+              "type": "string",
+              "format": "date-time",
+              "pattern": "Z$"
+            },
+            "can_decide": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "approval_id",
+            "status",
+            "approval_type",
+            "preview",
+            "digest",
+            "expires_at",
+            "can_decide"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "RequestPage": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "request_id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "status": {
+                "$ref": "#/definitions/RequestStatus"
+              },
+              "queue_position": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "execution_mode": {
+                "$ref": "#/definitions/Mode"
+              },
+              "created_at": {
+                "type": "string",
+                "format": "date-time",
+                "pattern": "Z$"
+              },
+              "error_code": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "can_control": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "request_id",
+              "status",
+              "queue_position",
+              "execution_mode",
+              "created_at",
+              "error_code",
+              "can_control"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 50
+        },
+        "next_cursor": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "items",
+        "next_cursor"
+      ],
+      "additionalProperties": false
+    },
+    "Api020Request": {
+      "type": "object",
+      "properties": {
+        "request_ref": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "step_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "tool_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "tool_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "arguments": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/JsonValue"
+          }
+        },
+        "action_ref": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "idempotency_key": {
+          "type": "string",
+          "minLength": 1
+        },
+        "lease_ref": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "request_ref",
+        "step_id",
+        "tool_id",
+        "tool_version",
+        "arguments",
+        "idempotency_key",
+        "lease_ref"
+      ],
+      "additionalProperties": false
+    },
+    "Api020Response": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "SUCCEEDED",
+            "FAILED",
+            "APPROVAL_REQUIRED"
+          ]
+        },
+        "result": {
+          "$ref": "#/definitions/JsonValue"
+        },
+        "approval_ref": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "error_code": {
+          "type": "string",
+          "minLength": 1
+        },
+        "retryable": {
+          "type": "boolean"
+        },
+        "trace_id": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "status",
+        "retryable",
+        "trace_id"
+      ],
+      "additionalProperties": false
+    },
+    "Api023Response": {
+      "type": "object",
+      "properties": {
+        "platform": {
+          "$ref": "#/definitions/Platform"
+        },
+        "triggers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "event_type": {
+                "type": "string",
+                "minLength": 1
+              },
+              "label": {
+                "type": "string"
+              },
+              "config_schema": {
+                "$ref": "#/definitions/ReviewedJsonSchema"
+              },
+              "enabled": {
+                "type": "boolean"
+              },
+              "default_system": {
+                "type": "boolean"
+              },
+              "requires_approval": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "event_type",
+              "label",
+              "config_schema",
+              "enabled",
+              "default_system",
+              "requires_approval"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "platform",
+        "triggers"
+      ],
+      "additionalProperties": false
+    },
+    "Api040Request": {
+      "type": "object",
+      "properties": {
+        "tool_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "resource_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "operation_set": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true,
+          "minItems": 1
+        },
+        "audience": {
+          "$ref": "#/definitions/Audience"
+        },
+        "expires_at": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "tool_id",
+        "resource_ref",
+        "operation_set",
+        "audience",
+        "expires_at",
+        "revision"
+      ],
+      "additionalProperties": false
+    },
+    "Api041Response": {
+      "type": "object",
+      "properties": {
+        "grant_id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "scope": {
+          "$ref": "#/definitions/SafeScope"
+        },
+        "status": {
+          "$ref": "#/definitions/GrantStatus"
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "grant_id",
+        "scope",
+        "status",
+        "revision"
+      ],
+      "additionalProperties": false
+    },
+    "Api043Request": {
+      "type": "object",
+      "properties": {
+        "session_ref": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "resource_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "allowed_read_operations": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true,
+          "minItems": 1
+        },
+        "audience": {
+          "$ref": "#/definitions/Audience"
+        },
+        "expires_at": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        }
+      },
+      "required": [
+        "session_ref",
+        "resource_ref",
+        "allowed_read_operations",
+        "audience",
+        "expires_at"
+      ],
+      "additionalProperties": false
+    },
+    "Api043Response": {
+      "type": "object",
+      "properties": {
+        "consent_id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "status": {
+          "$ref": "#/definitions/GrantStatus"
+        }
+      },
+      "required": [
+        "consent_id",
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "Api047Request": {
+      "type": "object",
+      "properties": {
+        "operation": {
+          "type": "string",
+          "enum": [
+            "GRANT",
+            "REVOKE"
+          ]
+        },
+        "grantee_ref": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "expected_revision": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "operation",
+        "grantee_ref",
+        "expected_revision"
+      ],
+      "additionalProperties": false
+    },
+    "ValidationChecks": {
+      "type": "object",
+      "properties": {
+        "valid": {
+          "type": "boolean"
+        },
+        "checks": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "warnings": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "required": [
+        "valid",
+        "checks",
+        "warnings"
+      ],
+      "additionalProperties": false
+    },
+    "ModelCapability": {
+      "type": "object",
+      "properties": {
+        "model_catalog_ref": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "provider": {
+          "type": "string",
+          "minLength": 1
+        },
+        "model_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "display_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "capabilities": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "model_catalog_ref",
+        "provider",
+        "model_id",
+        "display_name",
+        "capabilities"
+      ],
+      "additionalProperties": false
+    },
+    "ParameterRule": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "enum": [
+            "number",
+            "integer",
+            "string",
+            "boolean"
+          ]
+        },
+        "minimum": {
+          "type": "number"
+        },
+        "maximum": {
+          "type": "number"
+        },
+        "enum": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              }
+            ]
+          }
+        },
+        "default": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "boolean"
+            }
+          ]
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "Api050Response": {
+      "type": "object",
+      "properties": {
+        "models": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ModelCapability"
+          }
+        },
+        "supported_params": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/definitions/ParameterRule"
+            }
+          }
+        },
+        "tool_constraints": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          }
+        }
+      },
+      "required": [
+        "models",
+        "supported_params",
+        "tool_constraints"
+      ],
+      "additionalProperties": false,
+      "description": "Parameter rules and tool constraints are keyed by model catalogue UUID."
+    },
+    "Api051Request": {
+      "type": "object",
+      "properties": {
+        "provider": {
+          "type": "string",
+          "minLength": 1
+        },
+        "model_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "parameters": {
+          "$ref": "#/definitions/ModelParameters"
+        },
+        "credential": {
+          "type": "string",
+          "minLength": 1,
+          "writeOnly": true
+        },
+        "confirm_cost": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "provider",
+        "model_id",
+        "parameters",
+        "confirm_cost"
+      ],
+      "additionalProperties": false
+    },
+    "Api052Request": {
+      "type": "object",
+      "properties": {
+        "model_catalog_ref": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "parameters": {
+          "$ref": "#/definitions/ModelParameters"
+        },
+        "credential": {
+          "type": "string",
+          "minLength": 1,
+          "writeOnly": true
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "model_catalog_ref",
+        "parameters",
+        "revision"
+      ],
+      "additionalProperties": false
+    },
+    "Api052Response": {
+      "type": "object",
+      "properties": {
+        "provider": {
+          "type": "string"
+        },
+        "model_name": {
+          "type": "string"
+        },
+        "role": {
+          "$ref": "#/definitions/ModelRole"
+        },
+        "credential_configured": {
+          "type": "boolean"
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "provider",
+        "model_name",
+        "role",
+        "credential_configured",
+        "revision"
+      ],
+      "additionalProperties": false
+    },
+    "Api053Request": {
+      "type": "object",
+      "properties": {
+        "requested_scopes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true,
+          "minItems": 1
+        },
+        "form_ref": {
+          "type": "string",
+          "format": "uuid"
+        }
+      },
+      "required": [
+        "requested_scopes",
+        "form_ref"
+      ],
+      "additionalProperties": false
+    },
+    "Api053Response": {
+      "type": "object",
+      "properties": {
+        "authorization_url": {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^https://"
+        }
+      },
+      "required": [
+        "authorization_url"
+      ],
+      "additionalProperties": false
+    },
+    "Api057Request": {
+      "type": "object",
+      "properties": {
+        "target_ref": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "confirmation": {
+          "const": true
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "target_ref",
+        "confirmation",
+        "revision"
+      ],
+      "additionalProperties": false
+    },
+    "Api058Request": {
+      "type": "object",
+      "properties": {
+        "action": {
+          "$ref": "#/definitions/FormAction"
+        },
+        "resource_ref": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "request_ref": {
+          "type": "string",
+          "format": "uuid"
+        }
+      },
+      "required": [
+        "action",
+        "resource_ref"
+      ],
+      "additionalProperties": false
+    },
+    "Api058Response": {
+      "type": "object",
+      "properties": {
+        "ticket_ref": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "private_delivery_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "expires_at": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        }
+      },
+      "required": [
+        "ticket_ref",
+        "private_delivery_ref",
+        "expires_at"
+      ],
+      "additionalProperties": false
+    },
+    "Api060Response": {
+      "type": "object",
+      "properties": {
+        "form_session_ref": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "expires_at": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        }
+      },
+      "required": [
+        "form_session_ref",
+        "expires_at"
+      ],
+      "additionalProperties": false
+    },
+    "Api061Response": {
+      "type": "object",
+      "properties": {
+        "action": {
+          "$ref": "#/definitions/FormAction"
+        },
+        "fields": {
+          "$ref": "#/definitions/ReviewedJsonSchema"
+        },
+        "expires_at": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "action",
+        "fields",
+        "expires_at",
+        "revision"
+      ],
+      "additionalProperties": false,
+      "description": "fields is the reviewed JSON Schema describing the fields allowed by this bound form."
+    },
+    "FormSubmission": {
+      "type": "object",
+      "properties": {
+        "revision": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "confirmation": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "revision"
+      ],
+      "additionalProperties": {
+        "$ref": "#/definitions/JsonValue"
+      },
+      "description": "Flat submission. The server must validate all fields, including confirmation, against the bound local submit schema."
+    },
+    "Api062Response": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "minLength": 1
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "job_ref": {
+          "type": "string",
+          "format": "uuid"
+        }
+      },
+      "required": [
+        "status",
+        "revision"
+      ],
+      "additionalProperties": false
+    },
+    "Api064Request": {
+      "type": "object",
+      "properties": {
+        "ticket_ref": {
+          "type": "string",
+          "format": "uuid"
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "LogQuery": {
+      "type": "object",
+      "properties": {
+        "level": {
+          "type": "string",
+          "minLength": 1
+        },
+        "service": {
+          "type": "string",
+          "minLength": 1
+        },
+        "event_type": {
+          "type": "string",
+          "minLength": 1
+        },
+        "start_at": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "end_at": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "limit": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100,
+          "default": 50
+        },
+        "cursor": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "TraceQuery": {
+      "type": "object",
+      "properties": {
+        "limit": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100,
+          "default": 50
+        },
+        "cursor": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "Api027Response": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/SafeLogEvent"
+          },
+          "maxItems": 100
+        },
+        "next_cursor": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "items",
+        "next_cursor"
+      ],
+      "additionalProperties": false
+    },
+    "Api028Response": {
+      "type": "object",
+      "properties": {
+        "request_id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "trace_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "events": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/SafeLogEvent"
+          },
+          "maxItems": 100
+        },
+        "next_cursor": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "request_id",
+        "trace_id",
+        "events",
+        "next_cursor"
+      ],
+      "additionalProperties": false
+    },
+    "Api030Request": {
+      "type": "object",
+      "properties": {
+        "request_ref": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "lease_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "idempotency_key": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "request_ref",
+        "lease_ref",
+        "idempotency_key"
+      ],
+      "additionalProperties": false
+    },
+    "Api030Response": {
+      "type": "object",
+      "properties": {
+        "request_id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "QUEUED",
+            "RUNNING"
+          ]
+        },
+        "trace_id": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "request_id",
+        "status",
+        "trace_id"
+      ],
+      "additionalProperties": false
+    },
+    "Api031Request": {
+      "type": "object",
+      "properties": {
+        "trigger_ref": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "scheduled_at": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "delivery_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "lease_ref": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "trigger_ref",
+        "scheduled_at",
+        "delivery_id",
+        "lease_ref"
+      ],
+      "additionalProperties": false
+    },
+    "Api031Response": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "ACCEPTED",
+            "NO_MATCH",
+            "DUPLICATE"
+          ]
+        },
+        "firings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "trigger_id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "request_id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "status": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "trigger_id",
+              "status"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "trace_id": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "status",
+        "firings",
+        "trace_id"
+      ],
+      "additionalProperties": false
+    },
+    "BotIdPath": {
+      "type": "object",
+      "properties": {
+        "botId": {
+          "type": "string",
+          "format": "uuid"
+        }
+      },
+      "required": [
+        "botId"
+      ],
+      "additionalProperties": false
+    },
+    "PlatformPath": {
+      "type": "object",
+      "properties": {
+        "platform": {
+          "$ref": "#/definitions/Platform"
+        }
+      },
+      "required": [
+        "platform"
+      ],
+      "additionalProperties": false
+    },
+    "ApprovalIdPath": {
+      "type": "object",
+      "properties": {
+        "approvalId": {
+          "type": "string",
+          "format": "uuid"
+        }
+      },
+      "required": [
+        "approvalId"
+      ],
+      "additionalProperties": false
+    },
+    "JobIdPath": {
+      "type": "object",
+      "properties": {
+        "jobId": {
+          "type": "string",
+          "format": "uuid"
+        }
+      },
+      "required": [
+        "jobId"
+      ],
+      "additionalProperties": false
+    },
+    "RequestIdPath": {
+      "type": "object",
+      "properties": {
+        "requestId": {
+          "type": "string",
+          "format": "uuid"
+        }
+      },
+      "required": [
+        "requestId"
+      ],
+      "additionalProperties": false
+    },
+    "GrantIdPath": {
+      "type": "object",
+      "properties": {
+        "grantId": {
+          "type": "string",
+          "format": "uuid"
+        }
+      },
+      "required": [
+        "grantId"
+      ],
+      "additionalProperties": false
+    },
+    "SessionIdPath": {
+      "type": "object",
+      "properties": {
+        "sessionId": {
+          "type": "string",
+          "format": "uuid"
+        }
+      },
+      "required": [
+        "sessionId"
+      ],
+      "additionalProperties": false
+    },
+    "BotIdAgentRolePath": {
+      "type": "object",
+      "properties": {
+        "botId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "agentRole": {
+          "$ref": "#/definitions/ModelRole"
+        }
+      },
+      "required": [
+        "botId",
+        "agentRole"
+      ],
+      "additionalProperties": false
+    },
+    "AccountCallbackQuery": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "code": {
+              "type": "string",
+              "minLength": 1
+            },
+            "state": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "code",
+            "state"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "error": {
+              "type": "string",
+              "minLength": 1
+            },
+            "state": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "error",
+            "state"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "AccountIdPath": {
+      "type": "object",
+      "properties": {
+        "accountId": {
+          "type": "string",
+          "format": "uuid"
+        }
+      },
+      "required": [
+        "accountId"
+      ],
+      "additionalProperties": false
+    },
+    "ActionTicketPath": {
+      "type": "object",
+      "properties": {
+        "action": {
+          "$ref": "#/definitions/FormAction"
+        },
+        "ticket": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "action",
+        "ticket"
+      ],
+      "additionalProperties": false
+    },
+    "FormIdPath": {
+      "type": "object",
+      "properties": {
+        "formId": {
+          "type": "string",
+          "format": "uuid"
+        }
+      },
+      "required": [
+        "formId"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

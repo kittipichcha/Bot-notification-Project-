@@ -1,0 +1,4931 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Notification API",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/health": {
+      "get": {
+        "operationId": "getHealth",
+        "responses": {
+          "200": {
+            "description": "Scaffold readiness",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./api.schema.json#/definitions/LegacyHealthResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/me": {
+      "get": {
+        "operationId": "api001GetAuthenticatedUser",
+        "x-api-id": "API-001",
+        "x-release": "P0",
+        "x-feature-gate": "P0.",
+        "x-authorization": "Session.",
+        "x-runtime-owner": "EP02-01, EP02-03.",
+        "x-requirements": "FR-ID-01, FR-AUTH-03.",
+        "x-tests": "TC-API-001, TC-ID-001, TC-AUTH-005.",
+        "x-path-schema": {
+          "$ref": "./api.schema.json#/definitions/EmptyBody"
+        },
+        "x-query-schema": {
+          "$ref": "./api.schema.json#/definitions/EmptyBody"
+        },
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "200 {user_ref:uuid, display_name:string|null, platform:'DISCORD', expires_at:datetime}.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./api.schema.json#/definitions/Api001Response"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Private response.",
+                "schema": {
+                  "const": "no-store"
+                },
+                "required": true
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "401": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "403": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "404": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "409": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "410": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "422": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "503": {
+            "$ref": "#/components/responses/CanonicalError"
+          }
+        }
+      }
+    },
+    "/api/v1/auth/logout": {
+      "post": {
+        "operationId": "api002Logout",
+        "x-api-id": "API-002",
+        "x-release": "P0",
+        "x-feature-gate": "P0.",
+        "x-authorization": "Session + CSRF.",
+        "x-runtime-owner": "EP02-03, EP11-01.",
+        "x-requirements": "FR-ID-01, FR-AUTH-03, NFR-SEC-03.",
+        "x-tests": "TC-API-002, TC-AUTH-005, TC-AUTH-002.",
+        "x-path-schema": {
+          "$ref": "./api.schema.json#/definitions/EmptyBody"
+        },
+        "x-query-schema": {
+          "$ref": "./api.schema.json#/definitions/EmptyBody"
+        },
+        "parameters": [],
+        "responses": {
+          "204": {
+            "description": "204; invalidate session and dependent form sessions, clear cookie.",
+            "headers": {
+              "Set-Cookie": {
+                "description": "Clear the session cookie.",
+                "schema": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "required": true
+              },
+              "Cache-Control": {
+                "description": "Private response.",
+                "schema": {
+                  "const": "no-store"
+                },
+                "required": true
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "401": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "403": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "404": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "409": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "410": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "422": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "503": {
+            "$ref": "#/components/responses/CanonicalError"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "./api.schema.json#/definitions/EmptyBody"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/bots": {
+      "get": {
+        "operationId": "api003ListAuthorizedBots",
+        "x-api-id": "API-003",
+        "x-release": "P0",
+        "x-feature-gate": "P0.",
+        "x-authorization": "Setup scope.",
+        "x-runtime-owner": "EP02-03, EP02-06, EP11-01.",
+        "x-requirements": "FR-BOT-01, FR-AUTH-03, FR-SETUP-01.",
+        "x-tests": "TC-API-003, TC-BOT-001, TC-AUTH-005.",
+        "x-path-schema": {
+          "$ref": "./api.schema.json#/definitions/EmptyBody"
+        },
+        "x-query-schema": {
+          "$ref": "./api.schema.json#/definitions/EmptyBody"
+        },
+        "parameters": [
+          {
+            "name": "X-Page-Cursor",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "minLength": 1
+            },
+            "description": "Opaque continuation bound to this scope."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 Page<{bot_id:uuid,name:string,platform:Platform,conversation_label:string,status:BotStatus,can_setup:true,model:ModelSummary|null}>.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./api.schema.json#/definitions/BotPage"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Private response.",
+                "schema": {
+                  "const": "no-store"
+                },
+                "required": true
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "401": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "403": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "404": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "409": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "410": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "422": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "503": {
+            "$ref": "#/components/responses/CanonicalError"
+          }
+        },
+        "x-page-size": 50
+      }
+    },
+    "/api/v1/bots/{botId}/overview": {
+      "get": {
+        "operationId": "api004GetBotOverview",
+        "x-api-id": "API-004",
+        "x-release": "P0",
+        "x-feature-gate": "P0 core; P1 sharing/watches; P2 features hidden.",
+        "x-authorization": "Setup scope.",
+        "x-runtime-owner": "EP11-01, EP02-06; EP10-01, EP07-05 (P1).",
+        "x-requirements": "FR-BOT-01, FR-UI-01, FR-SETUP-02, FR-CONN-01, FR-TRIGGER-01.",
+        "x-tests": "TC-API-004, TC-BOT-001, TC-UI-001, TC-SETUP-004, TC-SHARE-001, TC-TRIG-001.",
+        "x-path-schema": {
+          "$ref": "./api.schema.json#/definitions/BotIdPath"
+        },
+        "x-query-schema": {
+          "$ref": "./api.schema.json#/definitions/EmptyBody"
+        },
+        "parameters": [
+          {
+            "name": "botId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "./api.schema.json#/definitions/BotIdPath/properties/botId"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 {bot:BotSummary,revision:int,models:ModelSummary[],sessions:[{session_ref:uuid,execution_mode:Mode}],storage:StorageSummary,health:HealthSummary,requests:Counts,approvals:Counts,triggers:FeatureSummary,connections:ConnectionSummary,command_sync:{status:enum,reason_code:string|null}}.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./api.schema.json#/definitions/Api004Response"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Private response.",
+                "schema": {
+                  "const": "no-store"
+                },
+                "required": true
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "401": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "403": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "404": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "409": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "410": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "422": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "503": {
+            "$ref": "#/components/responses/CanonicalError"
+          }
+        }
+      }
+    },
+    "/api/v1/bots/{botId}": {
+      "patch": {
+        "operationId": "api005UpdateBotConfig",
+        "x-api-id": "API-005",
+        "x-release": "P0",
+        "x-feature-gate": "P0.",
+        "x-authorization": "Setup scope + CSRF + revision.",
+        "x-runtime-owner": "EP02-05, EP08-01, EP11-01.",
+        "x-requirements": "FR-BOT-01, FR-AUTH-03, FR-SETUP-01.",
+        "x-tests": "TC-API-005, TC-BOT-001, TC-AUTH-005, TC-DISCORD-002.",
+        "x-path-schema": {
+          "$ref": "./api.schema.json#/definitions/BotIdPath"
+        },
+        "x-query-schema": {
+          "$ref": "./api.schema.json#/definitions/EmptyBody"
+        },
+        "parameters": [
+          {
+            "name": "botId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "./api.schema.json#/definitions/BotIdPath/properties/botId"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 {bot:BotSummary,revision:int,command_sync:{status:'PENDING'|'SYNCED'|'FALLBACK',reason_code:string|null}}; persist name before idempotent async synchronization.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./api.schema.json#/definitions/Api005Response"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Private response.",
+                "schema": {
+                  "const": "no-store"
+                },
+                "required": true
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "401": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "403": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "404": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "409": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "410": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "422": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "503": {
+            "$ref": "#/components/responses/CanonicalError"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "./api.schema.json#/definitions/Api005Request"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/bots/{botId}/agents": {
+      "get": {
+        "operationId": "api006GetModelSettings",
+        "x-api-id": "API-006",
+        "x-release": "P0",
+        "x-feature-gate": "P0 SIMPLE; P1 MULTI_AGENT.",
+        "x-authorization": "Setup scope.",
+        "x-runtime-owner": "EP11-01, EP13-02; EP05-03 (P1).",
+        "x-requirements": "FR-FORM-02, FR-MODEL-03, FR-AGENT-01.",
+        "x-tests": "TC-API-006, TC-FORM-002, TC-MODEL-004.",
+        "x-path-schema": {
+          "$ref": "./api.schema.json#/definitions/BotIdPath"
+        },
+        "x-query-schema": {
+          "$ref": "./api.schema.json#/definitions/EmptyBody"
+        },
+        "parameters": [
+          {
+            "name": "botId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "./api.schema.json#/definitions/BotIdPath/properties/botId"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 {agents:[{role:string,model:ModelSummary,parameters:object,credential_configured:boolean,revision:int}],supported_modes:Mode[]}.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./api.schema.json#/definitions/Api006Response"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Private response.",
+                "schema": {
+                  "const": "no-store"
+                },
+                "required": true
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "401": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "403": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "404": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "409": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "410": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "422": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "503": {
+            "$ref": "#/components/responses/CanonicalError"
+          }
+        }
+      }
+    },
+    "/api/v1/platforms": {
+      "get": {
+        "operationId": "api007GetAvailablePlatforms",
+        "x-api-id": "API-007",
+        "x-release": "P0",
+        "x-feature-gate": "P0 registry; per-provider feature gates.",
+        "x-authorization": "Session.",
+        "x-runtime-owner": "EP02-08, EP11-01.",
+        "x-requirements": "FR-PLATFORM-03, FR-PLATFORM-04.",
+        "x-tests": "TC-API-007, TC-PLATFORM-003, TC-PLATFORM-005.",
+        "x-path-schema": {
+          "$ref": "./api.schema.json#/definitions/EmptyBody"
+        },
+        "x-query-schema": {
+          "$ref": "./api.schema.json#/definitions/EmptyBody"
+        },
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "200 {platforms:[{platform:Platform,label:string,release:'P0'|'P1'|'P2',enabled:boolean,setup_available:boolean,reason_code:string|null}]}.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./api.schema.json#/definitions/Api007Response"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Private response.",
+                "schema": {
+                  "const": "no-store"
+                },
+                "required": true
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "401": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "403": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "404": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "409": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "410": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "422": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "503": {
+            "$ref": "#/components/responses/CanonicalError"
+          }
+        }
+      }
+    },
+    "/api/v1/bots/{botId}/connected-accounts": {
+      "get": {
+        "operationId": "api008ListConnectedAccounts",
+        "x-api-id": "API-008",
+        "x-release": "P0",
+        "x-feature-gate": "P0 metadata/consent; P1 Calendar; P2 Gmail/GitHub/LINE.",
+        "x-authorization": "Setup scope + account-holder/audience filtering.",
+        "x-runtime-owner": "EP02-04, EP02-08, EP11-01.",
+        "x-requirements": "FR-CRED-01, FR-FORM-03, FR-PLATFORM-03.",
+        "x-tests": "TC-API-008, TC-FORM-003, TC-PLATFORM-004.",
+        "x-path-schema": {
+          "$ref": "./api.schema.json#/definitions/BotIdPath"
+        },
+        "x-query-schema": {
+          "$ref": "./api.schema.json#/definitions/EmptyBody"
+        },
+        "parameters": [
+          {
+            "name": "botId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "./api.schema.json#/definitions/BotIdPath/properties/botId"
+            }
+          },
+          {
+            "name": "X-Page-Cursor",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "minLength": 1
+            },
+            "description": "Opaque continuation bound to this scope."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 Page<{account_ref:uuid,platform:Platform,label:string|null,status:string,visible_scopes:string[],audience:'PRIVATE'|'GROUP',can_revoke:boolean}>.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./api.schema.json#/definitions/AccountPage"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Private response.",
+                "schema": {
+                  "const": "no-store"
+                },
+                "required": true
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "401": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "403": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "404": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "409": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "410": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "422": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "503": {
+            "$ref": "#/components/responses/CanonicalError"
+          }
+        },
+        "x-page-size": 50
+      }
+    },
+    "/api/v1/platforms/{platform}/tools": {
+      "get": {
+        "operationId": "api009GetToolCatalog",
+        "x-api-id": "API-009",
+        "x-release": "P0",
+        "x-feature-gate": "P0 catalogue; provider gates.",
+        "x-authorization": "Session; catalogue metadata only.",
+        "x-runtime-owner": "EP02-08, EP11-01.",
+        "x-requirements": "FR-TOOL-01, FR-PLATFORM-04.",
+        "x-tests": "TC-API-009, TC-TOOL-001, TC-PLATFORM-005.",
+        "x-path-schema": {
+          "$ref": "./api.schema.json#/definitions/PlatformPath"
+        },
+        "x-query-schema": {
+          "$ref": "./api.schema.json#/definitions/EmptyBody"
+        },
+        "parameters": [
+          {
+            "name": "platform",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "./api.schema.json#/definitions/PlatformPath/properties/platform"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 {platform:Platform,tools:[{tool_id:string,version:string,label:string,operation:'READ'|'WRITE',input_schema:JSONSchema,approval_required:boolean,sensitive:boolean,enabled:boolean}]}.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./api.schema.json#/definitions/Api009Response"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Private response.",
+                "schema": {
+                  "const": "no-store"
+                },
+                "required": true
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "401": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "403": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "404": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "409": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "410": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "422": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "503": {
+            "$ref": "#/components/responses/CanonicalError"
+          }
+        }
+      }
+    },
+    "/api/v1/bots/{botId}/tool-grants": {
+      "get": {
+        "operationId": "api010GetEffectiveToolGrants",
+        "x-api-id": "API-010",
+        "x-release": "P0",
+        "x-feature-gate": "P0.",
+        "x-authorization": "Setup scope + resource-holder filtering.",
+        "x-runtime-owner": "EP02-03, EP02-08, EP11-01.",
+        "x-requirements": "FR-TOOL-01, FR-FORM-03.",
+        "x-tests": "TC-API-010, TC-TOOL-001, TC-PLATFORM-004.",
+        "x-path-schema": {
+          "$ref": "./api.schema.json#/definitions/BotIdPath"
+        },
+        "x-query-schema": {
+          "$ref": "./api.schema.json#/definitions/EmptyBody"
+        },
+        "parameters": [
+          {
+            "name": "botId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "./api.schema.json#/definitions/BotIdPath/properties/botId"
+            }
+          },
+          {
+            "name": "X-Page-Cursor",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "minLength": 1
+            },
+            "description": "Opaque continuation bound to this scope."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 Page<{grant_id:uuid,tool_id:string,scope:SafeScope,status:string,expires_at:datetime|null,approval_required:boolean}>.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./api.schema.json#/definitions/ToolGrantPage"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Private response.",
+                "schema": {
+                  "const": "no-store"
+                },
+                "required": true
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "401": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "403": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "404": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "409": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "410": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "422": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "503": {
+            "$ref": "#/components/responses/CanonicalError"
+          }
+        },
+        "x-page-size": 50
+      }
+    },
+    "/api/v1/bots/{botId}/approvals": {
+      "get": {
+        "operationId": "api011ListPendingApprovals",
+        "x-api-id": "API-011",
+        "x-release": "P0",
+        "x-feature-gate": "P0 scoped pending approval; advanced UI and trigger-policy approvals P1.",
+        "x-authorization": "Verified member for own request or eligible approver; exact resource audience.",
+        "x-runtime-owner": "EP07-01, EP07-02; EP11-02 (P1 advanced UI).",
+        "x-requirements": "FR-APPROVAL-01, FR-APPROVAL-02.",
+        "x-tests": "TC-API-011, TC-APP-001, TC-APP-002.",
+        "x-path-schema": {
+          "$ref": "./api.schema.json#/definitions/BotIdPath"
+        },
+        "x-query-schema": {
+          "$ref": "./api.schema.json#/definitions/EmptyBody"
+        },
+        "parameters": [
+          {
+            "name": "botId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "./api.schema.json#/definitions/BotIdPath/properties/botId"
+            }
+          },
+          {
+            "name": "X-Page-Cursor",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "minLength": 1
+            },
+            "description": "Opaque continuation bound to this scope."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 Page<{approval_id:uuid,request_ref:uuid|null,approval_type:ApprovalType,operation_label:string,status:string,expires_at:datetime,can_decide:boolean}>.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./api.schema.json#/definitions/ApprovalPage"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Private response.",
+                "schema": {
+                  "const": "no-store"
+                },
+                "required": true
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "401": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "403": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "404": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "409": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "410": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "422": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "503": {
+            "$ref": "#/components/responses/CanonicalError"
+          }
+        },
+        "x-page-size": 50
+      }
+    },
+    "/api/v1/approvals/{approvalId}": {
+      "get": {
+        "operationId": "api012GetApprovalDetails",
+        "x-api-id": "API-012",
+        "x-release": "P0",
+        "x-feature-gate": "P0 tool action; P1 trigger policy.",
+        "x-authorization": "Eligible approver or requester with permitted preview; account-owner consent.",
+        "x-runtime-owner": "EP07-01, EP07-02.",
+        "x-requirements": "FR-APPROVAL-02, NFR-SEC-06.",
+        "x-tests": "TC-API-012, TC-APP-002, TC-APP-003. For API-011/012, ApprovalType is TOOL_ACTION | TRIGGER_POLICY_CREATE | TRIGGER_POLICY_UPDATE; connection and account-consent approvals retain their domain-specific previews and routes while sharing internal validation. ToolActionPreview includes tool/version, operation, target and masked exact changes; TriggerPolicyPreview includes safe event/filter, account/resource, action/argument bounds, destination/audience, recurrence/timezone, expiry, quota and policy revision. Mask sensitive values for unauthorized viewers; require private authenticated review if a native preview cannot safely convey the full scope.",
+        "x-path-schema": {
+          "$ref": "./api.schema.json#/definitions/ApprovalIdPath"
+        },
+        "x-query-schema": {
+          "$ref": "./api.schema.json#/definitions/EmptyBody"
+        },
+        "parameters": [
+          {
+            "name": "approvalId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "./api.schema.json#/definitions/ApprovalIdPath/properties/approvalId"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 {approval_id:uuid,status:string,approval_type:ApprovalType,preview:ToolActionPreview|TriggerPolicyPreview,digest:string,expires_at:datetime,can_decide:boolean}.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./api.schema.json#/definitions/Api012Response"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Private response.",
+                "schema": {
+                  "const": "no-store"
+                },
+                "required": true
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "401": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "403": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "404": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "409": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "410": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "422": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "503": {
+            "$ref": "#/components/responses/CanonicalError"
+          }
+        }
+      }
+    },
+    "/api/v1/bots/{botId}/requests": {
+      "get": {
+        "operationId": "api013ListBotRequests",
+        "x-api-id": "API-013",
+        "x-release": "P0",
+        "x-feature-gate": "P0 basic; P1 advanced history UI.",
+        "x-authorization": "Verified member sees own/authorized session requests; ADMIN only within permitted audience.",
+        "x-runtime-owner": "EP04-02, EP04-03; EP04-05, EP11-02 (P1).",
+        "x-requirements": "FR-QUEUE-01, FR-RUN-01, FR-UI-01.",
+        "x-tests": "TC-API-013, TC-QUEUE-001, TC-RUN-001, TC-UI-001.",
+        "x-path-schema": {
+          "$ref": "./api.schema.json#/definitions/BotIdPath"
+        },
+        "x-query-schema": {
+          "$ref": "./api.schema.json#/definitions/EmptyBody"
+        },
+        "parameters": [
+          {
+            "name": "botId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "./api.schema.json#/definitions/BotIdPath/properties/botId"
+            }
+          },
+          {
+            "name": "X-Page-Cursor",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "minLength": 1
+            },
+            "description": "Opaque continuation bound to this scope."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 Page<{request_id:uuid,status:RequestStatus,queue_position:int|null,execution_mode:Mode,created_at:datetime,error_code:string|null,can_control:boolean}>.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./api.schema.json#/definitions/RequestPage"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Private response.",
+                "schema": {
+                  "const": "no-store"
+                },
+                "required": true
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "401": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "403": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "404": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "409": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "410": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "422": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "503": {
+            "$ref": "#/components/responses/CanonicalError"
+          }
+        },
+        "x-page-size": 50
+      }
+    },
+    "/api/v1/bots/{botId}/storage": {
+      "get": {
+        "operationId": "api014GetStorageProfiles",
+        "x-api-id": "API-014",
+        "x-release": "P0",
+        "x-feature-gate": "P0 managed; local/mixed P2.",
+        "x-authorization": "Setup scope; tenant profile access.",
+        "x-runtime-owner": "EP03-01, EP03-03, EP11-01.",
+        "x-requirements": "FR-STORE-01, FR-STORE-02, FR-FORM-01.",
+        "x-tests": "TC-API-014, TC-STOR-001, TC-FORM-001, TC-CKPT-001.",
+        "x-path-schema": {
+          "$ref": "./api.schema.json#/definitions/BotIdPath"
+        },
+        "x-query-schema": {
+          "$ref": "./api.schema.json#/definitions/EmptyBody"
+        },
+        "parameters": [
+          {
+            "name": "botId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "./api.schema.json#/definitions/BotIdPath/properties/botId"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 {managed_selected:boolean,app_data:{location:'HOSTED'|null,status:string},checkpoint:{location:'HOSTED'|null,status:string},revision:int}.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./api.schema.json#/definitions/Api014Response"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Private response.",
+                "schema": {
+                  "const": "no-store"
+                },
+                "required": true
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "401": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "403": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "404": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "409": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "410": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "422": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "503": {
+            "$ref": "#/components/responses/CanonicalError"
+          }
+        }
+      },
+      "put": {
+        "operationId": "api049UpdateStorageProfiles",
+        "x-api-id": "API-049",
+        "x-release": "P0",
+        "x-feature-gate": "P0.",
+        "x-authorization": "Setup scope + CSRF + revision.",
+        "x-runtime-owner": "EP03-01, EP11-01.",
+        "x-requirements": "FR-STORE-01, FR-FORM-01.",
+        "x-tests": "TC-API-049, TC-FORM-001, TC-STOR-001.",
+        "x-path-schema": {
+          "$ref": "./api.schema.json#/definitions/BotIdPath"
+        },
+        "x-query-schema": {
+          "$ref": "./api.schema.json#/definitions/EmptyBody"
+        },
+        "parameters": [
+          {
+            "name": "botId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "./api.schema.json#/definitions/BotIdPath/properties/botId"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 StorageSummary + revision.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./api.schema.json#/definitions/Api049Response"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Private response.",
+                "schema": {
+                  "const": "no-store"
+                },
+                "required": true
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "401": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "403": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "404": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "409": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "410": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "422": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "503": {
+            "$ref": "#/components/responses/CanonicalError"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "./api.schema.json#/definitions/Api049Request"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/deletions/{jobId}": {
+      "get": {
+        "operationId": "api015GetDeletionStatus",
+        "x-api-id": "API-015",
+        "x-release": "P0",
+        "x-feature-gate": "P0 bot removal; other export/retention as existing scope.",
+        "x-authorization": "Authorized initiating actor or current authorized resource owner; tombstone-scope check.",
+        "x-runtime-owner": "EP02-05, EP03-06.",
+        "x-requirements": "FR-LIFECYCLE-01, NFR-DEL-01.",
+        "x-tests": "TC-API-015, TC-DELETE-001, TC-DELETE-002, TC-DELETE-003.",
+        "x-path-schema": {
+          "$ref": "./api.schema.json#/definitions/JobIdPath"
+        },
+        "x-query-schema": {
+          "$ref": "./api.schema.json#/definitions/EmptyBody"
+        },
+        "parameters": [
+          {
+            "name": "jobId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "./api.schema.json#/definitions/JobIdPath/properties/jobId"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 {job_id:uuid,status:string,completed_classes:string[],pending_classes:string[],error_code:string|null,updated_at:datetime}.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./api.schema.json#/definitions/Api015Response"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Private response.",
+                "schema": {
+                  "const": "no-store"
+                },
+                "required": true
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "401": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "403": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "404": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "409": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "410": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "422": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "503": {
+            "$ref": "#/components/responses/CanonicalError"
+          }
+        }
+      }
+    },
+    "/health/live": {
+      "get": {
+        "operationId": "api016GetLiveness",
+        "x-api-id": "API-016",
+        "x-release": "P0",
+        "x-feature-gate": "P0.",
+        "x-authorization": "Public minimal or internal probe; no user data.",
+        "x-runtime-owner": "EP11-03, EP09-03.",
+        "x-requirements": "FR-HEALTH-01, NFR-OPS-01.",
+        "x-tests": "TC-API-016, TC-HEALTH-001, TC-OPS-001.",
+        "x-path-schema": {
+          "$ref": "./api.schema.json#/definitions/EmptyBody"
+        },
+        "x-query-schema": {
+          "$ref": "./api.schema.json#/definitions/EmptyBody"
+        },
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "200 {status:'UP'}; 503 if reachable process unhealthy.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./api.schema.json#/definitions/Api016Response"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "401": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "403": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "404": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "409": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "410": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "422": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "503": {
+            "$ref": "#/components/responses/CanonicalError"
+          }
+        }
+      }
+    },
+    "/health/ready": {
+      "get": {
+        "operationId": "api017GetReadiness",
+        "x-api-id": "API-017",
+        "x-release": "P0",
+        "x-feature-gate": "P0.",
+        "x-authorization": "Public minimal or internal probe; no user data.",
+        "x-runtime-owner": "EP11-03, EP09-03.",
+        "x-requirements": "FR-HEALTH-01, NFR-REL-01.",
+        "x-tests": "TC-API-017, TC-HEALTH-001, TC-REL-001.",
+        "x-path-schema": {
+          "$ref": "./api.schema.json#/definitions/EmptyBody"
+        },
+        "x-query-schema": {
+          "$ref": "./api.schema.json#/definitions/EmptyBody"
+        },
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "200 {status:'READY'} or 503 {status:'NOT_READY'}.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./api.schema.json#/definitions/Api017ReadyResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "401": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "403": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "404": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "409": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "410": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "422": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "503": {
+            "description": "Dependencies unavailable.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./api.schema.json#/definitions/Api017NotReadyResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/bots/{botId}/tracing": {
+      "get": {
+        "operationId": "api018GetTracingConfig",
+        "x-api-id": "API-018",
+        "x-release": "P0",
+        "x-feature-gate": "P0 optional, OFF default.",
+        "x-authorization": "Setup scope + tracing credential owner.",
+        "x-runtime-owner": "EP11-07.",
+        "x-requirements": "FR-OBS-01, NFR-OBS-02.",
+        "x-tests": "TC-API-018, TC-LANGSMITH-001, TC-LANGSMITH-002.",
+        "x-path-schema": {
+          "$ref": "./api.schema.json#/definitions/BotIdPath"
+        },
+        "x-query-schema": {
+          "$ref": "./api.schema.json#/definitions/EmptyBody"
+        },
+        "parameters": [
+          {
+            "name": "botId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "./api.schema.json#/definitions/BotIdPath/properties/botId"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 {enabled:boolean,export_mode:'OFF'|'METADATA_ONLY',key_configured:boolean,workspace:string|null,project:string|null,destination_label:string|null,retention_notice:string|null,revision:int}.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./api.schema.json#/definitions/Api018Response"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Private response.",
+                "schema": {
+                  "const": "no-store"
+                },
+                "required": true
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "401": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "403": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "404": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "409": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "410": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "422": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "503": {
+            "$ref": "#/components/responses/CanonicalError"
+          }
+        }
+      },
+      "put": {
+        "operationId": "api019UpdateTracingConfig",
+        "x-api-id": "API-019",
+        "x-release": "P0",
+        "x-feature-gate": "P0 optional, OFF default.",
+        "x-authorization": "Setup scope + credential owner + CSRF + revision + explicit opt-in.",
+        "x-runtime-owner": "EP11-07, EP07-06.",
+        "x-requirements": "FR-OBS-01, NFR-OBS-02, NFR-URL-01.",
+        "x-tests": "TC-API-019, TC-LANGSMITH-001, TC-LANGSMITH-002, TC-URL-002.",
+        "x-path-schema": {
+          "$ref": "./api.schema.json#/definitions/BotIdPath"
+        },
+        "x-query-schema": {
+          "$ref": "./api.schema.json#/definitions/EmptyBody"
+        },
+        "parameters": [
+          {
+            "name": "botId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "./api.schema.json#/definitions/BotIdPath/properties/botId"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 safe tracing DTO as GET; no echo; invalid test/config 422/503, remain off on failed enable.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./api.schema.json#/definitions/Api018Response"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Private response.",
+                "schema": {
+                  "const": "no-store"
+                },
+                "required": true
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "401": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "403": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "404": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "409": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "410": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "422": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "503": {
+            "$ref": "#/components/responses/CanonicalError"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "./api.schema.json#/definitions/Api019Request"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/internal/tools/execute": {
+      "post": {
+        "operationId": "api020ExecuteApprovedAction",
+        "x-api-id": "API-020",
+        "x-release": "P0",
+        "x-feature-gate": "P0.",
+        "x-authorization": "Service identity + active request lease/fence; request-derived actor/grants; no browser access.",
+        "x-runtime-owner": "EP07-01, EP07-02, EP06-02, EP13-01.",
+        "x-requirements": "FR-TOOL-01, FR-APPROVAL-02, FR-MODEL-03.",
+        "x-tests": "TC-API-020, TC-TOOL-001, TC-APP-002, TC-APP-003, TC-BUDGET-001.",
+        "x-path-schema": {
+          "$ref": "./api.schema.json#/definitions/EmptyBody"
+        },
+        "x-query-schema": {
+          "$ref": "./api.schema.json#/definitions/EmptyBody"
+        },
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "200 {status:'SUCCEEDED'|'FAILED'|'APPROVAL_REQUIRED',result?:typed redacted tool result,approval_ref?:uuid,error_code?:string,retryable:boolean,trace_id:string}; 202 for durable pending action if applicable.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./api.schema.json#/definitions/Api020Response"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Private response.",
+                "schema": {
+                  "const": "no-store"
+                },
+                "required": true
+              }
+            }
+          },
+          "202": {
+            "description": "200 {status:'SUCCEEDED'|'FAILED'|'APPROVAL_REQUIRED',result?:typed redacted tool result,approval_ref?:uuid,error_code?:string,retryable:boolean,trace_id:string}; 202 for durable pending action if applicable.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./api.schema.json#/definitions/Api020Response"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Private response.",
+                "schema": {
+                  "const": "no-store"
+                },
+                "required": true
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "401": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "403": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "404": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "409": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "410": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "422": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "503": {
+            "$ref": "#/components/responses/CanonicalError"
+          }
+        },
+        "x-bound-contract": "trusted tool input and result schemas",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "./api.schema.json#/definitions/Api020Request"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/platforms/{platform}/triggers": {
+      "get": {
+        "operationId": "api023GetAvailableTriggerTypes",
+        "x-api-id": "API-023",
+        "x-release": "P1",
+        "x-feature-gate": "P1 watches; P0 default lifecycle metadata only if needed.",
+        "x-authorization": "Session; safe catalogue metadata.",
+        "x-runtime-owner": "EP02-08, EP07-05.",
+        "x-requirements": "FR-TRIGGER-01, FR-TRIGGER-03, FR-PLATFORM-04.",
+        "x-tests": "TC-API-023, TC-PLATFORM-005, TC-TRIG-004.",
+        "x-path-schema": {
+          "$ref": "./api.schema.json#/definitions/PlatformPath"
+        },
+        "x-query-schema": {
+          "$ref": "./api.schema.json#/definitions/EmptyBody"
+        },
+        "parameters": [
+          {
+            "name": "platform",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "./api.schema.json#/definitions/PlatformPath/properties/platform"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 {platform:Platform,triggers:[{event_type:string,label:string,config_schema:JSONSchema,enabled:boolean,default_system:boolean,requires_approval:boolean}]}.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./api.schema.json#/definitions/Api023Response"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Private response.",
+                "schema": {
+                  "const": "no-store"
+                },
+                "required": true
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "401": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "403": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "404": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "409": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "410": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "422": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "503": {
+            "$ref": "#/components/responses/CanonicalError"
+          }
+        }
+      }
+    },
+    "/api/v1/bots/{botId}/logs": {
+      "get": {
+        "operationId": "api027SearchApplicationLogs",
+        "x-api-id": "API-027",
+        "x-release": "P1",
+        "x-feature-gate": "P1 advanced diagnostics; P0 built-in logging remains mandatory.",
+        "x-authorization": "Current ADMIN + log audience/ownership permission; read-only GET; no state mutation.",
+        "x-runtime-owner": "EP11-04, EP11-05.",
+        "x-requirements": "FR-AUDIT-01, NFR-OBS-01, NFR-SEC-02.",
+        "x-tests": "TC-API-027, TC-AUDIT-002, TC-SEC-002.",
+        "x-path-schema": {
+          "$ref": "./api.schema.json#/definitions/BotIdPath"
+        },
+        "x-query-schema": {
+          "$ref": "./api.schema.json#/definitions/LogQuery"
+        },
+        "parameters": [
+          {
+            "name": "botId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "./api.schema.json#/definitions/BotIdPath/properties/botId"
+            }
+          },
+          {
+            "name": "level",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "./api.schema.json#/definitions/LogQuery/properties/level"
+            }
+          },
+          {
+            "name": "service",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "./api.schema.json#/definitions/LogQuery/properties/service"
+            }
+          },
+          {
+            "name": "event_type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "./api.schema.json#/definitions/LogQuery/properties/event_type"
+            }
+          },
+          {
+            "name": "start_at",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "./api.schema.json#/definitions/LogQuery/properties/start_at"
+            }
+          },
+          {
+            "name": "end_at",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "./api.schema.json#/definitions/LogQuery/properties/end_at"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "./api.schema.json#/definitions/LogQuery/properties/limit"
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "./api.schema.json#/definitions/LogQuery/properties/cursor"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 Page<{timestamp:datetime,level:string,service:string,event_type:string,trace_id:string,reason_code:string|null,safe_metadata:object}>.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./api.schema.json#/definitions/Api027Response"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Private response.",
+                "schema": {
+                  "const": "no-store"
+                },
+                "required": true
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "401": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "403": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "404": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "409": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "410": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "422": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "503": {
+            "$ref": "#/components/responses/CanonicalError"
+          }
+        }
+      }
+    },
+    "/api/v1/requests/{requestId}/trace": {
+      "get": {
+        "operationId": "api028GetRequestTrace",
+        "x-api-id": "API-028",
+        "x-release": "P1",
+        "x-feature-gate": "P1 advanced UI; P0 correlation logs.",
+        "x-authorization": "Requester or authorized ADMIN with exact audience; no private provider payload.",
+        "x-runtime-owner": "EP11-04, EP11-05.",
+        "x-requirements": "FR-AUDIT-01, NFR-OBS-01, NFR-SEC-02.",
+        "x-tests": "TC-API-028, TC-AUDIT-002, TC-SEC-002.",
+        "x-path-schema": {
+          "$ref": "./api.schema.json#/definitions/RequestIdPath"
+        },
+        "x-query-schema": {
+          "$ref": "./api.schema.json#/definitions/TraceQuery"
+        },
+        "parameters": [
+          {
+            "name": "requestId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "./api.schema.json#/definitions/RequestIdPath/properties/requestId"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "./api.schema.json#/definitions/TraceQuery/properties/limit"
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "./api.schema.json#/definitions/TraceQuery/properties/cursor"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 {request_id:uuid,trace_id:string,events:SafeLogEvent[],next_cursor:string|null}.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./api.schema.json#/definitions/Api028Response"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Private response.",
+                "schema": {
+                  "const": "no-store"
+                },
+                "required": true
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "401": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "403": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "404": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "409": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "410": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "422": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "503": {
+            "$ref": "#/components/responses/CanonicalError"
+          }
+        }
+      }
+    },
+    "/api/v1/internal/agents/invoke": {
+      "post": {
+        "operationId": "api030DispatchAdmittedRequest",
+        "x-api-id": "API-030",
+        "x-release": "P2",
+        "x-feature-gate": "P2 Icebox transport; P0 SIMPLE and P1 MULTI_AGENT use the durable queue consumer.",
+        "x-authorization": "Service identity + current admitted request and lease/fence; private network.",
+        "x-runtime-owner": "EP06-05 (P2 only).",
+        "x-requirements": "FR-QUEUE-01, FR-AGENT-01, FR-MODEL-03.",
+        "x-tests": "TC-API-030, TC-QUEUE-001, TC-AGENT-001, TC-MODEL-003.",
+        "x-path-schema": {
+          "$ref": "./api.schema.json#/definitions/EmptyBody"
+        },
+        "x-query-schema": {
+          "$ref": "./api.schema.json#/definitions/EmptyBody"
+        },
+        "parameters": [],
+        "responses": {
+          "202": {
+            "description": "202 {request_id:uuid,status:'QUEUED'|'RUNNING',trace_id:string} or existing dispatch status; 409 stale lease.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./api.schema.json#/definitions/Api030Response"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Private response.",
+                "schema": {
+                  "const": "no-store"
+                },
+                "required": true
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "401": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "403": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "404": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "409": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "410": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "422": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "503": {
+            "$ref": "#/components/responses/CanonicalError"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "./api.schema.json#/definitions/Api030Request"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/internal/scheduler/dispatch": {
+      "post": {
+        "operationId": "api031DispatchDueSchedule",
+        "x-api-id": "API-031",
+        "x-release": "P2",
+        "x-feature-gate": "P2 Icebox HTTP transport; P1 durable watches call the dispatcher directly.",
+        "x-authorization": "Authenticated scheduler identity + validated due event/lease; private network.",
+        "x-runtime-owner": "EP06-05 (P2 only).",
+        "x-requirements": "FR-TRIGGER-02, FR-TRIGGER-03.",
+        "x-tests": "TC-API-031, TC-TIMER-002, TC-SCHED-003, TC-TRIG-004.",
+        "x-path-schema": {
+          "$ref": "./api.schema.json#/definitions/EmptyBody"
+        },
+        "x-query-schema": {
+          "$ref": "./api.schema.json#/definitions/EmptyBody"
+        },
+        "parameters": [],
+        "responses": {
+          "202": {
+            "description": "202 {status:'ACCEPTED'|'NO_MATCH'|'DUPLICATE',firings:[{trigger_id:uuid,request_id?:uuid,status:string}],trace_id:string}; 409 invalid/stale schedule claim.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./api.schema.json#/definitions/Api031Response"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Private response.",
+                "schema": {
+                  "const": "no-store"
+                },
+                "required": true
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "401": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "403": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "404": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "409": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "410": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "422": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "503": {
+            "$ref": "#/components/responses/CanonicalError"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "./api.schema.json#/definitions/Api031Request"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/requests": {
+      "post": {
+        "operationId": "api032AdmitRequest",
+        "x-api-id": "API-032",
+        "x-release": "P0",
+        "x-feature-gate": "P0.",
+        "x-authorization": "Verified READY member; bound Discord session; CSRF for browser.",
+        "x-runtime-owner": "EP04-01, EP04-02, EP08-01.",
+        "x-requirements": "FR-QUEUE-01, FR-AGENT-01, FR-UI-01.",
+        "x-tests": "TC-API-032, TC-QUEUE-001, TC-UI-001.",
+        "x-path-schema": {
+          "$ref": "./api.schema.json#/definitions/EmptyBody"
+        },
+        "x-query-schema": {
+          "$ref": "./api.schema.json#/definitions/EmptyBody"
+        },
+        "parameters": [],
+        "responses": {
+          "202": {
+            "description": "202 {request_id, status, execution_mode, trace_id}.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./api.schema.json#/definitions/RequestAcceptedResponse"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Private response.",
+                "schema": {
+                  "const": "no-store"
+                },
+                "required": true
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "401": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "403": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "404": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "409": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "410": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "422": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "503": {
+            "$ref": "#/components/responses/CanonicalError"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "./api.schema.json#/definitions/Api032Request"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/requests/{requestId}": {
+      "get": {
+        "operationId": "api033GetRequestStatus",
+        "x-api-id": "API-033",
+        "x-release": "P0",
+        "x-feature-gate": "P0.",
+        "x-authorization": "Requester or scoped authorized viewer.",
+        "x-runtime-owner": "EP04-03.",
+        "x-requirements": "FR-RUN-01, FR-QUEUE-01, FR-UI-01.",
+        "x-tests": "TC-API-033, TC-RUN-001, TC-QUEUE-001.",
+        "x-path-schema": {
+          "$ref": "./api.schema.json#/definitions/RequestIdPath"
+        },
+        "x-query-schema": {
+          "$ref": "./api.schema.json#/definitions/EmptyBody"
+        },
+        "parameters": [
+          {
+            "name": "requestId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "./api.schema.json#/definitions/RequestIdPath/properties/requestId"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 {request_id,status,queue_position,execution_mode,error_code,can_control,trace_id}.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./api.schema.json#/definitions/Api033Response"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Private response.",
+                "schema": {
+                  "const": "no-store"
+                },
+                "required": true
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "401": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "403": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "404": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "409": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "410": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "422": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "503": {
+            "$ref": "#/components/responses/CanonicalError"
+          }
+        }
+      }
+    },
+    "/api/v1/requests/{requestId}/pause": {
+      "post": {
+        "operationId": "api034RequestPause",
+        "x-api-id": "API-034",
+        "x-release": "P0",
+        "x-feature-gate": "P0.",
+        "x-authorization": "Verified authorized requester/admin within session; CSRF.",
+        "x-runtime-owner": "EP04-03.",
+        "x-requirements": "FR-RUN-01, FR-RUN-03, NFR-REL-02.",
+        "x-tests": "TC-API-034, TC-RUN-001, TC-CKPT-001, TC-RUN-002.",
+        "x-path-schema": {
+          "$ref": "./api.schema.json#/definitions/RequestIdPath"
+        },
+        "x-query-schema": {
+          "$ref": "./api.schema.json#/definitions/EmptyBody"
+        },
+        "parameters": [
+          {
+            "name": "requestId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "./api.schema.json#/definitions/RequestIdPath/properties/requestId"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "202 {request_id,status,execution_mode,trace_id}.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./api.schema.json#/definitions/RequestAcceptedResponse"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Private response.",
+                "schema": {
+                  "const": "no-store"
+                },
+                "required": true
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "401": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "403": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "404": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "409": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "410": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "422": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "503": {
+            "$ref": "#/components/responses/CanonicalError"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "./api.schema.json#/definitions/EmptyBody"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/requests/{requestId}/resume": {
+      "post": {
+        "operationId": "api035RequestResume",
+        "x-api-id": "API-035",
+        "x-release": "P0",
+        "x-feature-gate": "P0.",
+        "x-authorization": "Verified authorized requester/admin within session; CSRF.",
+        "x-runtime-owner": "EP04-03.",
+        "x-requirements": "FR-RUN-01, FR-RUN-03, NFR-REL-02.",
+        "x-tests": "TC-API-035, TC-RUN-001, TC-CKPT-001, TC-RUN-002.",
+        "x-path-schema": {
+          "$ref": "./api.schema.json#/definitions/RequestIdPath"
+        },
+        "x-query-schema": {
+          "$ref": "./api.schema.json#/definitions/EmptyBody"
+        },
+        "parameters": [
+          {
+            "name": "requestId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "./api.schema.json#/definitions/RequestIdPath/properties/requestId"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "202 {request_id,status,execution_mode,trace_id}.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./api.schema.json#/definitions/RequestAcceptedResponse"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Private response.",
+                "schema": {
+                  "const": "no-store"
+                },
+                "required": true
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "401": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "403": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "404": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "409": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "410": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "422": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "503": {
+            "$ref": "#/components/responses/CanonicalError"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "./api.schema.json#/definitions/EmptyBody"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/requests/{requestId}/cancel": {
+      "post": {
+        "operationId": "api036RequestCancel",
+        "x-api-id": "API-036",
+        "x-release": "P0",
+        "x-feature-gate": "P0.",
+        "x-authorization": "Verified authorized requester/admin within session; CSRF.",
+        "x-runtime-owner": "EP04-03.",
+        "x-requirements": "FR-RUN-01, FR-RUN-03, NFR-REL-02.",
+        "x-tests": "TC-API-036, TC-RUN-001, TC-CKPT-001, TC-RUN-002.",
+        "x-path-schema": {
+          "$ref": "./api.schema.json#/definitions/RequestIdPath"
+        },
+        "x-query-schema": {
+          "$ref": "./api.schema.json#/definitions/EmptyBody"
+        },
+        "parameters": [
+          {
+            "name": "requestId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "./api.schema.json#/definitions/RequestIdPath/properties/requestId"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "202 {request_id,status,execution_mode,trace_id}.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./api.schema.json#/definitions/RequestAcceptedResponse"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Private response.",
+                "schema": {
+                  "const": "no-store"
+                },
+                "required": true
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "401": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "403": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "404": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "409": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "410": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "422": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "503": {
+            "$ref": "#/components/responses/CanonicalError"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "./api.schema.json#/definitions/EmptyBody"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/bots/{botId}/stop": {
+      "post": {
+        "operationId": "api037SetBotStopped",
+        "x-api-id": "API-037",
+        "x-release": "P0",
+        "x-feature-gate": "P0.",
+        "x-authorization": "Current verified Discord ADMIN; CSRF.",
+        "x-runtime-owner": "EP04-04.",
+        "x-requirements": "FR-RUN-02, BR-02.",
+        "x-tests": "TC-API-037, TC-STOP-001.",
+        "x-path-schema": {
+          "$ref": "./api.schema.json#/definitions/BotIdPath"
+        },
+        "x-query-schema": {
+          "$ref": "./api.schema.json#/definitions/EmptyBody"
+        },
+        "parameters": [
+          {
+            "name": "botId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "./api.schema.json#/definitions/BotIdPath/properties/botId"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 {bot_id,status,trace_id}.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./api.schema.json#/definitions/BotTransitionResponse"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Private response.",
+                "schema": {
+                  "const": "no-store"
+                },
+                "required": true
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "401": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "403": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "404": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "409": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "410": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "422": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "503": {
+            "$ref": "#/components/responses/CanonicalError"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "./api.schema.json#/definitions/EmptyBody"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/bots/{botId}/resume": {
+      "post": {
+        "operationId": "api038SetBotStopped",
+        "x-api-id": "API-038",
+        "x-release": "P0",
+        "x-feature-gate": "P0.",
+        "x-authorization": "Current verified Discord ADMIN; CSRF.",
+        "x-runtime-owner": "EP04-04.",
+        "x-requirements": "FR-RUN-02, BR-02.",
+        "x-tests": "TC-API-038, TC-STOP-001.",
+        "x-path-schema": {
+          "$ref": "./api.schema.json#/definitions/BotIdPath"
+        },
+        "x-query-schema": {
+          "$ref": "./api.schema.json#/definitions/EmptyBody"
+        },
+        "parameters": [
+          {
+            "name": "botId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "./api.schema.json#/definitions/BotIdPath/properties/botId"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 {bot_id,status,trace_id}.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./api.schema.json#/definitions/BotTransitionResponse"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Private response.",
+                "schema": {
+                  "const": "no-store"
+                },
+                "required": true
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "401": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "403": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "404": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "409": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "410": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "422": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "503": {
+            "$ref": "#/components/responses/CanonicalError"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "./api.schema.json#/definitions/EmptyBody"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/approvals/{approvalId}/decision": {
+      "post": {
+        "operationId": "api039ApprovalService",
+        "x-api-id": "API-039",
+        "x-release": "P0",
+        "x-feature-gate": "P0.",
+        "x-authorization": "Eligible actor/account holder; CSRF or verified Gateway interaction; bound preview.",
+        "x-runtime-owner": "EP07-01, EP07-02.",
+        "x-requirements": "FR-APPROVAL-01, FR-APPROVAL-02, NFR-SEC-06.",
+        "x-tests": "TC-API-039, TC-APP-002, TC-APP-003.",
+        "x-path-schema": {
+          "$ref": "./api.schema.json#/definitions/ApprovalIdPath"
+        },
+        "x-query-schema": {
+          "$ref": "./api.schema.json#/definitions/EmptyBody"
+        },
+        "parameters": [
+          {
+            "name": "approvalId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "./api.schema.json#/definitions/ApprovalIdPath/properties/approvalId"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 recorded decision or 202 pending execution {approval_id,status,activation_status?,trace_id}.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./api.schema.json#/definitions/ApprovalDecisionResponse"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Private response.",
+                "schema": {
+                  "const": "no-store"
+                },
+                "required": true
+              }
+            }
+          },
+          "202": {
+            "description": "200 recorded decision or 202 pending execution {approval_id,status,activation_status?,trace_id}.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./api.schema.json#/definitions/ApprovalDecisionResponse"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Private response.",
+                "schema": {
+                  "const": "no-store"
+                },
+                "required": true
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "401": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "403": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "404": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "409": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "410": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "422": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "503": {
+            "$ref": "#/components/responses/CanonicalError"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "./api.schema.json#/definitions/ApprovalDecisionRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/tool-grants": {
+      "post": {
+        "operationId": "api040GrantTool",
+        "x-api-id": "API-040",
+        "x-release": "P0",
+        "x-feature-gate": "P0.",
+        "x-authorization": "Current ADMIN plus holder consent when required; bound setup and CSRF.",
+        "x-runtime-owner": "EP02-08, EP07-02.",
+        "x-requirements": "FR-TOOL-01, FR-FORM-03.",
+        "x-tests": "TC-API-040, TC-TOOL-001, TC-PLATFORM-004.",
+        "x-path-schema": {
+          "$ref": "./api.schema.json#/definitions/EmptyBody"
+        },
+        "x-query-schema": {
+          "$ref": "./api.schema.json#/definitions/EmptyBody"
+        },
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "201 {grant_id,status,revision}.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./api.schema.json#/definitions/GrantResponse"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Private response.",
+                "schema": {
+                  "const": "no-store"
+                },
+                "required": true
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "401": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "403": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "404": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "409": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "410": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "422": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "503": {
+            "$ref": "#/components/responses/CanonicalError"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "./api.schema.json#/definitions/Api040Request"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/tool-grants/{grantId}": {
+      "get": {
+        "operationId": "api041GetToolGrant",
+        "x-api-id": "API-041",
+        "x-release": "P0",
+        "x-feature-gate": "P0.",
+        "x-authorization": "Scoped eligible viewer.",
+        "x-runtime-owner": "EP02-08.",
+        "x-requirements": "FR-TOOL-01.",
+        "x-tests": "TC-API-041, TC-TOOL-001.",
+        "x-path-schema": {
+          "$ref": "./api.schema.json#/definitions/GrantIdPath"
+        },
+        "x-query-schema": {
+          "$ref": "./api.schema.json#/definitions/EmptyBody"
+        },
+        "parameters": [
+          {
+            "name": "grantId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "./api.schema.json#/definitions/GrantIdPath/properties/grantId"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 {grant_id,scope,status,revision}.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./api.schema.json#/definitions/Api041Response"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Private response.",
+                "schema": {
+                  "const": "no-store"
+                },
+                "required": true
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "401": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "403": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "404": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "409": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "410": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "422": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "503": {
+            "$ref": "#/components/responses/CanonicalError"
+          }
+        }
+      },
+      "delete": {
+        "operationId": "api042RevokeToolGrant",
+        "x-api-id": "API-042",
+        "x-release": "P0",
+        "x-feature-gate": "P0.",
+        "x-authorization": "Authorized grant owner/admin; CSRF.",
+        "x-runtime-owner": "EP02-08, EP07-02.",
+        "x-requirements": "FR-TOOL-01.",
+        "x-tests": "TC-API-042, TC-TOOL-001.",
+        "x-path-schema": {
+          "$ref": "./api.schema.json#/definitions/GrantIdPath"
+        },
+        "x-query-schema": {
+          "$ref": "./api.schema.json#/definitions/EmptyBody"
+        },
+        "parameters": [
+          {
+            "name": "grantId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "./api.schema.json#/definitions/GrantIdPath/properties/grantId"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "204.",
+            "headers": {
+              "Cache-Control": {
+                "description": "Private response.",
+                "schema": {
+                  "const": "no-store"
+                },
+                "required": true
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "401": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "403": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "404": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "409": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "410": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "422": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "503": {
+            "$ref": "#/components/responses/CanonicalError"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "./api.schema.json#/definitions/EmptyBody"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/session-consents": {
+      "post": {
+        "operationId": "api043GrantSensitiveConsent",
+        "x-api-id": "API-043",
+        "x-release": "P0",
+        "x-feature-gate": "P0.",
+        "x-authorization": "Authenticated resource holder; CSRF; explicit audience.",
+        "x-runtime-owner": "EP02-04, EP07-02.",
+        "x-requirements": "FR-TOOL-01, FR-FORM-03, FR-SESSION-02.",
+        "x-tests": "TC-API-043, TC-FORM-003, TC-SESSION-002.",
+        "x-path-schema": {
+          "$ref": "./api.schema.json#/definitions/EmptyBody"
+        },
+        "x-query-schema": {
+          "$ref": "./api.schema.json#/definitions/EmptyBody"
+        },
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "201 {consent_id,status}.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./api.schema.json#/definitions/Api043Response"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Private response.",
+                "schema": {
+                  "const": "no-store"
+                },
+                "required": true
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "401": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "403": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "404": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "409": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "410": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "422": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "503": {
+            "$ref": "#/components/responses/CanonicalError"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "./api.schema.json#/definitions/Api043Request"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/bots/{botId}/health": {
+      "get": {
+        "operationId": "api044GetBotHealth",
+        "x-api-id": "API-044",
+        "x-release": "P0",
+        "x-feature-gate": "P0.",
+        "x-authorization": "Scoped viewer.",
+        "x-runtime-owner": "EP11-03.",
+        "x-requirements": "FR-HEALTH-01.",
+        "x-tests": "TC-API-044, TC-HEALTH-001.",
+        "x-path-schema": {
+          "$ref": "./api.schema.json#/definitions/BotIdPath"
+        },
+        "x-query-schema": {
+          "$ref": "./api.schema.json#/definitions/EmptyBody"
+        },
+        "parameters": [
+          {
+            "name": "botId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "./api.schema.json#/definitions/BotIdPath/properties/botId"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 HealthSummary.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./api.schema.json#/definitions/HealthSummary"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Private response.",
+                "schema": {
+                  "const": "no-store"
+                },
+                "required": true
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "401": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "403": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "404": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "409": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "410": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "422": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "503": {
+            "$ref": "#/components/responses/CanonicalError"
+          }
+        }
+      }
+    },
+    "/api/v1/sessions/{sessionId}/execution-mode": {
+      "get": {
+        "operationId": "api045GetExecutionMode",
+        "x-api-id": "API-045",
+        "x-release": "P0",
+        "x-feature-gate": "P0.",
+        "x-authorization": "Verified session member.",
+        "x-runtime-owner": "EP05-01.",
+        "x-requirements": "FR-AGENT-01.",
+        "x-tests": "TC-API-045, TC-AGENT-001.",
+        "x-path-schema": {
+          "$ref": "./api.schema.json#/definitions/SessionIdPath"
+        },
+        "x-query-schema": {
+          "$ref": "./api.schema.json#/definitions/EmptyBody"
+        },
+        "parameters": [
+          {
+            "name": "sessionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "./api.schema.json#/definitions/SessionIdPath/properties/sessionId"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 {current_mode:normal|langgraph}.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./api.schema.json#/definitions/ModeResponse"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Private response.",
+                "schema": {
+                  "const": "no-store"
+                },
+                "required": true
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "401": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "403": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "404": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "409": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "410": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "422": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "503": {
+            "$ref": "#/components/responses/CanonicalError"
+          }
+        }
+      },
+      "patch": {
+        "operationId": "api046SetExecutionMode",
+        "x-api-id": "API-046",
+        "x-release": "P0",
+        "x-feature-gate": "P0.",
+        "x-authorization": "Current verified session ADMIN; CSRF.",
+        "x-runtime-owner": "EP05-01, EP02-03.",
+        "x-requirements": "FR-AGENT-01.",
+        "x-tests": "TC-API-046, TC-AGENT-001.",
+        "x-path-schema": {
+          "$ref": "./api.schema.json#/definitions/SessionIdPath"
+        },
+        "x-query-schema": {
+          "$ref": "./api.schema.json#/definitions/EmptyBody"
+        },
+        "parameters": [
+          {
+            "name": "sessionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "./api.schema.json#/definitions/SessionIdPath/properties/sessionId"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 {current_mode}.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./api.schema.json#/definitions/ModeResponse"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Private response.",
+                "schema": {
+                  "const": "no-store"
+                },
+                "required": true
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "401": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "403": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "404": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "409": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "410": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "422": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "503": {
+            "$ref": "#/components/responses/CanonicalError"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "./api.schema.json#/definitions/ModeRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/bots/{botId}/setup-permissions": {
+      "post": {
+        "operationId": "api047ManageSetupGrant",
+        "x-api-id": "API-047",
+        "x-release": "P0",
+        "x-feature-gate": "P0.",
+        "x-authorization": "Current verified native authority; restricted bootstrap; CSRF.",
+        "x-runtime-owner": "EP02-03, EP02-06.",
+        "x-requirements": "FR-AUTH-03, FR-SETUP-01.",
+        "x-tests": "TC-API-047, TC-AUTH-005, TC-SETUP-002.",
+        "x-path-schema": {
+          "$ref": "./api.schema.json#/definitions/BotIdPath"
+        },
+        "x-query-schema": {
+          "$ref": "./api.schema.json#/definitions/EmptyBody"
+        },
+        "parameters": [
+          {
+            "name": "botId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "./api.schema.json#/definitions/BotIdPath/properties/botId"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 {grant_id,status,revision}.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./api.schema.json#/definitions/GrantResponse"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Private response.",
+                "schema": {
+                  "const": "no-store"
+                },
+                "required": true
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "401": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "403": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "404": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "409": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "410": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "422": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "503": {
+            "$ref": "#/components/responses/CanonicalError"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "./api.schema.json#/definitions/Api047Request"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/setup/storage/validate": {
+      "post": {
+        "operationId": "api048ValidateManagedStores",
+        "x-api-id": "API-048",
+        "x-release": "P0",
+        "x-feature-gate": "P0.",
+        "x-authorization": "Current Discord ADMIN + BOT_SETUP + form scope; CSRF.",
+        "x-runtime-owner": "EP03-03, EP11-01.",
+        "x-requirements": "FR-STORE-01, FR-STORE-02, FR-FORM-01.",
+        "x-tests": "TC-API-048, TC-FORM-001, TC-CKPT-001.",
+        "x-path-schema": {
+          "$ref": "./api.schema.json#/definitions/EmptyBody"
+        },
+        "x-query-schema": {
+          "$ref": "./api.schema.json#/definitions/EmptyBody"
+        },
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "200 {valid,checks[],warnings[]}.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./api.schema.json#/definitions/ValidationChecks"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Private response.",
+                "schema": {
+                  "const": "no-store"
+                },
+                "required": true
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "401": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "403": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "404": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "409": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "410": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "422": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "503": {
+            "$ref": "#/components/responses/CanonicalError"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "./api.schema.json#/definitions/Api048Request"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/setup/model-capabilities": {
+      "get": {
+        "operationId": "api050GetModelCapabilities",
+        "x-api-id": "API-050",
+        "x-release": "P0",
+        "x-feature-gate": "P0.",
+        "x-authorization": "Setup scope.",
+        "x-runtime-owner": "EP13-02, EP11-01.",
+        "x-requirements": "FR-FORM-02, FR-MODEL-03.",
+        "x-tests": "TC-API-050, TC-FORM-002, TC-MODEL-004.",
+        "x-path-schema": {
+          "$ref": "./api.schema.json#/definitions/EmptyBody"
+        },
+        "x-query-schema": {
+          "$ref": "./api.schema.json#/definitions/EmptyBody"
+        },
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "200 {models[],supported_params,tool_constraints}.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./api.schema.json#/definitions/Api050Response"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Private response.",
+                "schema": {
+                  "const": "no-store"
+                },
+                "required": true
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "401": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "403": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "404": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "409": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "410": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "422": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "503": {
+            "$ref": "#/components/responses/CanonicalError"
+          }
+        }
+      }
+    },
+    "/api/v1/setup/models/test": {
+      "post": {
+        "operationId": "api051TestModelConnection",
+        "x-api-id": "API-051",
+        "x-release": "P0",
+        "x-feature-gate": "P0.",
+        "x-authorization": "Setup scope + explicit cost confirmation + CSRF.",
+        "x-runtime-owner": "EP13-02, EP11-01.",
+        "x-requirements": "FR-FORM-02, FR-MODEL-03, FR-BUDGET-01.",
+        "x-tests": "TC-API-051, TC-FORM-002, TC-BUDGET-001.",
+        "x-path-schema": {
+          "$ref": "./api.schema.json#/definitions/EmptyBody"
+        },
+        "x-query-schema": {
+          "$ref": "./api.schema.json#/definitions/EmptyBody"
+        },
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "200 {valid,checks[],warnings[]}.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./api.schema.json#/definitions/ValidationChecks"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Private response.",
+                "schema": {
+                  "const": "no-store"
+                },
+                "required": true
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "401": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "403": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "404": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "409": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "410": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "422": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "503": {
+            "$ref": "#/components/responses/CanonicalError"
+          }
+        },
+        "x-bound-contract": "selected provider and model parameter schema",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "./api.schema.json#/definitions/Api051Request"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/bots/{botId}/agents/{agentRole}": {
+      "put": {
+        "operationId": "api052UpdateModelSettings",
+        "x-api-id": "API-052",
+        "x-release": "P0",
+        "x-feature-gate": "P0.",
+        "x-authorization": "Setup scope + CSRF + revision.",
+        "x-runtime-owner": "EP13-02, EP11-01.",
+        "x-requirements": "FR-FORM-02, FR-MODEL-03.",
+        "x-tests": "TC-API-052, TC-FORM-002, TC-MODEL-004.",
+        "x-path-schema": {
+          "$ref": "./api.schema.json#/definitions/BotIdAgentRolePath"
+        },
+        "x-query-schema": {
+          "$ref": "./api.schema.json#/definitions/EmptyBody"
+        },
+        "parameters": [
+          {
+            "name": "botId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "./api.schema.json#/definitions/BotIdAgentRolePath/properties/botId"
+            }
+          },
+          {
+            "name": "agentRole",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "./api.schema.json#/definitions/BotIdAgentRolePath/properties/agentRole"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 ModelSummary + revision.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./api.schema.json#/definitions/Api052Response"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Private response.",
+                "schema": {
+                  "const": "no-store"
+                },
+                "required": true
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "401": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "403": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "404": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "409": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "410": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "422": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "503": {
+            "$ref": "#/components/responses/CanonicalError"
+          }
+        },
+        "x-bound-contract": "selected catalogue model parameter schema",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "./api.schema.json#/definitions/Api052Request"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/integrations/{platform}/authorize": {
+      "post": {
+        "operationId": "api053StartAccountOAuth",
+        "x-api-id": "API-053",
+        "x-release": "P0",
+        "x-feature-gate": "P0 core; providers P1/P2.",
+        "x-authorization": "Authenticated account holder + applicable setup scope; CSRF.",
+        "x-runtime-owner": "EP02-04, EP11-01.",
+        "x-requirements": "FR-CRED-01, FR-FORM-03.",
+        "x-tests": "TC-API-053, TC-FORM-003, TC-CRED-002.",
+        "x-path-schema": {
+          "$ref": "./api.schema.json#/definitions/PlatformPath"
+        },
+        "x-query-schema": {
+          "$ref": "./api.schema.json#/definitions/EmptyBody"
+        },
+        "parameters": [
+          {
+            "name": "platform",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "./api.schema.json#/definitions/PlatformPath/properties/platform"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "303 approved OAuth redirect or 200 {authorization_url} to browser only.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./api.schema.json#/definitions/Api053Response"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Private response.",
+                "schema": {
+                  "const": "no-store"
+                },
+                "required": true
+              }
+            }
+          },
+          "303": {
+            "description": "303 approved OAuth redirect or 200 {authorization_url} to browser only.",
+            "headers": {
+              "Location": {
+                "description": "Allowlisted provider authorization URL.",
+                "schema": {
+                  "type": "string",
+                  "format": "uri",
+                  "pattern": "^https://"
+                },
+                "required": true
+              },
+              "Cache-Control": {
+                "description": "Private response.",
+                "schema": {
+                  "const": "no-store"
+                },
+                "required": true
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "401": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "403": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "404": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "409": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "410": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "422": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "503": {
+            "$ref": "#/components/responses/CanonicalError"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "./api.schema.json#/definitions/Api053Request"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/integrations/{platform}/callback": {
+      "get": {
+        "operationId": "api054CompleteAccountOAuth",
+        "x-api-id": "API-054",
+        "x-release": "P0",
+        "x-feature-gate": "P0 core; providers P1/P2.",
+        "x-authorization": "Verified provider state/cookie/PKCE; code exchange server-side.",
+        "x-runtime-owner": "EP02-04.",
+        "x-requirements": "FR-CRED-01, FR-FORM-03, NFR-SEC-03.",
+        "x-tests": "TC-API-054, TC-FORM-003, TC-CRED-002.",
+        "x-path-schema": {
+          "$ref": "./api.schema.json#/definitions/PlatformPath"
+        },
+        "x-query-schema": {
+          "$ref": "./api.schema.json#/definitions/AccountCallbackQuery"
+        },
+        "parameters": [
+          {
+            "name": "platform",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "./api.schema.json#/definitions/PlatformPath/properties/platform"
+            }
+          },
+          {
+            "name": "code",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "./api.schema.json#/definitions/AccountCallbackQuery/oneOf/0/properties/code"
+            }
+          },
+          {
+            "name": "state",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "./api.schema.json#/definitions/AccountCallbackQuery/oneOf/0/properties/state"
+            }
+          },
+          {
+            "name": "error",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "./api.schema.json#/definitions/AccountCallbackQuery/oneOf/1/properties/error"
+            }
+          }
+        ],
+        "responses": {
+          "303": {
+            "description": "303 clean fixed page; safe outcome.",
+            "headers": {
+              "Location": {
+                "description": "Fixed clean same-origin page.",
+                "schema": {
+                  "type": "string",
+                  "pattern": "^/(?!/)[^?#\\\\]*$"
+                },
+                "required": true
+              },
+              "Cache-Control": {
+                "description": "Private response.",
+                "schema": {
+                  "const": "no-store"
+                },
+                "required": true
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "401": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "403": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "404": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "409": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "410": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "422": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "503": {
+            "$ref": "#/components/responses/CanonicalError"
+          }
+        }
+      }
+    },
+    "/api/v1/connected-accounts/{accountId}": {
+      "get": {
+        "operationId": "api055GetConnectedAccount",
+        "x-api-id": "API-055",
+        "x-release": "P0",
+        "x-feature-gate": "P0.",
+        "x-authorization": "Account holder or authorized scoped metadata viewer.",
+        "x-runtime-owner": "EP02-04.",
+        "x-requirements": "FR-CRED-01, FR-FORM-03.",
+        "x-tests": "TC-API-055, TC-CRED-002, TC-FORM-003.",
+        "x-path-schema": {
+          "$ref": "./api.schema.json#/definitions/AccountIdPath"
+        },
+        "x-query-schema": {
+          "$ref": "./api.schema.json#/definitions/EmptyBody"
+        },
+        "parameters": [
+          {
+            "name": "accountId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "./api.schema.json#/definitions/AccountIdPath/properties/accountId"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 safe account summary.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./api.schema.json#/definitions/AccountSummary"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Private response.",
+                "schema": {
+                  "const": "no-store"
+                },
+                "required": true
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "401": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "403": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "404": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "409": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "410": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "422": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "503": {
+            "$ref": "#/components/responses/CanonicalError"
+          }
+        }
+      },
+      "delete": {
+        "operationId": "api056RevokeConnectedAccount",
+        "x-api-id": "API-056",
+        "x-release": "P0",
+        "x-feature-gate": "P0.",
+        "x-authorization": "Authenticated account holder; CSRF.",
+        "x-runtime-owner": "EP02-04, EP07-02.",
+        "x-requirements": "FR-CRED-01, FR-TOOL-01.",
+        "x-tests": "TC-API-056, TC-CRED-002, TC-TOOL-001.",
+        "x-path-schema": {
+          "$ref": "./api.schema.json#/definitions/AccountIdPath"
+        },
+        "x-query-schema": {
+          "$ref": "./api.schema.json#/definitions/EmptyBody"
+        },
+        "parameters": [
+          {
+            "name": "accountId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "./api.schema.json#/definitions/AccountIdPath/properties/accountId"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "204.",
+            "headers": {
+              "Cache-Control": {
+                "description": "Private response.",
+                "schema": {
+                  "const": "no-store"
+                },
+                "required": true
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "401": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "403": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "404": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "409": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "410": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "422": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "503": {
+            "$ref": "#/components/responses/CanonicalError"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "./api.schema.json#/definitions/EmptyBody"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/deletions": {
+      "post": {
+        "operationId": "api057RequestDeletion",
+        "x-api-id": "API-057",
+        "x-release": "P0",
+        "x-feature-gate": "P0.",
+        "x-authorization": "Current ADMIN, bound form, confirmation, CSRF.",
+        "x-runtime-owner": "EP02-05, EP03-06.",
+        "x-requirements": "FR-LIFECYCLE-01, NFR-DEL-01.",
+        "x-tests": "TC-API-057, TC-DELETE-001, TC-DELETE-002, TC-DELETE-003.",
+        "x-path-schema": {
+          "$ref": "./api.schema.json#/definitions/EmptyBody"
+        },
+        "x-query-schema": {
+          "$ref": "./api.schema.json#/definitions/EmptyBody"
+        },
+        "parameters": [],
+        "responses": {
+          "202": {
+            "description": "202 {job_id,status}.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./api.schema.json#/definitions/JobResponse"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Private response.",
+                "schema": {
+                  "const": "no-store"
+                },
+                "required": true
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "401": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "403": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "404": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "409": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "410": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "422": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "503": {
+            "$ref": "#/components/responses/CanonicalError"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "./api.schema.json#/definitions/Api057Request"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/transactions": {
+      "post": {
+        "operationId": "api058IssueTransactionTicket",
+        "x-api-id": "API-058",
+        "x-release": "P0",
+        "x-feature-gate": "P0.",
+        "x-authorization": "Trusted authorized service/event; no model-minted ticket.",
+        "x-runtime-owner": "EP02-06.",
+        "x-requirements": "FR-AUTH-03, FR-SETUP-01.",
+        "x-tests": "TC-API-058, TC-AUTH-005, TC-SETUP-002.",
+        "x-path-schema": {
+          "$ref": "./api.schema.json#/definitions/EmptyBody"
+        },
+        "x-query-schema": {
+          "$ref": "./api.schema.json#/definitions/EmptyBody"
+        },
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "201 {ticket_ref,private_delivery_ref,expires_at}; no raw token to model.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./api.schema.json#/definitions/Api058Response"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Private response.",
+                "schema": {
+                  "const": "no-store"
+                },
+                "required": true
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "401": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "403": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "404": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "409": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "410": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "422": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "503": {
+            "$ref": "#/components/responses/CanonicalError"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "./api.schema.json#/definitions/Api058Request"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/transactions/{action}/{ticket}": {
+      "get": {
+        "operationId": "api059LandTransaction",
+        "x-api-id": "API-059",
+        "x-release": "P0",
+        "x-feature-gate": "P0.",
+        "x-authorization": "Public safe landing, no protected data.",
+        "x-runtime-owner": "EP02-06.",
+        "x-requirements": "FR-AUTH-03, FR-SETUP-01.",
+        "x-tests": "TC-API-059, TC-AUTH-005, TC-SETUP-003.",
+        "x-path-schema": {
+          "$ref": "./api.schema.json#/definitions/ActionTicketPath"
+        },
+        "x-query-schema": {
+          "$ref": "./api.schema.json#/definitions/EmptyBody"
+        },
+        "parameters": [
+          {
+            "name": "action",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "./api.schema.json#/definitions/ActionTicketPath/properties/action"
+            }
+          },
+          {
+            "name": "ticket",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "./api.schema.json#/definitions/ActionTicketPath/properties/ticket"
+            }
+          }
+        ],
+        "responses": {
+          "303": {
+            "description": "303 fixed clean page; prelogin continuation cookie.",
+            "headers": {
+              "Location": {
+                "description": "Fixed clean same-origin page.",
+                "schema": {
+                  "type": "string",
+                  "pattern": "^/(?!/)[^?#\\\\]*$"
+                },
+                "required": true
+              },
+              "Set-Cookie": {
+                "description": "Opaque, secure, HTTP-only session or continuation cookie.",
+                "schema": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "required": true
+              },
+              "Cache-Control": {
+                "description": "Private response.",
+                "schema": {
+                  "const": "no-store"
+                },
+                "required": true
+              },
+              "Referrer-Policy": {
+                "description": "Suppress referrer disclosure.",
+                "schema": {
+                  "const": "no-referrer"
+                },
+                "required": true
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "401": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "403": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "404": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "409": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "410": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "422": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "503": {
+            "$ref": "#/components/responses/CanonicalError"
+          }
+        }
+      }
+    },
+    "/api/v1/transactions/redeem": {
+      "post": {
+        "operationId": "api060RedeemTransaction",
+        "x-api-id": "API-060",
+        "x-release": "P0",
+        "x-feature-gate": "P0.",
+        "x-authorization": "Verified matching actor + explicit Continue + CSRF.",
+        "x-runtime-owner": "EP02-06.",
+        "x-requirements": "FR-AUTH-03, FR-SETUP-01.",
+        "x-tests": "TC-API-060, TC-AUTH-005, TC-SETUP-003.",
+        "x-path-schema": {
+          "$ref": "./api.schema.json#/definitions/EmptyBody"
+        },
+        "x-query-schema": {
+          "$ref": "./api.schema.json#/definitions/EmptyBody"
+        },
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "201 {form_session_ref,expires_at}.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./api.schema.json#/definitions/Api060Response"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Private response.",
+                "schema": {
+                  "const": "no-store"
+                },
+                "required": true
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "401": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "403": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "404": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "409": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "410": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "422": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "503": {
+            "$ref": "#/components/responses/CanonicalError"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "./api.schema.json#/definitions/EmptyBody"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/form-sessions/{formId}": {
+      "get": {
+        "operationId": "api061GetFormSession",
+        "x-api-id": "API-061",
+        "x-release": "P0",
+        "x-feature-gate": "P0.",
+        "x-authorization": "Verified matching actor and current permissions; CSRF on unsafe methods.",
+        "x-runtime-owner": "EP02-06, EP11-01.",
+        "x-requirements": "FR-AUTH-03, FR-SETUP-01, FR-FORM-01.",
+        "x-tests": "TC-API-061, TC-AUTH-005, TC-FORM-001, TC-SETUP-003.",
+        "x-path-schema": {
+          "$ref": "./api.schema.json#/definitions/FormIdPath"
+        },
+        "x-query-schema": {
+          "$ref": "./api.schema.json#/definitions/EmptyBody"
+        },
+        "parameters": [
+          {
+            "name": "formId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "./api.schema.json#/definitions/FormIdPath/properties/formId"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 {action,fields,expires_at,revision}.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./api.schema.json#/definitions/Api061Response"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Private response.",
+                "schema": {
+                  "const": "no-store"
+                },
+                "required": true
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "401": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "403": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "404": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "409": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "410": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "422": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "503": {
+            "$ref": "#/components/responses/CanonicalError"
+          }
+        },
+        "x-bound-contract": "bound form field schema"
+      }
+    },
+    "/api/v1/form-sessions/{formId}/submit": {
+      "post": {
+        "operationId": "api062SubmitForm",
+        "x-api-id": "API-062",
+        "x-release": "P0",
+        "x-feature-gate": "P0.",
+        "x-authorization": "Verified matching actor and current permissions; CSRF on unsafe methods.",
+        "x-runtime-owner": "EP02-06, EP11-01.",
+        "x-requirements": "FR-AUTH-03, FR-SETUP-01, FR-FORM-01.",
+        "x-tests": "TC-API-062, TC-AUTH-005, TC-FORM-001, TC-SETUP-003.",
+        "x-path-schema": {
+          "$ref": "./api.schema.json#/definitions/FormIdPath"
+        },
+        "x-query-schema": {
+          "$ref": "./api.schema.json#/definitions/EmptyBody"
+        },
+        "parameters": [
+          {
+            "name": "formId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "./api.schema.json#/definitions/FormIdPath/properties/formId"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 or 202 {status,revision,job_ref?}.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./api.schema.json#/definitions/Api062Response"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Private response.",
+                "schema": {
+                  "const": "no-store"
+                },
+                "required": true
+              }
+            }
+          },
+          "202": {
+            "description": "200 or 202 {status,revision,job_ref?}.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./api.schema.json#/definitions/Api062Response"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Private response.",
+                "schema": {
+                  "const": "no-store"
+                },
+                "required": true
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "401": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "403": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "404": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "409": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "410": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "422": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "503": {
+            "$ref": "#/components/responses/CanonicalError"
+          }
+        },
+        "x-bound-contract": "bound form submission schema",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "./api.schema.json#/definitions/FormSubmission"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/form-sessions/{formId}/cancel": {
+      "post": {
+        "operationId": "api063CancelForm",
+        "x-api-id": "API-063",
+        "x-release": "P0",
+        "x-feature-gate": "P0.",
+        "x-authorization": "Verified matching actor and current permissions; CSRF on unsafe methods.",
+        "x-runtime-owner": "EP02-06, EP11-01.",
+        "x-requirements": "FR-AUTH-03, FR-SETUP-01, FR-FORM-01.",
+        "x-tests": "TC-API-063, TC-AUTH-005, TC-FORM-001, TC-SETUP-003.",
+        "x-path-schema": {
+          "$ref": "./api.schema.json#/definitions/FormIdPath"
+        },
+        "x-query-schema": {
+          "$ref": "./api.schema.json#/definitions/EmptyBody"
+        },
+        "parameters": [
+          {
+            "name": "formId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "./api.schema.json#/definitions/FormIdPath/properties/formId"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "204.",
+            "headers": {
+              "Cache-Control": {
+                "description": "Private response.",
+                "schema": {
+                  "const": "no-store"
+                },
+                "required": true
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "401": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "403": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "404": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "409": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "410": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "422": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "503": {
+            "$ref": "#/components/responses/CanonicalError"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "./api.schema.json#/definitions/EmptyBody"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/discord/start": {
+      "post": {
+        "operationId": "api064StartDiscordLogin",
+        "x-api-id": "API-064",
+        "x-release": "P0",
+        "x-feature-gate": "P0.",
+        "x-authorization": "Ticket eligibility, pre-login Origin/CSRF/rate limits.",
+        "x-runtime-owner": "EP02-02, EP02-06.",
+        "x-requirements": "FR-AUTH-03, NFR-SEC-03.",
+        "x-tests": "TC-API-064, TC-AUTH-005, TC-AUTH-003.",
+        "x-path-schema": {
+          "$ref": "./api.schema.json#/definitions/EmptyBody"
+        },
+        "x-query-schema": {
+          "$ref": "./api.schema.json#/definitions/EmptyBody"
+        },
+        "parameters": [],
+        "responses": {
+          "303": {
+            "description": "303 Discord authorize URL, opaque prelogin cookie.",
+            "headers": {
+              "Location": {
+                "description": "Allowlisted provider authorization URL.",
+                "schema": {
+                  "type": "string",
+                  "format": "uri",
+                  "pattern": "^https://"
+                },
+                "required": true
+              },
+              "Set-Cookie": {
+                "description": "Opaque, secure, HTTP-only session or continuation cookie.",
+                "schema": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "required": true
+              },
+              "Cache-Control": {
+                "description": "Private response.",
+                "schema": {
+                  "const": "no-store"
+                },
+                "required": true
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "401": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "403": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "404": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "409": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "410": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "422": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "503": {
+            "$ref": "#/components/responses/CanonicalError"
+          }
+        },
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "./api.schema.json#/definitions/Api064Request"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/discord/callback": {
+      "get": {
+        "operationId": "api065CompleteDiscordLogin",
+        "x-api-id": "API-065",
+        "x-release": "P0",
+        "x-feature-gate": "P0.",
+        "x-authorization": "Valid state, cookie, expiry, configured issuer; verified /users/@me.",
+        "x-runtime-owner": "EP02-02, EP02-06.",
+        "x-requirements": "FR-ID-01, FR-AUTH-03, NFR-SEC-03.",
+        "x-tests": "TC-API-065, TC-AUTH-005, TC-AUTH-003.",
+        "x-path-schema": {
+          "$ref": "./api.schema.json#/definitions/EmptyBody"
+        },
+        "x-query-schema": {
+          "$ref": "./api.schema.json#/definitions/OAuthCallbackQuery"
+        },
+        "parameters": [
+          {
+            "name": "code",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "./api.schema.json#/definitions/OAuthCallbackQuery/oneOf/0/properties/code"
+            }
+          },
+          {
+            "name": "state",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "./api.schema.json#/definitions/OAuthCallbackQuery/oneOf/0/properties/state"
+            }
+          },
+          {
+            "name": "iss",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "./api.schema.json#/definitions/OAuthCallbackQuery/oneOf/0/properties/iss"
+            }
+          },
+          {
+            "name": "error",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "./api.schema.json#/definitions/OAuthCallbackQuery/oneOf/1/properties/error"
+            }
+          }
+        ],
+        "responses": {
+          "303": {
+            "description": "303 fixed same-origin page, rotated web cookie.",
+            "headers": {
+              "Location": {
+                "description": "Fixed clean same-origin page.",
+                "schema": {
+                  "type": "string",
+                  "pattern": "^/(?!/)[^?#\\\\]*$"
+                },
+                "required": true
+              },
+              "Set-Cookie": {
+                "description": "Opaque, secure, HTTP-only session or continuation cookie.",
+                "schema": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "required": true
+              },
+              "Cache-Control": {
+                "description": "Private response.",
+                "schema": {
+                  "const": "no-store"
+                },
+                "required": true
+              },
+              "Referrer-Policy": {
+                "description": "Suppress referrer disclosure.",
+                "schema": {
+                  "const": "no-referrer"
+                },
+                "required": true
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "401": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "403": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "404": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "409": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "410": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "422": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/CanonicalError"
+          },
+          "503": {
+            "$ref": "#/components/responses/CanonicalError"
+          }
+        }
+      }
+    }
+  },
+  "jsonSchemaDialect": "http://json-schema.org/draft-07/schema#",
+  "components": {
+    "responses": {
+      "CanonicalError": {
+        "description": "Safe contract error.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "./api.schema.json#/definitions/CanonicalError"
+            }
+          }
+        }
+      }
+    }
+  }
+}

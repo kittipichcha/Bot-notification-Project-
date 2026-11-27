@@ -10,7 +10,7 @@ Fork the repository using your Git host, then clone your fork and enter the chec
 git clone <your-fork-url>
 cd <checkout-directory>
 npm ci
-uv sync --locked --all-packages
+uv sync --locked --all-packages --cache-dir .uv-cache
 npm run check:env
 npm run build
 npm test
@@ -33,3 +33,5 @@ uv run --locked --package local-connector python -m local_connector
 The API listens on loopback at http://127.0.0.1:3000/health by default. Run `npm run dev:web` in another terminal for the web scaffold. Copy `.env.example` to `.env` for local settings; root commands load it when present. Never commit credentials. See [self-hosting](docs/self-hosting.md), [platform setup](docs/platform-setup.md), and [tests](docs/tests.md).
 
 Prisma, PostgreSQL, and MongoDB are deferred to EP03; Docker deployment is deferred to EP09. BYOK and tracing are opt-in future work and are not implemented.
+
+Shared contract schemas and generation commands are documented in [contracts](packages/contracts/README.md). Platform and budget configuration is validated at startup; it does not enable integrations.

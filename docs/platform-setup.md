@@ -9,3 +9,5 @@ LINE administration and setup, including administrative claims, are disabled in 
 When ingress is implemented, Discord interactions delivered over HTTP require verification of the signature against the raw request body and the application public key; Gateway delivery instead uses an outbound connection. See [Discord interaction delivery](https://github.com/discord/discord-api-docs/blob/main/developers/interactions/overview.mdx).
 
 For future LINE webhooks, register an externally reachable HTTPS webhook URL in the channel settings and verify each request signature using the channel secret and raw request body before processing it. See [LINE webhook signature verification](https://developers.line.biz/en/docs/messaging-api/verify-webhook-signature/). These endpoints are not available in this scaffold.
+
+The versioned platform registry is descriptive and defaults every provider capability to disabled. Configuring an adapter name alone cannot activate it: a trusted code callback, installation readiness, feature enablement and bot grant are also required. The current registry contains no provider implementations. LINE responses are text-only.

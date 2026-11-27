@@ -1,0 +1,953 @@
+[
+  {
+    "name": "health",
+    "schema": "api",
+    "valid": true,
+    "value": {
+      "status": "ok",
+      "service": "api",
+      "readiness": "scaffold"
+    }
+  },
+  {
+    "name": "api unknown",
+    "schema": "api",
+    "valid": false,
+    "value": {
+      "status": "ok",
+      "service": "api",
+      "readiness": "scaffold",
+      "extra": true
+    }
+  },
+  {
+    "name": "platform",
+    "schema": "platform",
+    "valid": true,
+    "value": {
+      "schema_version": "1.0.0",
+      "platforms": [
+        {
+          "enabled": false,
+          "capabilities": {
+            "setup": false,
+            "invoke": false,
+            "connection": false,
+            "tool": false,
+            "trigger": false,
+            "response": false
+          },
+          "setup_flow": {
+            "adapter": "authenticated_react_oauth2",
+            "status": null,
+            "permission": null,
+            "bootstrap": null
+          },
+          "invoke_adapter": "a2a_or_local",
+          "connection_adapter": "discord_gateway",
+          "trigger_adapter": "discord_gateway",
+          "response_adapter": "discord_response",
+          "scheduler_support": false,
+          "supported_response_components": [],
+          "tool_registry": {
+            "adapter": "discord_safe",
+            "tools": []
+          },
+          "oauth_requirements": {
+            "required": false,
+            "scopes": []
+          },
+          "event_source_type": "gateway",
+          "default_event_policy": [
+            {
+              "event_slug": "help",
+              "source": "gateway",
+              "payload_schema_ref": "https://notification.local/contracts/1.0.0/trigger.schema.json#/definitions/SystemEvent",
+              "filters": {},
+              "eligible_roles": [
+                "ADMIN",
+                "MEMBER"
+              ],
+              "default_on_action": "help",
+              "filter_schema_ref": "https://notification.local/contracts/1.0.0/trigger.schema.json#/definitions/SystemFilter"
+            },
+            {
+              "event_slug": "mention",
+              "source": "gateway",
+              "payload_schema_ref": "https://notification.local/contracts/1.0.0/trigger.schema.json#/definitions/SystemEvent",
+              "filters": {},
+              "eligible_roles": [
+                "ADMIN",
+                "MEMBER"
+              ],
+              "default_on_action": "mention",
+              "filter_schema_ref": "https://notification.local/contracts/1.0.0/trigger.schema.json#/definitions/SystemFilter"
+            }
+          ],
+          "platform_key": "discord",
+          "display_name": "Discord",
+          "release": "P0"
+        },
+        {
+          "enabled": false,
+          "capabilities": {
+            "setup": false,
+            "invoke": false,
+            "connection": false,
+            "tool": false,
+            "trigger": false,
+            "response": false
+          },
+          "setup_flow": {
+            "adapter": null,
+            "status": "LINE_SETUP_DISABLED",
+            "permission": null,
+            "bootstrap": null
+          },
+          "invoke_adapter": null,
+          "connection_adapter": null,
+          "trigger_adapter": "line_webhook",
+          "response_adapter": "line_safe_text",
+          "scheduler_support": false,
+          "supported_response_components": [],
+          "tool_registry": {
+            "adapter": null,
+            "tools": []
+          },
+          "oauth_requirements": {
+            "required": false,
+            "scopes": []
+          },
+          "event_source_type": "webhook",
+          "default_event_policy": [
+            {
+              "event_slug": "help",
+              "source": "webhook",
+              "payload_schema_ref": "https://notification.local/contracts/1.0.0/trigger.schema.json#/definitions/SystemEvent",
+              "filters": {},
+              "eligible_roles": [
+                "ADMIN",
+                "MEMBER"
+              ],
+              "default_on_action": "help",
+              "filter_schema_ref": "https://notification.local/contracts/1.0.0/trigger.schema.json#/definitions/SystemFilter"
+            },
+            {
+              "event_slug": "status",
+              "source": "webhook",
+              "payload_schema_ref": "https://notification.local/contracts/1.0.0/trigger.schema.json#/definitions/SystemEvent",
+              "filters": {},
+              "eligible_roles": [
+                "ADMIN",
+                "MEMBER"
+              ],
+              "default_on_action": "status",
+              "filter_schema_ref": "https://notification.local/contracts/1.0.0/trigger.schema.json#/definitions/SystemFilter"
+            }
+          ],
+          "platform_key": "line",
+          "display_name": "LINE",
+          "release": "P2"
+        },
+        {
+          "enabled": false,
+          "capabilities": {
+            "setup": false,
+            "invoke": false,
+            "connection": false,
+            "tool": false,
+            "trigger": false,
+            "response": false
+          },
+          "setup_flow": {
+            "adapter": "composio_oauth",
+            "status": null,
+            "permission": null,
+            "bootstrap": null
+          },
+          "invoke_adapter": null,
+          "connection_adapter": "composio",
+          "trigger_adapter": "composio",
+          "response_adapter": null,
+          "scheduler_support": false,
+          "supported_response_components": [],
+          "tool_registry": {
+            "adapter": "gmail_safe",
+            "tools": []
+          },
+          "oauth_requirements": {
+            "required": false,
+            "scopes": []
+          },
+          "event_source_type": "composio",
+          "default_event_policy": [],
+          "platform_key": "gmail",
+          "display_name": "Gmail",
+          "release": "P2"
+        },
+        {
+          "enabled": false,
+          "capabilities": {
+            "setup": false,
+            "invoke": false,
+            "connection": false,
+            "tool": false,
+            "trigger": false,
+            "response": false
+          },
+          "setup_flow": {
+            "adapter": "composio_oauth",
+            "status": null,
+            "permission": null,
+            "bootstrap": null
+          },
+          "invoke_adapter": null,
+          "connection_adapter": "composio",
+          "trigger_adapter": "composio",
+          "response_adapter": null,
+          "scheduler_support": false,
+          "supported_response_components": [],
+          "tool_registry": {
+            "adapter": "calendar_safe",
+            "tools": []
+          },
+          "oauth_requirements": {
+            "required": false,
+            "scopes": []
+          },
+          "event_source_type": "composio",
+          "default_event_policy": [],
+          "platform_key": "calendar",
+          "display_name": "Calendar",
+          "release": "P1"
+        },
+        {
+          "enabled": false,
+          "capabilities": {
+            "setup": false,
+            "invoke": false,
+            "connection": false,
+            "tool": false,
+            "trigger": false,
+            "response": false
+          },
+          "setup_flow": {
+            "adapter": "composio_oauth",
+            "status": null,
+            "permission": null,
+            "bootstrap": null
+          },
+          "invoke_adapter": null,
+          "connection_adapter": "composio",
+          "trigger_adapter": "composio",
+          "response_adapter": null,
+          "scheduler_support": false,
+          "supported_response_components": [],
+          "tool_registry": {
+            "adapter": "github_safe",
+            "tools": []
+          },
+          "oauth_requirements": {
+            "required": false,
+            "scopes": []
+          },
+          "event_source_type": "composio",
+          "default_event_policy": [],
+          "platform_key": "github",
+          "display_name": "GitHub",
+          "release": "P2"
+        }
+      ]
+    }
+  },
+  {
+    "name": "platform missing",
+    "schema": "platform",
+    "valid": false,
+    "value": {
+      "schema_version": "1.0.0"
+    }
+  },
+  {
+    "name": "trigger",
+    "schema": "trigger",
+    "valid": true,
+    "value": {
+      "event_slug": "help",
+      "source": "gateway",
+      "payload_schema_ref": "https://notification.local/contracts/1.0.0/trigger.schema.json#/definitions/SystemEvent",
+      "filters": {},
+      "eligible_roles": [
+        "ADMIN",
+        "MEMBER"
+      ],
+      "default_on_action": "help",
+      "filter_schema_ref": "https://notification.local/contracts/1.0.0/trigger.schema.json#/definitions/SystemFilter"
+    }
+  },
+  {
+    "name": "trigger null",
+    "schema": "trigger",
+    "valid": false,
+    "value": {
+      "event_slug": "help",
+      "source": null,
+      "payload_schema_ref": "https://notification.local/contracts/1.0.0/trigger.schema.json#/definitions/SystemEvent",
+      "filters": {},
+      "eligible_roles": [
+        "ADMIN",
+        "MEMBER"
+      ],
+      "default_on_action": "help",
+      "filter_schema_ref": "https://notification.local/contracts/1.0.0/trigger.schema.json#/definitions/SystemFilter"
+    }
+  },
+  {
+    "name": "tool spec",
+    "schema": "tool",
+    "valid": true,
+    "value": {
+      "tool_id": "safe_tool",
+      "version": "1.0.0",
+      "provider_action": "lookup",
+      "operation": "READ",
+      "adapter": "discord_safe",
+      "input_schema_ref": "https://notification.local/contracts/1.0.0/trigger.schema.json#/definitions/SystemEvent",
+      "result_schema_ref": "https://notification.local/contracts/1.0.0/trigger.schema.json#/definitions/SystemEvent",
+      "required_scopes": [],
+      "rate_limit": {
+        "max_calls": 2,
+        "window_ms": 1000
+      }
+    }
+  },
+  {
+    "name": "tool success",
+    "schema": "tool",
+    "valid": true,
+    "value": {
+      "status": "success",
+      "data_ref": "opaque",
+      "source": "discord",
+      "timestamp": "2026-01-01T00:00:00Z",
+      "error_code": null,
+      "retryable": false
+    }
+  },
+  {
+    "name": "tool failure",
+    "schema": "tool",
+    "valid": true,
+    "value": {
+      "status": "failed",
+      "data_ref": null,
+      "source": "discord",
+      "timestamp": "2026-01-01T00:00:00Z",
+      "error_code": "TIMEOUT",
+      "retryable": true
+    }
+  },
+  {
+    "name": "tool invalid date",
+    "schema": "tool",
+    "valid": false,
+    "value": {
+      "status": "success",
+      "data_ref": "opaque",
+      "source": "discord",
+      "timestamp": "not-a-date",
+      "error_code": null,
+      "retryable": false
+    }
+  },
+  {
+    "name": "tool wrong type",
+    "schema": "tool",
+    "valid": false,
+    "value": {
+      "tool_id": "safe_tool",
+      "version": "1.0.0",
+      "provider_action": "lookup",
+      "operation": true,
+      "adapter": "discord_safe",
+      "input_schema_ref": "https://notification.local/contracts/1.0.0/trigger.schema.json#/definitions/SystemEvent",
+      "result_schema_ref": "https://notification.local/contracts/1.0.0/trigger.schema.json#/definitions/SystemEvent",
+      "required_scopes": [],
+      "rate_limit": {
+        "max_calls": 2,
+        "window_ms": 1000
+      }
+    }
+  },
+  {
+    "name": "response components",
+    "schema": "response",
+    "valid": true,
+    "value": {
+      "text": "hello",
+      "status": "SUCCESS",
+      "extra_response": [
+        {
+          "kind": "EMBED",
+          "payload": {
+            "title": "title",
+            "description": "description"
+          }
+        }
+      ],
+      "source_refs": [
+        "source"
+      ],
+      "stale": false
+    }
+  },
+  {
+    "name": "response markup",
+    "schema": "response",
+    "valid": false,
+    "value": {
+      "text": "hello",
+      "status": "SUCCESS",
+      "extra_response": [
+        {
+          "kind": "EMBED",
+          "payload": {
+            "title": "ok",
+            "url": "https://example.com"
+          }
+        }
+      ],
+      "source_refs": [
+        "source"
+      ],
+      "stale": false
+    }
+  },
+  {
+    "name": "budget",
+    "schema": "budget",
+    "valid": true,
+    "value": {
+      "schema_version": "1.0.0",
+      "currency": "THB",
+      "timezone": "Asia/Bangkok",
+      "monthly_cash_cap": 400,
+      "protected_reserve": 100,
+      "operating_cap": 300,
+      "inference_cap": 120,
+      "hosting_cap": 180,
+      "paid_upgrades": 0,
+      "max_llm_calls_per_run": 4,
+      "max_input_tokens_per_run": 20000,
+      "max_output_tokens_per_run": 3000,
+      "max_platform_subtasks_per_run": 2,
+      "max_tool_calls_per_run": 4,
+      "max_retries_per_run": 2,
+      "warning_percent": 80,
+      "funded_runs_per_month": 100,
+      "funded_runs_per_day": 5,
+      "user_monthly_cap": 15,
+      "tracing_enabled": false
+    }
+  },
+  {
+    "name": "budget unknown",
+    "schema": "budget",
+    "valid": false,
+    "value": {
+      "schema_version": "1.0.0",
+      "currency": "THB",
+      "timezone": "Asia/Bangkok",
+      "monthly_cash_cap": 400,
+      "protected_reserve": 100,
+      "operating_cap": 300,
+      "inference_cap": 120,
+      "hosting_cap": 180,
+      "paid_upgrades": 0,
+      "max_llm_calls_per_run": 4,
+      "max_input_tokens_per_run": 20000,
+      "max_output_tokens_per_run": 3000,
+      "max_platform_subtasks_per_run": 2,
+      "max_tool_calls_per_run": 4,
+      "max_retries_per_run": 2,
+      "warning_percent": 80,
+      "funded_runs_per_month": 100,
+      "funded_runs_per_day": 5,
+      "user_monthly_cap": 15,
+      "tracing_enabled": false,
+      "secret": "no"
+    }
+  },
+  {
+    "name": "policy",
+    "schema": "policy",
+    "valid": true,
+    "value": {
+      "schema_version": "1.0.0",
+      "release": "P0",
+      "tool": {
+        "default_access": "DENY"
+      },
+      "trigger": {
+        "personal_watches_by_default": false,
+        "ignore_own_messages": true,
+        "schedule_enabled": false,
+        "deduplicate_events": true
+      },
+      "model": {
+        "allowed_models": []
+      },
+      "agent": {
+        "default_mode": "SIMPLE",
+        "enabled_modes": [
+          "SIMPLE"
+        ],
+        "role_definitions": {},
+        "max_model_calls": 4
+      },
+      "request": {
+        "execution_enabled": false,
+        "retry_policy": {
+          "model_retries": 1,
+          "tool_retries": 0
+        }
+      },
+      "approval": {
+        "enabled": false,
+        "mutation_policy": "EXACT_ACTION"
+      },
+      "bot_connection": {
+        "enabled_modes": [
+          "SAME_BOT"
+        ]
+      },
+      "response": {
+        "supported_components": [
+          "TEXT",
+          "EMBED",
+          "RESULT_CARD",
+          "APPROVAL_BUTTON",
+          "PRIVATE_FORM_LINK"
+        ]
+      }
+    }
+  },
+  {
+    "name": "unsupported policy version",
+    "schema": "policy",
+    "valid": false,
+    "value": {
+      "schema_version": "2.0.0",
+      "release": "P0",
+      "tool": {
+        "default_access": "DENY"
+      },
+      "trigger": {
+        "personal_watches_by_default": false,
+        "ignore_own_messages": true,
+        "schedule_enabled": false,
+        "deduplicate_events": true
+      },
+      "model": {
+        "allowed_models": []
+      },
+      "agent": {
+        "default_mode": "SIMPLE",
+        "enabled_modes": [
+          "SIMPLE"
+        ],
+        "role_definitions": {},
+        "max_model_calls": 4
+      },
+      "request": {
+        "execution_enabled": false,
+        "retry_policy": {
+          "model_retries": 1,
+          "tool_retries": 0
+        }
+      },
+      "approval": {
+        "enabled": false,
+        "mutation_policy": "EXACT_ACTION"
+      },
+      "bot_connection": {
+        "enabled_modes": [
+          "SAME_BOT"
+        ]
+      },
+      "response": {
+        "supported_components": [
+          "TEXT",
+          "EMBED",
+          "RESULT_CARD",
+          "APPROVAL_BUTTON",
+          "PRIVATE_FORM_LINK"
+        ]
+      }
+    }
+  },
+  {
+    "name": "response error notice retryable true",
+    "schema": "response",
+    "valid": true,
+    "value": {
+      "text": "Request failed",
+      "status": "FAILED",
+      "extra_response": [
+        {
+          "kind": "ERROR_NOTICE",
+          "payload": {
+            "error_code": "TIMEOUT",
+            "text": "Please try again.",
+            "retryable": true
+          }
+        }
+      ],
+      "source_refs": [],
+      "stale": false
+    }
+  },
+  {
+    "name": "response error notice retryable false",
+    "schema": "response",
+    "valid": true,
+    "value": {
+      "text": "Request failed",
+      "status": "FAILED",
+      "extra_response": [
+        {
+          "kind": "ERROR_NOTICE",
+          "payload": {
+            "error_code": "TIMEOUT",
+            "text": "Please try again.",
+            "retryable": false
+          }
+        }
+      ],
+      "source_refs": [],
+      "stale": false
+    }
+  },
+  {
+    "name": "response error notice retryable omitted",
+    "schema": "response",
+    "valid": true,
+    "value": {
+      "text": "Request failed",
+      "status": "FAILED",
+      "extra_response": [
+        {
+          "kind": "ERROR_NOTICE",
+          "payload": {
+            "error_code": "TIMEOUT",
+            "text": "Please try again."
+          }
+        }
+      ],
+      "source_refs": [],
+      "stale": false
+    }
+  },
+  {
+    "name": "response error notice missing code",
+    "schema": "response",
+    "valid": false,
+    "value": {
+      "text": "Request failed",
+      "status": "FAILED",
+      "extra_response": [
+        {
+          "kind": "ERROR_NOTICE",
+          "payload": {
+            "text": "Please try again."
+          }
+        }
+      ],
+      "source_refs": [],
+      "stale": false
+    }
+  },
+  {
+    "name": "response error notice missing text",
+    "schema": "response",
+    "valid": false,
+    "value": {
+      "text": "Request failed",
+      "status": "FAILED",
+      "extra_response": [
+        {
+          "kind": "ERROR_NOTICE",
+          "payload": {
+            "error_code": "TIMEOUT"
+          }
+        }
+      ],
+      "source_refs": [],
+      "stale": false
+    }
+  },
+  {
+    "name": "response error notice wrong code type",
+    "schema": "response",
+    "valid": false,
+    "value": {
+      "text": "Request failed",
+      "status": "FAILED",
+      "extra_response": [
+        {
+          "kind": "ERROR_NOTICE",
+          "payload": {
+            "error_code": 1,
+            "text": "Please try again."
+          }
+        }
+      ],
+      "source_refs": [],
+      "stale": false
+    }
+  },
+  {
+    "name": "response error notice wrong text type",
+    "schema": "response",
+    "valid": false,
+    "value": {
+      "text": "Request failed",
+      "status": "FAILED",
+      "extra_response": [
+        {
+          "kind": "ERROR_NOTICE",
+          "payload": {
+            "error_code": "TIMEOUT",
+            "text": 1
+          }
+        }
+      ],
+      "source_refs": [],
+      "stale": false
+    }
+  },
+  {
+    "name": "response error notice wrong retryable type",
+    "schema": "response",
+    "valid": false,
+    "value": {
+      "text": "Request failed",
+      "status": "FAILED",
+      "extra_response": [
+        {
+          "kind": "ERROR_NOTICE",
+          "payload": {
+            "error_code": "TIMEOUT",
+            "text": "Please try again.",
+            "retryable": "true"
+          }
+        }
+      ],
+      "source_refs": [],
+      "stale": false
+    }
+  },
+  {
+    "name": "response error notice empty code",
+    "schema": "response",
+    "valid": false,
+    "value": {
+      "text": "Request failed",
+      "status": "FAILED",
+      "extra_response": [
+        {
+          "kind": "ERROR_NOTICE",
+          "payload": {
+            "error_code": "",
+            "text": "Please try again."
+          }
+        }
+      ],
+      "source_refs": [],
+      "stale": false
+    }
+  },
+  {
+    "name": "response error notice text too long",
+    "schema": "response",
+    "valid": false,
+    "value": {
+      "text": "Request failed",
+      "status": "FAILED",
+      "extra_response": [
+        {
+          "kind": "ERROR_NOTICE",
+          "payload": {
+            "error_code": "TIMEOUT",
+            "text": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+          }
+        }
+      ],
+      "source_refs": [],
+      "stale": false
+    }
+  },
+  {
+    "name": "response error notice extra unknown",
+    "schema": "response",
+    "valid": false,
+    "value": {
+      "text": "Request failed",
+      "status": "FAILED",
+      "extra_response": [
+        {
+          "kind": "ERROR_NOTICE",
+          "payload": {
+            "error_code": "TIMEOUT",
+            "text": "Please try again.",
+            "unknown": "value"
+          }
+        }
+      ],
+      "source_refs": [],
+      "stale": false
+    }
+  },
+  {
+    "name": "response error notice extra raw_exception",
+    "schema": "response",
+    "valid": false,
+    "value": {
+      "text": "Request failed",
+      "status": "FAILED",
+      "extra_response": [
+        {
+          "kind": "ERROR_NOTICE",
+          "payload": {
+            "error_code": "TIMEOUT",
+            "text": "Please try again.",
+            "raw_exception": "value"
+          }
+        }
+      ],
+      "source_refs": [],
+      "stale": false
+    }
+  },
+  {
+    "name": "response error notice extra secret",
+    "schema": "response",
+    "valid": false,
+    "value": {
+      "text": "Request failed",
+      "status": "FAILED",
+      "extra_response": [
+        {
+          "kind": "ERROR_NOTICE",
+          "payload": {
+            "error_code": "TIMEOUT",
+            "text": "Please try again.",
+            "secret": "value"
+          }
+        }
+      ],
+      "source_refs": [],
+      "stale": false
+    }
+  },
+  {
+    "name": "response error notice extra action_ref",
+    "schema": "response",
+    "valid": false,
+    "value": {
+      "text": "Request failed",
+      "status": "FAILED",
+      "extra_response": [
+        {
+          "kind": "ERROR_NOTICE",
+          "payload": {
+            "error_code": "TIMEOUT",
+            "text": "Please try again.",
+            "action_ref": "value"
+          }
+        }
+      ],
+      "source_refs": [],
+      "stale": false
+    }
+  },
+  {
+    "name": "response error notice extra handler_id",
+    "schema": "response",
+    "valid": false,
+    "value": {
+      "text": "Request failed",
+      "status": "FAILED",
+      "extra_response": [
+        {
+          "kind": "ERROR_NOTICE",
+          "payload": {
+            "error_code": "TIMEOUT",
+            "text": "Please try again.",
+            "handler_id": "value"
+          }
+        }
+      ],
+      "source_refs": [],
+      "stale": false
+    }
+  },
+  {
+    "name": "response error notice extra url",
+    "schema": "response",
+    "valid": false,
+    "value": {
+      "text": "Request failed",
+      "status": "FAILED",
+      "extra_response": [
+        {
+          "kind": "ERROR_NOTICE",
+          "payload": {
+            "error_code": "TIMEOUT",
+            "text": "Please try again.",
+            "url": "value"
+          }
+        }
+      ],
+      "source_refs": [],
+      "stale": false
+    }
+  },
+  {
+    "name": "response error notice missing payload",
+    "schema": "response",
+    "valid": false,
+    "value": {
+      "text": "Request failed",
+      "status": "FAILED",
+      "extra_response": [
+        {
+          "kind": "ERROR_NOTICE"
+        }
+      ],
+      "source_refs": [],
+      "stale": false
+    }
+  },
+  {
+    "name": "response error notice extra component field",
+    "schema": "response",
+    "valid": false,
+    "value": {
+      "text": "Request failed",
+      "status": "FAILED",
+      "extra_response": [
+        {
+          "kind": "ERROR_NOTICE",
+          "payload": {
+            "error_code": "TIMEOUT",
+            "text": "Please try again."
+          },
+          "unknown": true
+        }
+      ],
+      "source_refs": [],
+      "stale": false
+    }
+  }
+]

@@ -1,0 +1,126 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://notification.local/contracts/1.0.0/budget.schema.json",
+  "title": "BudgetContract",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0",
+      "type": "string"
+    },
+    "currency": {
+      "const": "THB",
+      "type": "string"
+    },
+    "timezone": {
+      "const": "Asia/Bangkok",
+      "type": "string"
+    },
+    "monthly_cash_cap": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 400
+    },
+    "protected_reserve": {
+      "type": "number",
+      "minimum": 100
+    },
+    "operating_cap": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 300
+    },
+    "inference_cap": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 120
+    },
+    "hosting_cap": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 180
+    },
+    "paid_upgrades": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 0
+    },
+    "max_llm_calls_per_run": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 4
+    },
+    "max_input_tokens_per_run": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 20000
+    },
+    "max_output_tokens_per_run": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 3000
+    },
+    "max_platform_subtasks_per_run": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 2
+    },
+    "max_tool_calls_per_run": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 4
+    },
+    "max_retries_per_run": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 2
+    },
+    "warning_percent": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 80
+    },
+    "funded_runs_per_month": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 100
+    },
+    "funded_runs_per_day": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 5
+    },
+    "user_monthly_cap": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 15
+    },
+    "tracing_enabled": {
+      "const": false,
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "schema_version",
+    "currency",
+    "timezone",
+    "monthly_cash_cap",
+    "protected_reserve",
+    "operating_cap",
+    "inference_cap",
+    "hosting_cap",
+    "paid_upgrades",
+    "max_llm_calls_per_run",
+    "max_input_tokens_per_run",
+    "max_output_tokens_per_run",
+    "max_platform_subtasks_per_run",
+    "max_tool_calls_per_run",
+    "max_retries_per_run",
+    "warning_percent",
+    "funded_runs_per_month",
+    "funded_runs_per_day",
+    "user_monthly_cap",
+    "tracing_enabled"
+  ],
+  "additionalProperties": false
+}

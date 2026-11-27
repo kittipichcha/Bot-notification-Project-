@@ -1,0 +1,22 @@
+{
+  "schema_version": "1.0.0",
+  "currency": "THB",
+  "timezone": "Asia/Bangkok",
+  "monthly_cash_cap": 400,
+  "protected_reserve": 100,
+  "operating_cap": 300,
+  "inference_cap": 120,
+  "hosting_cap": 180,
+  "paid_upgrades": 0,
+  "max_llm_calls_per_run": 4,
+  "max_input_tokens_per_run": 20000,
+  "max_output_tokens_per_run": 3000,
+  "max_platform_subtasks_per_run": 2,
+  "max_tool_calls_per_run": 4,
+  "max_retries_per_run": 2,
+  "warning_percent": 80,
+  "funded_runs_per_month": 100,
+  "funded_runs_per_day": 5,
+  "user_monthly_cap": 15,
+  "tracing_enabled": false
+}

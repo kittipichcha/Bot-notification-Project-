@@ -1,0 +1,85 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://notification.local/contracts/1.0.0/trigger.schema.json",
+  "title": "TriggerContract",
+  "type": "object",
+  "properties": {
+    "event_slug": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[a-z][a-z0-9_]*$"
+    },
+    "source": {
+      "enum": [
+        "gateway",
+        "webhook",
+        "composio",
+        "none"
+      ]
+    },
+    "payload_schema_ref": {
+      "type": "string",
+      "pattern": "^https://notification\\.local/contracts/1\\.0\\.0/[a-z][a-z0-9-]*\\.schema\\.json#/definitions/[A-Za-z][A-Za-z0-9]*$"
+    },
+    "filters": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "eligible_roles": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "ADMIN",
+          "MEMBER"
+        ]
+      },
+      "uniqueItems": true
+    },
+    "default_on_action": {
+      "anyOf": [
+        {
+          "enum": [
+            "help",
+            "setup",
+            "mention",
+            "approval",
+            "removal",
+            "status"
+          ]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "filter_schema_ref": {
+      "type": "string",
+      "pattern": "^https://notification\\.local/contracts/1\\.0\\.0/[a-z][a-z0-9-]*\\.schema\\.json#/definitions/[A-Za-z][A-Za-z0-9]*$"
+    }
+  },
+  "required": [
+    "event_slug",
+    "source",
+    "payload_schema_ref",
+    "filters",
+    "eligible_roles",
+    "default_on_action",
+    "filter_schema_ref"
+  ],
+  "additionalProperties": false,
+  "definitions": {
+    "SystemEvent": {
+      "type": "object",
+      "properties": {},
+      "additionalProperties": false
+    },
+    "SystemFilter": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    }
+  }
+}
