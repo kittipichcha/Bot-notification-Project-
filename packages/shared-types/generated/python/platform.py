@@ -2,10 +2,12 @@
 
 from __future__ import annotations
 
-from typing import Any, Dict, List, Literal, Optional, TypedDict, Union
+from typing import Any, Literal
+
+from typing_extensions import TypedDict
 
 
-class Capabilities(TypedDict):
+class Capabilities(TypedDict, closed=True):
     setup: bool
     invoke: bool
     connection: bool
@@ -14,34 +16,34 @@ class Capabilities(TypedDict):
     response: bool
 
 
-class SetupFlow(TypedDict):
-    adapter: Optional[str]
-    status: Optional[str]
-    permission: Optional[str]
-    bootstrap: Optional[str]
+class SetupFlow(TypedDict, closed=True):
+    adapter: str | None
+    status: str | None
+    permission: str | None
+    bootstrap: str | None
 
 
-Scope = str
+type Scope = str
 
 
-class OauthRequirements(TypedDict):
+class OauthRequirements(TypedDict, closed=True):
     required: bool
-    scopes: List[Scope]
+    scopes: list[Scope]
 
 
-class FieldCatalogTrigger(TypedDict):
+class FieldCatalogTrigger(TypedDict, closed=True):
     event_slug: str
     source: Literal['gateway', 'webhook', 'composio', 'none']
     payload_schema_ref: str
-    filters: Dict[str, Any]
-    eligible_roles: List[Literal['ADMIN', 'MEMBER']]
-    default_on_action: Optional[
-        Literal['help', 'setup', 'mention', 'approval', 'removal', 'status']
-    ]
+    filters: dict[str, Any]
+    eligible_roles: list[Literal['ADMIN', 'MEMBER']]
+    default_on_action: (
+        Literal['help', 'setup', 'mention', 'approval', 'removal', 'status'] | None
+    )
     filter_schema_ref: str
 
 
-class ToolResult1(TypedDict):
+class ToolResult1(TypedDict, closed=True):
     status: Literal['success']
     data_ref: str
     source: str
@@ -50,7 +52,7 @@ class ToolResult1(TypedDict):
     retryable: Literal[False]
 
 
-class ToolResult2(TypedDict):
+class ToolResult2(TypedDict, closed=True):
     status: Literal['failed']
     data_ref: None
     source: str
@@ -69,18 +71,18 @@ class ToolResult2(TypedDict):
     retryable: bool
 
 
-ToolResult = Union[ToolResult1, ToolResult2]
+type ToolResult = ToolResult1 | ToolResult2
 
 
-RequiredScope = str
+type RequiredScope = str
 
 
-class RateLimit(TypedDict):
+class RateLimit(TypedDict, closed=True):
     max_calls: int
     window_ms: int
 
 
-class ToolSpec(TypedDict):
+class ToolSpec(TypedDict, closed=True):
     tool_id: str
     version: Literal['1.0.0']
     provider_action: str
@@ -88,27 +90,27 @@ class ToolSpec(TypedDict):
     adapter: str
     input_schema_ref: str
     result_schema_ref: str
-    required_scopes: List[RequiredScope]
+    required_scopes: list[RequiredScope]
     rate_limit: RateLimit
 
 
-class ToolRegistry(TypedDict):
-    adapter: Optional[str]
-    tools: List[ToolSpec]
+class ToolRegistry(TypedDict, closed=True):
+    adapter: str | None
+    tools: list[ToolSpec]
 
 
-class Platform(TypedDict):
+class Platform(TypedDict, closed=True):
     platform_key: str
     display_name: str
     enabled: bool
     capabilities: Capabilities
     setup_flow: SetupFlow
-    invoke_adapter: Optional[str]
-    connection_adapter: Optional[str]
-    trigger_adapter: Optional[str]
-    response_adapter: Optional[str]
+    invoke_adapter: str | None
+    connection_adapter: str | None
+    trigger_adapter: str | None
+    response_adapter: str | None
     scheduler_support: bool
-    supported_response_components: List[
+    supported_response_components: list[
         Literal[
             'TEXT',
             'EMBED',
@@ -121,13 +123,13 @@ class Platform(TypedDict):
     tool_registry: ToolRegistry
     oauth_requirements: OauthRequirements
     event_source_type: Literal['gateway', 'webhook', 'composio', 'none']
-    default_event_policy: List[FieldCatalogTrigger]
+    default_event_policy: list[FieldCatalogTrigger]
     release: Literal['P0', 'P1', 'P2']
 
 
-class PlatformContract(TypedDict):
+class PlatformContract(TypedDict, closed=True):
     schema_version: Literal['1.0.0']
-    platforms: List[Platform]
+    platforms: list[Platform]
 
 
-FieldCatalogTool = Union[ToolSpec, ToolResult]
+type FieldCatalogTool = ToolSpec | ToolResult

@@ -2,129 +2,131 @@
 
 from __future__ import annotations
 
-from typing import Dict, List, Literal, NotRequired, Optional, TypedDict, Union
+from typing import Literal, NotRequired
+
+from typing_extensions import TypedDict
 
 
-class LegacyHealthResponse(TypedDict):
+class LegacyHealthResponse(TypedDict, closed=True):
     status: Literal['ok']
     service: Literal['api']
     readiness: Literal['scaffold']
 
 
-class FieldError(TypedDict):
+class FieldError(TypedDict, closed=True):
     field: str
     message: str
 
 
-class CanonicalError(TypedDict):
+class CanonicalError(TypedDict, closed=True):
     code: str
     message: str
-    field_errors: List[FieldError]
+    field_errors: list[FieldError]
     trace_id: str
     retryable: bool
 
 
-Mode = Literal['normal', 'langgraph']
+type Mode = Literal['normal', 'langgraph']
 
 
-InternalMode = Literal['SIMPLE', 'MULTI_AGENT']
+type InternalMode = Literal['SIMPLE', 'MULTI_AGENT']
 
 
-class Component(TypedDict):
+class Component(TypedDict, closed=True):
     name: str
     status: str
 
 
-class HealthSummary(TypedDict):
+class HealthSummary(TypedDict, closed=True):
     status: str
-    components: List[Component]
+    components: list[Component]
 
 
-class AppData(TypedDict):
-    location: Optional[Literal['HOSTED']]
-    status: str
-
-
-class Checkpoint(TypedDict):
-    location: Optional[Literal['HOSTED']]
+class AppData(TypedDict, closed=True):
+    location: Literal['HOSTED'] | None
     status: str
 
 
-class StorageSummary(TypedDict):
+class Checkpoint(TypedDict, closed=True):
+    location: Literal['HOSTED'] | None
+    status: str
+
+
+class StorageSummary(TypedDict, closed=True):
     managed_selected: bool
     app_data: AppData
     checkpoint: Checkpoint
 
 
-class RequestCounts(TypedDict):
+class RequestCounts(TypedDict, closed=True):
     queued: int
     running: int
     waiting_approval: int
 
 
-class ApprovalCounts(TypedDict):
+class ApprovalCounts(TypedDict, closed=True):
     pending: int
 
 
-Counts = Union[RequestCounts, ApprovalCounts]
+type Counts = RequestCounts | ApprovalCounts
 
 
-class EmptyBody(TypedDict):
+class EmptyBody(TypedDict, closed=True):
     pass
 
 
-class Api001Response(TypedDict):
+class Api001Response(TypedDict, closed=True):
     user_ref: str
-    display_name: Optional[str]
+    display_name: str | None
     platform: Literal['DISCORD']
     expires_at: str
 
 
-class Api005Request(TypedDict):
+class Api005Request(TypedDict, closed=True):
     name: str
     revision: int
 
 
-class Api014Response(TypedDict):
+class Api014Response(TypedDict, closed=True):
     managed_selected: bool
     app_data: AppData
     checkpoint: Checkpoint
     revision: int
 
 
-class Api015Response(TypedDict):
+class Api015Response(TypedDict, closed=True):
     job_id: str
     status: str
-    completed_classes: List[str]
-    pending_classes: List[str]
-    error_code: Optional[str]
+    completed_classes: list[str]
+    pending_classes: list[str]
+    error_code: str | None
     updated_at: str
 
 
-class Api016Response(TypedDict):
+class Api016Response(TypedDict, closed=True):
     status: Literal['UP']
 
 
-class Api017ReadyResponse(TypedDict):
+class Api017ReadyResponse(TypedDict, closed=True):
     status: Literal['READY']
 
 
-class Api017NotReadyResponse(TypedDict):
+class Api017NotReadyResponse(TypedDict, closed=True):
     status: Literal['NOT_READY']
 
 
-class Api018Response(TypedDict):
+class Api018Response(TypedDict, closed=True):
     enabled: bool
     export_mode: Literal['OFF', 'METADATA_ONLY']
     key_configured: bool
-    workspace: Optional[str]
-    project: Optional[str]
-    destination_label: Optional[str]
-    retention_notice: Optional[str]
+    workspace: str | None
+    project: str | None
+    destination_label: str | None
+    retention_notice: str | None
     revision: int
 
 
-class Api019Request(TypedDict):
+class Api019Request(TypedDict, closed=True):
     enabled: bool
     export_mode: Literal['OFF', 'METADATA_ONLY']
     workspace: NotRequired[str]
@@ -136,73 +138,73 @@ class Api019Request(TypedDict):
     revision: int
 
 
-class Api032Request(TypedDict):
+class Api032Request(TypedDict, closed=True):
     session_ref: str
     message: str
     client_event_ref: str
 
 
-class ApprovalDecisionRequest(TypedDict):
+class ApprovalDecisionRequest(TypedDict, closed=True):
     decision: Literal['APPROVE', 'REJECT']
 
 
-class ModeResponse(TypedDict):
+class ModeResponse(TypedDict, closed=True):
     current_mode: Mode
 
 
-class ModeRequest(TypedDict):
+class ModeRequest(TypedDict, closed=True):
     mode: Mode
 
 
-class GrantResponse(TypedDict):
+class GrantResponse(TypedDict, closed=True):
     grant_id: str
     status: str
     revision: int
 
 
-class Api048Request(TypedDict):
+class Api048Request(TypedDict, closed=True):
     managed_selected: bool
 
 
-class Api049Request(TypedDict):
+class Api049Request(TypedDict, closed=True):
     managed_selected: bool
     revision: int
 
 
-class Api049Response(TypedDict):
+class Api049Response(TypedDict, closed=True):
     managed_selected: bool
     app_data: AppData
     checkpoint: Checkpoint
     revision: int
 
 
-class JobResponse(TypedDict):
+class JobResponse(TypedDict, closed=True):
     job_id: str
     status: str
 
 
-class OAuthCallbackQuery1(TypedDict):
+class OAuthCallbackQuery1(TypedDict, closed=True):
     code: str
     state: str
     iss: NotRequired[str]
 
 
-class OAuthCallbackQuery2(TypedDict):
+class OAuthCallbackQuery2(TypedDict, closed=True):
     error: str
     state: str
     iss: NotRequired[str]
 
 
-OAuthCallbackQuery = Union[OAuthCallbackQuery1, OAuthCallbackQuery2]
+type OAuthCallbackQuery = OAuthCallbackQuery1 | OAuthCallbackQuery2
 
 
-Platform = Literal['DISCORD', 'LINE', 'GMAIL', 'GOOGLE_CALENDAR', 'GITHUB']
+type Platform = Literal['DISCORD', 'LINE', 'GMAIL', 'GOOGLE_CALENDAR', 'GITHUB']
 
 
-Release = Literal['P0', 'P1', 'P2']
+type Release = Literal['P0', 'P1', 'P2']
 
 
-ModelRole = Literal[
+type ModelRole = Literal[
     'SIMPLE',
     'ORCHESTRATOR',
     'REVIEWER',
@@ -214,7 +216,7 @@ ModelRole = Literal[
 ]
 
 
-BotStatus = Literal[
+type BotStatus = Literal[
     'UNCONFIGURED',
     'PENDING_STORAGE',
     'READY',
@@ -225,7 +227,7 @@ BotStatus = Literal[
 ]
 
 
-RequestStatus = Literal[
+type RequestStatus = Literal[
     'QUEUED',
     'RUNNING',
     'WAITING_APPROVAL',
@@ -241,21 +243,23 @@ RequestStatus = Literal[
 ]
 
 
-ApprovalType = Literal['TOOL_ACTION', 'TRIGGER_POLICY_CREATE', 'TRIGGER_POLICY_UPDATE']
+type ApprovalType = Literal[
+    'TOOL_ACTION', 'TRIGGER_POLICY_CREATE', 'TRIGGER_POLICY_UPDATE'
+]
 
 
-Audience = Literal['PRIVATE', 'GROUP']
+type Audience = Literal['PRIVATE', 'GROUP']
 
 
-GrantStatus = Literal['ACTIVE', 'REVOKED', 'EXPIRED']
+type GrantStatus = Literal['ACTIVE', 'REVOKED', 'EXPIRED']
 
 
-ApprovalStatus = Literal[
+type ApprovalStatus = Literal[
     'PENDING', 'APPROVED', 'REJECTED', 'EXPIRED', 'REVOKED', 'CONSUMED'
 ]
 
 
-FormAction = Literal[
+type FormAction = Literal[
     'SETUP',
     'GUILD_BOOTSTRAP',
     'DM_ENROLLMENT',
@@ -271,21 +275,21 @@ FormAction = Literal[
 ]
 
 
-ScalarParameter = Union[str, float, bool]
+type ScalarParameter = str | float | bool
 
 
-JsonValue = Optional[Union[str, float, bool, List['JsonValue'], Dict[str, 'JsonValue']]]
+type JsonValue = str | float | bool | list[JsonValue] | dict[str, JsonValue] | None
 
 
-ModelParameters = Dict[str, ScalarParameter]
+type ModelParameters = dict[str, ScalarParameter]
 
 
-class ReviewedJsonSchema1(TypedDict):
+class ReviewedJsonSchema1(TypedDict, closed=True):
     title: NotRequired[str]
     description: NotRequired[str]
     type: Literal['string', 'boolean', 'number', 'integer', 'null']
-    enum: NotRequired[List[Optional[Union[str, bool, float]]]]
-    const: NotRequired[Optional[Union[str, bool, float]]]
+    enum: NotRequired[list[str | bool | float | None]]
+    const: NotRequired[str | bool | float | None]
     format: NotRequired[Literal['uuid', 'date-time', 'uri', 'email']]
     pattern: NotRequired[str]
     minLength: NotRequired[int]
@@ -294,10 +298,10 @@ class ReviewedJsonSchema1(TypedDict):
     maximum: NotRequired[float]
 
 
-RequiredItem = str
+type RequiredItem = str
 
 
-class BotSummary(TypedDict):
+class BotSummary(TypedDict, closed=True):
     bot_id: str
     name: str
     platform: Platform
@@ -305,93 +309,93 @@ class BotSummary(TypedDict):
     conversation_label: str
 
 
-class CommandSync(TypedDict):
+class CommandSync(TypedDict, closed=True):
     status: Literal['PENDING', 'SYNCED', 'FALLBACK']
-    reason_code: Optional[str]
+    reason_code: str | None
 
 
-class SafePreview(TypedDict):
+class SafePreview(TypedDict, closed=True):
     field: str
-    before: Optional[str]
-    after: Optional[str]
+    before: str | None
+    after: str | None
 
 
-class ToolActionPreview(TypedDict):
+class ToolActionPreview(TypedDict, closed=True):
     tool_id: str
     version: str
     operation: str
     target: str
-    changes: List[SafePreview]
+    changes: list[SafePreview]
 
 
-class TriggerPolicyPreview(TypedDict):
+class TriggerPolicyPreview(TypedDict, closed=True):
     event_type: str
-    filters: Dict[str, ScalarParameter]
+    filters: dict[str, ScalarParameter]
     account: str
     resource: str
     action: str
-    argument_bounds: Dict[str, ScalarParameter]
+    argument_bounds: dict[str, ScalarParameter]
     destination: str
     audience: Audience
-    recurrence: Optional[str]
-    timezone: Optional[str]
+    recurrence: str | None
+    timezone: str | None
     expires_at: str
     quota: int
     policy_revision: int
 
 
-class SafeLogEvent(TypedDict):
+class SafeLogEvent(TypedDict, closed=True):
     timestamp: str
     level: str
     service: str
     event_type: str
     trace_id: str
-    reason_code: Optional[str]
-    safe_metadata: Dict[str, Optional[ScalarParameter]]
+    reason_code: str | None
+    safe_metadata: dict[str, ScalarParameter | None]
 
 
-class Session(TypedDict):
+class Session(TypedDict, closed=True):
     session_ref: str
     execution_mode: Mode
 
 
-class Api005Response(TypedDict):
+class Api005Response(TypedDict, closed=True):
     bot: BotSummary
     revision: int
     command_sync: CommandSync
 
 
-class Platform1(TypedDict):
+class Platform1(TypedDict, closed=True):
     platform: Platform
     label: str
     release: Release
     enabled: bool
     setup_available: bool
-    reason_code: Optional[str]
+    reason_code: str | None
 
 
-class Api007Response(TypedDict):
-    platforms: List[Platform1]
+class Api007Response(TypedDict, closed=True):
+    platforms: list[Platform1]
 
 
-class AccountSummary(TypedDict):
+class AccountSummary(TypedDict, closed=True):
     account_ref: str
     platform: Platform
-    label: Optional[str]
+    label: str | None
     status: Literal['PENDING', 'ACTIVE', 'REVOKED', 'UNAVAILABLE']
-    visible_scopes: List[str]
+    visible_scopes: list[str]
     audience: Audience
     can_revoke: bool
 
 
-class AccountPage(TypedDict):
-    items: List[AccountSummary]
-    next_cursor: Optional[str]
+class AccountPage(TypedDict, closed=True):
+    items: list[AccountSummary]
+    next_cursor: str | None
 
 
-class Item2(TypedDict):
+class Item2(TypedDict, closed=True):
     approval_id: str
-    request_ref: Optional[str]
+    request_ref: str | None
     approval_type: ApprovalType
     operation_label: str
     status: ApprovalStatus
@@ -399,12 +403,12 @@ class Item2(TypedDict):
     can_decide: bool
 
 
-class ApprovalPage(TypedDict):
-    items: List[Item2]
-    next_cursor: Optional[str]
+class ApprovalPage(TypedDict, closed=True):
+    items: list[Item2]
+    next_cursor: str | None
 
 
-class Api012Response1(TypedDict):
+class Api012Response1(TypedDict, closed=True):
     approval_id: str
     status: ApprovalStatus
     approval_type: Literal['TOOL_ACTION']
@@ -414,7 +418,7 @@ class Api012Response1(TypedDict):
     can_decide: bool
 
 
-class Api012Response2(TypedDict):
+class Api012Response2(TypedDict, closed=True):
     approval_id: str
     status: ApprovalStatus
     approval_type: Literal['TRIGGER_POLICY_CREATE', 'TRIGGER_POLICY_UPDATE']
@@ -424,36 +428,36 @@ class Api012Response2(TypedDict):
     can_decide: bool
 
 
-Api012Response = Union[Api012Response1, Api012Response2]
+type Api012Response = Api012Response1 | Api012Response2
 
 
-class Item3(TypedDict):
+class Item3(TypedDict, closed=True):
     request_id: str
     status: RequestStatus
-    queue_position: Optional[int]
+    queue_position: int | None
     execution_mode: Mode
     created_at: str
-    error_code: Optional[str]
+    error_code: str | None
     can_control: bool
 
 
-class RequestPage(TypedDict):
-    items: List[Item3]
-    next_cursor: Optional[str]
+class RequestPage(TypedDict, closed=True):
+    items: list[Item3]
+    next_cursor: str | None
 
 
-class Api020Request(TypedDict):
+class Api020Request(TypedDict, closed=True):
     request_ref: str
     step_id: str
     tool_id: str
     tool_version: str
-    arguments: Dict[str, JsonValue]
+    arguments: dict[str, JsonValue]
     action_ref: NotRequired[str]
     idempotency_key: str
     lease_ref: str
 
 
-class Api020Response(TypedDict):
+class Api020Response(TypedDict, closed=True):
     status: Literal['SUCCEEDED', 'FAILED', 'APPROVAL_REQUIRED']
     result: NotRequired[JsonValue]
     approval_ref: NotRequired[str]
@@ -462,75 +466,75 @@ class Api020Response(TypedDict):
     trace_id: str
 
 
-OperationSetItem = str
+type OperationSetItem = str
 
 
-class Api040Request(TypedDict):
+class Api040Request(TypedDict, closed=True):
     tool_id: str
     resource_ref: str
-    operation_set: List[OperationSetItem]
+    operation_set: list[OperationSetItem]
     audience: Audience
     expires_at: str
     revision: int
 
 
-AllowedReadOperation = str
+type AllowedReadOperation = str
 
 
-class Api043Request(TypedDict):
+class Api043Request(TypedDict, closed=True):
     session_ref: str
     resource_ref: str
-    allowed_read_operations: List[AllowedReadOperation]
+    allowed_read_operations: list[AllowedReadOperation]
     audience: Audience
     expires_at: str
 
 
-class Api043Response(TypedDict):
+class Api043Response(TypedDict, closed=True):
     consent_id: str
     status: GrantStatus
 
 
-class Api047Request(TypedDict):
+class Api047Request(TypedDict, closed=True):
     operation: Literal['GRANT', 'REVOKE']
     grantee_ref: str
     expected_revision: int
 
 
-class ValidationChecks(TypedDict):
+class ValidationChecks(TypedDict, closed=True):
     valid: bool
-    checks: List[str]
-    warnings: List[str]
+    checks: list[str]
+    warnings: list[str]
 
 
-Capability = str
+type Capability = str
 
 
-class ModelCapability(TypedDict):
+class ModelCapability(TypedDict, closed=True):
     model_catalog_ref: str
     provider: str
     model_id: str
     display_name: str
-    capabilities: List[Capability]
+    capabilities: list[Capability]
 
 
-class ParameterRule(TypedDict):
+class ParameterRule(TypedDict, closed=True):
     type: Literal['number', 'integer', 'string', 'boolean']
     minimum: NotRequired[float]
     maximum: NotRequired[float]
-    enum: NotRequired[List[Union[str, float, bool]]]
-    default: NotRequired[Union[str, float, bool]]
+    enum: NotRequired[list[str | float | bool]]
+    default: NotRequired[str | float | bool]
 
 
-ToolConstraint = str
+type ToolConstraint = str
 
 
-class Api050Response(TypedDict):
-    models: List[ModelCapability]
-    supported_params: Dict[str, Dict[str, ParameterRule]]
-    tool_constraints: Dict[str, List[ToolConstraint]]
+class Api050Response(TypedDict, closed=True):
+    models: list[ModelCapability]
+    supported_params: dict[str, dict[str, ParameterRule]]
+    tool_constraints: dict[str, list[ToolConstraint]]
 
 
-class Api051Request(TypedDict):
+class Api051Request(TypedDict, closed=True):
     provider: str
     model_id: str
     parameters: ModelParameters
@@ -538,14 +542,14 @@ class Api051Request(TypedDict):
     confirm_cost: bool
 
 
-class Api052Request(TypedDict):
+class Api052Request(TypedDict, closed=True):
     model_catalog_ref: str
     parameters: ModelParameters
     credential: NotRequired[str]
     revision: int
 
 
-class Api052Response(TypedDict):
+class Api052Response(TypedDict, closed=True):
     provider: str
     model_name: str
     role: ModelRole
@@ -553,57 +557,57 @@ class Api052Response(TypedDict):
     revision: int
 
 
-RequestedScope = str
+type RequestedScope = str
 
 
-class Api053Request(TypedDict):
-    requested_scopes: List[RequestedScope]
+class Api053Request(TypedDict, closed=True):
+    requested_scopes: list[RequestedScope]
     form_ref: str
 
 
-class Api053Response(TypedDict):
+class Api053Response(TypedDict, closed=True):
     authorization_url: str
 
 
-class Api057Request(TypedDict):
+class Api057Request(TypedDict, closed=True):
     target_ref: str
     confirmation: Literal[True]
     revision: int
 
 
-class Api058Request(TypedDict):
+class Api058Request(TypedDict, closed=True):
     action: FormAction
     resource_ref: str
     request_ref: NotRequired[str]
 
 
-class Api058Response(TypedDict):
+class Api058Response(TypedDict, closed=True):
     ticket_ref: str
     private_delivery_ref: str
     expires_at: str
 
 
-class Api060Response(TypedDict):
+class Api060Response(TypedDict, closed=True):
     form_session_ref: str
     expires_at: str
 
 
-class FormSubmission(TypedDict):
+class FormSubmission(TypedDict, extra_items='JsonValue'):
     revision: int
     confirmation: NotRequired[bool]
 
 
-class Api062Response(TypedDict):
+class Api062Response(TypedDict, closed=True):
     status: str
     revision: int
     job_ref: NotRequired[str]
 
 
-class Api064Request(TypedDict):
+class Api064Request(TypedDict, closed=True):
     ticket_ref: NotRequired[str]
 
 
-class LogQuery(TypedDict):
+class LogQuery(TypedDict, closed=True):
     level: NotRequired[str]
     service: NotRequired[str]
     event_type: NotRequired[str]
@@ -613,168 +617,168 @@ class LogQuery(TypedDict):
     cursor: NotRequired[str]
 
 
-class TraceQuery(TypedDict):
+class TraceQuery(TypedDict, closed=True):
     limit: NotRequired[int]
     cursor: NotRequired[str]
 
 
-class Api027Response(TypedDict):
-    items: List[SafeLogEvent]
-    next_cursor: Optional[str]
+class Api027Response(TypedDict, closed=True):
+    items: list[SafeLogEvent]
+    next_cursor: str | None
 
 
-class Api028Response(TypedDict):
+class Api028Response(TypedDict, closed=True):
     request_id: str
     trace_id: str
-    events: List[SafeLogEvent]
-    next_cursor: Optional[str]
+    events: list[SafeLogEvent]
+    next_cursor: str | None
 
 
-class Api030Request(TypedDict):
+class Api030Request(TypedDict, closed=True):
     request_ref: str
     lease_ref: str
     idempotency_key: str
 
 
-class Api030Response(TypedDict):
+class Api030Response(TypedDict, closed=True):
     request_id: str
     status: Literal['QUEUED', 'RUNNING']
     trace_id: str
 
 
-class Api031Request(TypedDict):
+class Api031Request(TypedDict, closed=True):
     trigger_ref: str
     scheduled_at: str
     delivery_id: str
     lease_ref: str
 
 
-class Firing(TypedDict):
+class Firing(TypedDict, closed=True):
     trigger_id: str
     request_id: NotRequired[str]
     status: str
 
 
-class Api031Response(TypedDict):
+class Api031Response(TypedDict, closed=True):
     status: Literal['ACCEPTED', 'NO_MATCH', 'DUPLICATE']
-    firings: List[Firing]
+    firings: list[Firing]
     trace_id: str
 
 
-class BotIdPath(TypedDict):
+class BotIdPath(TypedDict, closed=True):
     botId: str
 
 
-class PlatformPath(TypedDict):
+class PlatformPath(TypedDict, closed=True):
     platform: Platform
 
 
-class ApprovalIdPath(TypedDict):
+class ApprovalIdPath(TypedDict, closed=True):
     approvalId: str
 
 
-class JobIdPath(TypedDict):
+class JobIdPath(TypedDict, closed=True):
     jobId: str
 
 
-class RequestIdPath(TypedDict):
+class RequestIdPath(TypedDict, closed=True):
     requestId: str
 
 
-class GrantIdPath(TypedDict):
+class GrantIdPath(TypedDict, closed=True):
     grantId: str
 
 
-class SessionIdPath(TypedDict):
+class SessionIdPath(TypedDict, closed=True):
     sessionId: str
 
 
-class BotIdAgentRolePath(TypedDict):
+class BotIdAgentRolePath(TypedDict, closed=True):
     botId: str
     agentRole: ModelRole
 
 
-class AccountCallbackQuery1(TypedDict):
+class AccountCallbackQuery1(TypedDict, closed=True):
     code: str
     state: str
 
 
-class AccountCallbackQuery2(TypedDict):
+class AccountCallbackQuery2(TypedDict, closed=True):
     error: str
     state: str
 
 
-AccountCallbackQuery = Union[AccountCallbackQuery1, AccountCallbackQuery2]
+type AccountCallbackQuery = AccountCallbackQuery1 | AccountCallbackQuery2
 
 
-class AccountIdPath(TypedDict):
+class AccountIdPath(TypedDict, closed=True):
     accountId: str
 
 
-class ActionTicketPath(TypedDict):
+class ActionTicketPath(TypedDict, closed=True):
     action: FormAction
     ticket: str
 
 
-class FormIdPath(TypedDict):
+class FormIdPath(TypedDict, closed=True):
     formId: str
 
 
-class SafeScope(TypedDict):
-    platforms: List[str]
-    tool_ids: List[str]
-    operations: List[str]
-    resource_labels: List[str]
+class SafeScope(TypedDict, closed=True):
+    platforms: list[str]
+    tool_ids: list[str]
+    operations: list[str]
+    resource_labels: list[str]
     audience: Audience
-    expires_at: Optional[str]
+    expires_at: str | None
 
 
-class ModelSummary(TypedDict):
+class ModelSummary(TypedDict, closed=True):
     provider: str
     model_name: str
     role: ModelRole
     credential_configured: bool
 
 
-class FeatureSummary(TypedDict):
+class FeatureSummary(TypedDict, closed=True):
     enabled: bool
     release: Release
-    count: Optional[int]
-    reason_code: Optional[str]
+    count: int | None
+    reason_code: str | None
 
 
-class ConnectionSummary(TypedDict):
+class ConnectionSummary(TypedDict, closed=True):
     connection_id: str
     bot_label: str
     status: str
     scope: SafeScope
-    expires_at: Optional[str]
+    expires_at: str | None
 
 
-class RequestAcceptedResponse(TypedDict):
+class RequestAcceptedResponse(TypedDict, closed=True):
     request_id: str
     status: RequestStatus
     execution_mode: Mode
     trace_id: str
 
 
-class Api033Response(TypedDict):
+class Api033Response(TypedDict, closed=True):
     request_id: str
     status: RequestStatus
-    queue_position: Optional[int]
+    queue_position: int | None
     execution_mode: Mode
-    error_code: Optional[str]
+    error_code: str | None
     can_control: bool
     trace_id: str
 
 
-class BotTransitionResponse(TypedDict):
+class BotTransitionResponse(TypedDict, closed=True):
     bot_id: str
     status: BotStatus
     trace_id: str
 
 
-class ApprovalDecisionResponse(TypedDict):
+class ApprovalDecisionResponse(TypedDict, closed=True):
     approval_id: str
     approval_type: ApprovalType
     status: ApprovalStatus
@@ -782,33 +786,33 @@ class ApprovalDecisionResponse(TypedDict):
     trace_id: str
 
 
-class ConnectionDashboard(TypedDict):
+class ConnectionDashboard(TypedDict, closed=True):
     enabled: bool
-    incoming: List[ConnectionSummary]
-    outgoing: List[ConnectionSummary]
-    pending_count: Optional[int]
+    incoming: list[ConnectionSummary]
+    outgoing: list[ConnectionSummary]
+    pending_count: int | None
 
 
-class Item(TypedDict):
+class Item(TypedDict, closed=True):
     bot_id: str
     name: str
     platform: Platform
     conversation_label: str
     status: BotStatus
     can_setup: Literal[True]
-    model: Optional[ModelSummary]
+    model: ModelSummary | None
 
 
-class BotPage(TypedDict):
-    items: List[Item]
-    next_cursor: Optional[str]
+class BotPage(TypedDict, closed=True):
+    items: list[Item]
+    next_cursor: str | None
 
 
-class Api004Response(TypedDict):
+class Api004Response(TypedDict, closed=True):
     bot: BotSummary
     revision: int
-    models: List[ModelSummary]
-    sessions: List[Session]
+    models: list[ModelSummary]
+    sessions: list[Session]
     storage: StorageSummary
     health: HealthSummary
     requests: RequestCounts
@@ -818,7 +822,7 @@ class Api004Response(TypedDict):
     command_sync: CommandSync
 
 
-class Agent(TypedDict):
+class Agent(TypedDict, closed=True):
     role: ModelRole
     model: ModelSummary
     parameters: ModelParameters
@@ -826,26 +830,26 @@ class Agent(TypedDict):
     revision: int
 
 
-class Api006Response(TypedDict):
-    agents: List[Agent]
-    supported_modes: List[Mode]
+class Api006Response(TypedDict, closed=True):
+    agents: list[Agent]
+    supported_modes: list[Mode]
 
 
-class Item1(TypedDict):
+class Item1(TypedDict, closed=True):
     grant_id: str
     tool_id: str
     scope: SafeScope
     status: GrantStatus
-    expires_at: Optional[str]
+    expires_at: str | None
     approval_required: bool
 
 
-class ToolGrantPage(TypedDict):
-    items: List[Item1]
-    next_cursor: Optional[str]
+class ToolGrantPage(TypedDict, closed=True):
+    items: list[Item1]
+    next_cursor: str | None
 
 
-class Api041Response(TypedDict):
+class Api041Response(TypedDict, closed=True):
     grant_id: str
     scope: SafeScope
     status: GrantStatus
@@ -972,16 +976,16 @@ class GeneratorWrapper(TypedDict):
     value116: NotRequired[ApiContract]
 
 
-class ReviewedJsonSchema2(TypedDict):
+class ReviewedJsonSchema2(TypedDict, closed=True):
     title: NotRequired[str]
     description: NotRequired[str]
     type: Literal['object']
-    properties: Dict[str, ReviewedJsonSchema]
-    required: NotRequired[List[RequiredItem]]
+    properties: dict[str, ReviewedJsonSchema]
+    required: NotRequired[list[RequiredItem]]
     additionalProperties: Literal[False]
 
 
-class ReviewedJsonSchema3(TypedDict):
+class ReviewedJsonSchema3(TypedDict, closed=True):
     title: NotRequired[str]
     description: NotRequired[str]
     type: Literal['array']
@@ -991,28 +995,22 @@ class ReviewedJsonSchema3(TypedDict):
     uniqueItems: NotRequired[bool]
 
 
-class ReviewedJsonSchema4(TypedDict):
+class ReviewedJsonSchema4(TypedDict, closed=True):
     title: NotRequired[str]
     description: NotRequired[str]
-    anyOf: List[ReviewedJsonSchema]
+    anyOf: list[ReviewedJsonSchema]
 
 
-class ReviewedJsonSchema5(TypedDict):
+class ReviewedJsonSchema5(TypedDict, closed=True):
     title: NotRequired[str]
     description: NotRequired[str]
-    oneOf: List[ReviewedJsonSchema]
+    oneOf: list[ReviewedJsonSchema]
 
 
-ReviewedJsonSchema = Union[
-    ReviewedJsonSchema1,
-    ReviewedJsonSchema2,
-    ReviewedJsonSchema3,
-    ReviewedJsonSchema4,
-    ReviewedJsonSchema5,
-]
+type ReviewedJsonSchema = ReviewedJsonSchema1 | ReviewedJsonSchema2 | ReviewedJsonSchema3 | ReviewedJsonSchema4 | ReviewedJsonSchema5
 
 
-class Tool(TypedDict):
+class Tool(TypedDict, closed=True):
     tool_id: str
     version: str
     label: str
@@ -1023,12 +1021,12 @@ class Tool(TypedDict):
     enabled: bool
 
 
-class Api009Response(TypedDict):
+class Api009Response(TypedDict, closed=True):
     platform: Platform
-    tools: List[Tool]
+    tools: list[Tool]
 
 
-class Trigger(TypedDict):
+class Trigger(TypedDict, closed=True):
     event_type: str
     label: str
     config_schema: ReviewedJsonSchema
@@ -1037,84 +1035,16 @@ class Trigger(TypedDict):
     requires_approval: bool
 
 
-class Api023Response(TypedDict):
+class Api023Response(TypedDict, closed=True):
     platform: Platform
-    triggers: List[Trigger]
+    triggers: list[Trigger]
 
 
-class Api061Response(TypedDict):
+class Api061Response(TypedDict, closed=True):
     action: FormAction
     fields: ReviewedJsonSchema
     expires_at: str
     revision: int
 
 
-ApiContract = Union[
-    LegacyHealthResponse,
-    CanonicalError,
-    Api017NotReadyResponse,
-    Api001Response,
-    EmptyBody,
-    BotPage,
-    Api004Response,
-    Api005Request,
-    Api005Response,
-    Api006Response,
-    Api007Response,
-    AccountPage,
-    Api009Response,
-    ToolGrantPage,
-    ApprovalPage,
-    Api012Response,
-    RequestPage,
-    Api014Response,
-    Api015Response,
-    Api016Response,
-    Api017ReadyResponse,
-    Api018Response,
-    Api019Request,
-    Api020Request,
-    Api020Response,
-    Api023Response,
-    Api027Response,
-    Api028Response,
-    Api030Request,
-    Api030Response,
-    Api031Request,
-    Api031Response,
-    Api032Request,
-    RequestAcceptedResponse,
-    Api033Response,
-    BotTransitionResponse,
-    ApprovalDecisionRequest,
-    ApprovalDecisionResponse,
-    Api040Request,
-    GrantResponse,
-    Api041Response,
-    Api043Request,
-    Api043Response,
-    HealthSummary,
-    ModeResponse,
-    ModeRequest,
-    Api047Request,
-    Api048Request,
-    ValidationChecks,
-    Api049Request,
-    Api049Response,
-    Api050Response,
-    Api051Request,
-    Api052Request,
-    Api052Response,
-    Api053Request,
-    Api053Response,
-    AccountSummary,
-    Api057Request,
-    JobResponse,
-    Api058Request,
-    Api058Response,
-    Api060Response,
-    Api061Response,
-    FormSubmission,
-    Api062Response,
-    Api064Request,
-]
+type ApiContract = LegacyHealthResponse | CanonicalError | Api017NotReadyResponse | Api001Response | EmptyBody | BotPage | Api004Response | Api005Request | Api005Response | Api006Response | Api007Response | AccountPage | Api009Response | ToolGrantPage | ApprovalPage | Api012Response | RequestPage | Api014Response | Api015Response | Api016Response | Api017ReadyResponse | Api018Response | Api019Request | Api020Request | Api020Response | Api023Response | Api027Response | Api028Response | Api030Request | Api030Response | Api031Request | Api031Response | Api032Request | RequestAcceptedResponse | Api033Response | BotTransitionResponse | ApprovalDecisionRequest | ApprovalDecisionResponse | Api040Request | GrantResponse | Api041Response | Api043Request | Api043Response | HealthSummary | ModeResponse | ModeRequest | Api047Request | Api048Request | ValidationChecks | Api049Request | Api049Response | Api050Response | Api051Request | Api052Request | Api052Response | Api053Request | Api053Response | AccountSummary | Api057Request | JobResponse | Api058Request | Api058Response | Api060Response | Api061Response | FormSubmission | Api062Response | Api064Request

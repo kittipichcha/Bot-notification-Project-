@@ -2,10 +2,12 @@
 
 from __future__ import annotations
 
-from typing import Literal, TypedDict
+from typing import Literal
+
+from typing_extensions import TypedDict
 
 
-class BudgetContract(TypedDict):
+class BudgetContract(TypedDict, closed=True):
     schema_version: Literal['1.0.0']
     currency: Literal['THB']
     timezone: Literal['Asia/Bangkok']

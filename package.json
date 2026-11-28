@@ -14,7 +14,12 @@
     "contracts:generate": "node scripts/contracts.js generate",
     "contracts:check": "node scripts/contracts.js check",
     "contracts:test:python": "uv run --locked --package agent-worker python -m unittest discover -s tests/contracts -p test_contracts.py",
-    "check:contracts": "node --test tests/contracts.test.js tests/registry.test.js tests/generation.test.js tests/catalogue.test.js tests/contract-parity.test.js tests/api-contracts.test.js tests/policy.test.js tests/response.test.js && npm run contracts:test:python && npm run contracts:check"
+    "check:contracts": "node --test tests/contracts.test.js tests/registry.test.js tests/generation.test.js tests/catalogue.test.js tests/contract-parity.test.js tests/api-contracts.test.js tests/policy.test.js tests/response.test.js && npm run contracts:test:python && npm run contracts:check",
+    "check:format": "node scripts/check-format.js",
+    "typecheck": "node node_modules/typescript/bin/tsc -p apps/api/tsconfig.json --noEmit && node node_modules/typescript/bin/tsc -p apps/web/tsconfig.json --noEmit && node node_modules/typescript/bin/tsc --noEmit --strict tests/contracts/typecheck.ts tests/contracts/roundtrip.ts",
+    "check:secrets": "node scripts/check-secrets.js",
+    "check:deps": "node scripts/check-deps.js --pinning",
+    "check:python": "node scripts/check-python.js"
   },
   "engines": {
     "node": ">=24 <25",

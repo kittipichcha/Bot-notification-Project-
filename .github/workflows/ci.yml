@@ -1,0 +1,201 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - main
+      - dev
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - ready_for_review
+  push:
+    branches:
+      - main
+      - dev
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  format-type-build:
+    name: Format, Typecheck & Build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: "24"
+
+      - name: Set up Python
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.12"
+
+      - name: Install Node dependencies from lockfile
+        run: npm ci --ignore-scripts --no-audit --no-fund
+
+      - name: Check formatting and workflow hygiene
+        run: npm run check:format
+
+      - name: Validate default environment configuration
+        run: npm run check:env
+
+      - name: Run TypeScript typechecks
+        run: npm run typecheck
+
+      - name: Build workspaces
+        run: npm run build
+
+  tests-and-contracts:
+    name: Tests & Contracts
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: "24"
+
+      - name: Set up Python
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.12"
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@1db35dd8eee11c5894872e0b383ae6c406cf738d # v10.4.0
+        with:
+          version: "0.9.28"
+          enable-cache: false
+
+      - name: Install Node dependencies from lockfile
+        run: npm ci --ignore-scripts --no-audit --no-fund
+
+      - name: Sync Python workspace from lockfile
+        run: uv sync --locked --all-packages --cache-dir .uv-cache
+
+      - name: Verify Python service scaffolds
+        run: npm run check:python
+
+      - name: Run Python contract tests
+        run: npm run contracts:test:python
+
+      - name: Verify generated contract parity
+        run: npm run contracts:check
+
+      - name: Build workspaces
+        run: npm run build
+
+      - name: Run Node test suite
+        run: npm test
+
+  security-and-deps:
+    name: Secret & Dependency Gates
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout repository with full history
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Install and verify Gitleaks v8.30.1
+        run: |
+          set -euo pipefail
+          curl -fsSL "https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_linux_x64.tar.gz" -o "$RUNNER_TEMP/gitleaks.tar.gz"
+          echo "551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb  $RUNNER_TEMP/gitleaks.tar.gz" | sha256sum -c -
+          mkdir -p "$RUNNER_TEMP/gitleaks-bin"
+          tar -xzf "$RUNNER_TEMP/gitleaks.tar.gz" -C "$RUNNER_TEMP/gitleaks-bin" gitleaks
+          echo "$RUNNER_TEMP/gitleaks-bin" >> "$GITHUB_PATH"
+
+      - name: Run Gitleaks on git history, working tree, and synthetic fixture
+        run: |
+          set -euo pipefail
+          gitleaks git --redact --verbose --config .gitleaks.toml --no-banner
+          gitleaks dir . --redact --verbose --config .gitleaks.toml --no-banner
+          fixture_dir="$RUNNER_TEMP/gitleaks-fixture"
+          rm -rf "$fixture_dir"
+          mkdir -p "$fixture_dir"
+          trap 'rm -rf "$fixture_dir"' EXIT
+          synthetic_pat="$(python3 -c "import string; s = string.ascii_letters + string.digits; print('ghp' + '_' + ''.join(s[(i * 7) % len(s)] for i in range(36)), end='')")"
+          printf 'GITHUB_TOKEN=%s\n' "$synthetic_pat" > "$fixture_dir/leak.env"
+          set +e
+          output="$(gitleaks dir "$fixture_dir" --redact --config .gitleaks.toml --no-banner 2>&1)"
+          status=$?
+          set -e
+          if [ "$status" -eq 0 ]; then
+            echo "ERROR: Gitleaks failed to flag synthetic token fixture" >&2
+            exit 1
+          fi
+          if echo "$output" | grep -Fq "$synthetic_pat"; then
+            echo "ERROR: Gitleaks output exposed raw synthetic token" >&2
+            exit 1
+          fi
+          echo "Gitleaks synthetic fixture check passed with redacted failure."
+
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: "24"
+
+      - name: Set up Python
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.12"
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@1db35dd8eee11c5894872e0b383ae6c406cf738d # v10.4.0
+        with:
+          version: "0.9.28"
+          enable-cache: false
+
+      - name: Install Node dependencies from lockfile
+        run: npm ci --ignore-scripts --no-audit --no-fund
+
+      - name: Sync Python workspace from lockfile
+        run: uv sync --locked --all-packages --cache-dir .uv-cache
+
+      - name: Run deterministic repo secret scan and self-test
+        run: |
+          npm run check:secrets
+          node scripts/check-secrets.js --self-test
+
+      - name: Check dependency pinning and lockfile integrity
+        run: |
+          npm run check:deps
+          uv lock --check --offline --cache-dir .uv-cache
+
+      - name: Run npm vulnerability audit gate
+        run: node scripts/check-deps.js --audit-npm
+
+      - name: Run pip-audit vulnerability gate and self-test
+        run: |
+          set -euo pipefail
+          uv export --locked --offline --all-packages --no-emit-workspace --no-hashes --cache-dir .uv-cache -o "$RUNNER_TEMP/requirements.lock.txt"
+          set +e
+          uvx --from pip-audit==2.10.1 pip-audit --no-deps --disable-pip --format json -r "$RUNNER_TEMP/requirements.lock.txt" > "$RUNNER_TEMP/pip-audit.json"
+          audit_status=$?
+          set -e
+          if [ "$audit_status" -ne 0 ] && [ "$audit_status" -ne 1 ]; then
+            echo "ERROR: pip-audit exited with unexpected status $audit_status" >&2
+            exit "$audit_status"
+          fi
+          node scripts/check-deps.js --audit-pip "$RUNNER_TEMP/pip-audit.json"
+          node scripts/check-deps.js --self-test
