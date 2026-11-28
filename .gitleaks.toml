@@ -9,7 +9,7 @@ regex = '''\b[MN][A-Za-z0-9]{23,28}\.[A-Za-z0-9_-]{6}\.[A-Za-z0-9_-]{27,38}\b'''
 [[rules]]
 id = "env-secret-assignment"
 description = "Committed Secret Environment Assignment"
-regex = '''(?i)(?:DISCORD_BOT_TOKEN|DISCORD_CLIENT_SECRET|DISCORD_PUBLIC_KEY|LINE_CHANNEL_SECRET|LINE_CHANNEL_ACCESS_TOKEN|OPENAI_API_KEY|GEMINI_API_KEY|ANTHROPIC_API_KEY|AWS_SECRET_ACCESS_KEY|GITHUB_TOKEN|NPM_TOKEN)\s*(?:=\s*['"]?([^\s'"#]{8,})['"]?|:\s*['"]([^\s'"#]{8,})['"]|:\s+([^\s'"#,}\[\]]{8,}))'''
+regex = '''(?i)(?:DISCORD_BOT_TOKEN|DISCORD_CLIENT_SECRET|DISCORD_PUBLIC_KEY|LINE_CHANNEL_SECRET|LINE_CHANNEL_ACCESS_TOKEN|OPENAI_API_KEY|GEMINI_API_KEY|ANTHROPIC_API_KEY|AWS_SECRET_ACCESS_KEY|GITHUB_TOKEN|NPM_TOKEN)[ \t]*(?:=[ \t]*['"]?([^\s'"#]{8,})['"]?|:[ \t]*['"]([^\s'"#]{8,})['"]|:[ \t]+([^\s'"#,}\[\]]{8,}))'''
 
   [[rules.allowlists]]
   description = "Ignore sha256 manifests and placeholder values"
@@ -18,13 +18,13 @@ regex = '''(?i)(?:DISCORD_BOT_TOKEN|DISCORD_CLIENT_SECRET|DISCORD_PUBLIC_KEY|LIN
   ]
   regexTarget = "match"
   regexes = [
-    '''(?i)^(?:DISCORD_BOT_TOKEN|DISCORD_CLIENT_SECRET|DISCORD_PUBLIC_KEY|LINE_CHANNEL_SECRET|LINE_CHANNEL_ACCESS_TOKEN|OPENAI_API_KEY|GEMINI_API_KEY|ANTHROPIC_API_KEY|AWS_SECRET_ACCESS_KEY|GITHUB_TOKEN|NPM_TOKEN)\s*[:=]\s*['"]?(?:your[-_].*|placeholder.*|example.*|changeme.*|change-me.*|test[-_]?secret.*|dummy.*|redacted.*|<[^>]*>|\$\{\{?[^}]*\}?\}?)['"]?$''',
+    '''(?i)^(?:DISCORD_BOT_TOKEN|DISCORD_CLIENT_SECRET|DISCORD_PUBLIC_KEY|LINE_CHANNEL_SECRET|LINE_CHANNEL_ACCESS_TOKEN|OPENAI_API_KEY|GEMINI_API_KEY|ANTHROPIC_API_KEY|AWS_SECRET_ACCESS_KEY|GITHUB_TOKEN|NPM_TOKEN)[ \t]*[:=][ \t]*['"]?(?:your[-_].*|placeholder.*|example.*|changeme.*|change-me.*|test[-_]?secret.*|dummy.*|redacted.*|<[^>]*>|\$\{\{?[^}]*\}?\}?)['"]?$''',
   ]
 
 [[rules]]
 id = "database-url-credentials"
 description = "Database URL with Embedded Credentials"
-regex = '''(?i)DATABASE_URL\s*(?:=\s*['"]?|:\s*['"]?)(?:postgres(?:ql)?|mongodb(?:\+srv)?|mysql|redis)://[^:\s/@]+:([^@\s/'"]+)@'''
+regex = '''(?i)DATABASE_URL[ \t]*(?:=[ \t]*['"]?|:[ \t]*['"]?)(?:postgres(?:ql)?|mongodb(?:\+srv)?|mysql|redis)://[^:\s/@]+:([^@\s/'"]+)@'''
 secretGroup = 1
 
   [[rules.allowlists]]
