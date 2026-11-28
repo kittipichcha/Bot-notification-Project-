@@ -126,15 +126,13 @@ jobs:
       - name: Run Gitleaks on git history, working tree, and synthetic fixture
         run: |
           set -euo pipefail
-          gitleaks git --redact --config .gitleaks.toml --no-banner
-          gitleaks dir . --redact --config .gitleaks.toml --no-banner
+          gitleaks git --redact --verbose --config .gitleaks.toml --no-banner
+          gitleaks dir . --redact --verbose --config .gitleaks.toml --no-banner
           fixture_dir="$RUNNER_TEMP/gitleaks-fixture"
           rm -rf "$fixture_dir"
           mkdir -p "$fixture_dir"
           trap 'rm -rf "$fixture_dir"' EXIT
-          pat_prefix="ghp"
-          pat_body="A1b2C3d4E5f6G7h8I9j0K1l2M3n4O5p6Q7r8"
-          synthetic_pat="${pat_prefix}_${pat_body}"
+          synthetic_pat="$(python3 -c "import string; s = string.ascii_letters + string.digits; print('ghp' + '_' + ''.join(s[(i * 7) % len(s)] for i in range(36)), end='')")"
           printf 'GITHUB_TOKEN=%s\n' "$synthetic_pat" > "$fixture_dir/leak.env"
           set +e
           output="$(gitleaks dir "$fixture_dir" --redact --config .gitleaks.toml --no-banner 2>&1)"

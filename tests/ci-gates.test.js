@@ -121,9 +121,9 @@ test('scanSecrets passes on repository root', () => {
 
 test('scanSecrets detects synthetic secrets and redacts formatted output', () => {
   withTempDir((dir) => {
-    const githubPat = ['ghp', '_'].join('') + 'Z9y8X7w6V5u4T3s2R1q0P9o8N7m6L5k4J3i2';
+    const githubPat = ['ghp', '_'].join('') + Array.from({ length: 36 }, (_, i) => String.fromCharCode(97 + (i % 26))).join('');
     const discordTok = ['M' + 'A'.repeat(23), 'XyZaBc', 'Q'.repeat(27)].join('.');
-    const awsKey = ['AKI', 'A'].join('') + '1234567890ABCDEF';
+    const awsKey = ['AKI', 'A'].join('') + Array.from({ length: 16 }, (_, i) => String.fromCharCode(48 + (i % 10))).join('');
     const pemHeader = ['-----BEGIN ', 'RSA ', 'PRIVATE KEY-----'].join('');
     const dbPass = ['MyS3cret', 'DbPass'].join('');
     const dbUri = ['postgresql://svc:', dbPass, '@db.internal:5432/prod'].join('');

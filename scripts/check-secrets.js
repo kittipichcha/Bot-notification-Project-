@@ -176,8 +176,8 @@ function formatFindings(findings) {
 function runSelfTest() {
   const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'secret-gate-selftest-'));
   try {
-    const syntheticGithubPat = ['ghp', '_'].join('') + 'A1b2C3d4E5f6G7h8I9j0K1l2M3n4O5p6Q7r8';
-    const syntheticAwsKey = ['AKI', 'A'].join('') + 'IOSFODNN7EXAMPLE';
+    const syntheticGithubPat = ['ghp', '_'].join('') + Array.from({ length: 36 }, (_, i) => String.fromCharCode(65 + (i % 26))).join('');
+    const syntheticAwsKey = ['AKI', 'A'].join('') + Array.from({ length: 16 }, (_, i) => String.fromCharCode(65 + (i % 26))).join('');
     const syntheticDiscordToken = [
       'M' + 'T'.repeat(23),
       'AbCdEf',
