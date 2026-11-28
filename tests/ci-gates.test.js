@@ -263,6 +263,11 @@ test('evaluateNpmAuditReport and evaluatePipAuditReport fail closed and report a
 test('validateBranchName and extractIssueRefs handle valid and invalid inputs', () => {
   assert.equal(validateBranchName('feat/ep01-03-ci-gates').ok, true);
   assert.equal(validateBranchName('fix/12-token-refresh').ok, true);
+  assert.equal(validateBranchName('dev', { baseBranch: 'main' }).ok, true);
+  assert.equal(validateBranchName('dev', { baseBranch: 'main' }).kind, 'promotion');
+  assert.equal(validateBranchName('dev').ok, false);
+  assert.equal(validateBranchName('dev', { baseBranch: 'dev' }).ok, false);
+  assert.equal(validateBranchName('dev', { baseBranch: 'main', allowPromotion: false }).ok, false);
   assert.equal(validateBranchName('main').ok, false);
   assert.equal(validateBranchName('feat/no-issue').ok, false);
   assert.equal(validateBranchName('feat/EP01-03-upper').ok, false);
@@ -294,6 +299,7 @@ test('validatePrGovernance enforces issue existence, type, and branch consistenc
       repository: { full_name: repoFullName },
       pull_request: {
         head: { ref: 'feat/ep01-03-ci-gates' },
+        base: { ref: 'dev' },
         title: 'Configure CI gates',
         body: 'Closes #3',
       },
@@ -308,6 +314,7 @@ test('validatePrGovernance enforces issue existence, type, and branch consistenc
       repository: { full_name: repoFullName },
       pull_request: {
         head: { ref: 'fix/12-token-refresh' },
+        base: { ref: 'dev' },
         title: 'Fix token refresh',
         body: `Fixes https://github.com/${repoFullName}/issues/12`,
       },
@@ -315,6 +322,67 @@ test('validatePrGovernance enforces issue existence, type, and branch consistenc
     resolveGitHubIssue: async (_repo, num) => ({ number: num, title: 'Fix token refresh' }),
   });
   assert.equal(passWithUrl.ok, true, passWithUrl.errors.join('\n'));
+
+  const passPromotion = await validatePrGovernance({
+    root: REPO_ROOT,
+    event: {
+      repository: { full_name: repoFullName },
+      pull_request: {
+        head: { ref: 'dev', repo: { full_name: repoFullName } },
+        base: { ref: 'main', repo: { full_name: repoFullName } },
+        title: 'Promote dev to main',
+        body: 'Includes EP01-03 and #3',
+      },
+    },
+    resolveGitHubIssue: async (_repo, num) => ({ number: num, title: 'EP01-03: Configure CI quality gates' }),
+  });
+  assert.equal(passPromotion.ok, true, passPromotion.errors.join('\n'));
+  assert.equal(passPromotion.branch.kind, 'promotion');
+
+  const promotionMissingIssue = await validatePrGovernance({
+    root: REPO_ROOT,
+    event: {
+      repository: { full_name: repoFullName },
+      pull_request: {
+        head: { ref: 'dev', repo: { full_name: repoFullName } },
+        base: { ref: 'main', repo: { full_name: repoFullName } },
+        title: 'Promote dev to main',
+        body: 'Release batch without issue reference',
+      },
+    },
+  });
+  assert.equal(promotionMissingIssue.ok, false);
+  assert.ok(promotionMissingIssue.errors.some((e) => e.includes('must reference a tracked issue')));
+
+  const forkDevToMain = await validatePrGovernance({
+    root: REPO_ROOT,
+    event: {
+      repository: { full_name: repoFullName },
+      pull_request: {
+        head: { ref: 'dev', repo: { full_name: 'external-user/Bot-notification-Project-' } },
+        base: { ref: 'main', repo: { full_name: repoFullName } },
+        title: 'Promote from fork dev',
+        body: 'Ref EP01-03',
+      },
+    },
+  });
+  assert.equal(forkDevToMain.ok, false);
+  assert.ok(forkDevToMain.errors.some((e) => e.includes('same-repository "dev" -> "main"')));
+
+  const devToNonMain = await validatePrGovernance({
+    root: REPO_ROOT,
+    event: {
+      repository: { full_name: repoFullName },
+      pull_request: {
+        head: { ref: 'dev', repo: { full_name: repoFullName } },
+        base: { ref: 'dev', repo: { full_name: repoFullName } },
+        title: 'Invalid dev target',
+        body: 'Ref EP01-03',
+      },
+    },
+  });
+  assert.equal(devToNonMain.ok, false);
+  assert.ok(devToNonMain.errors.some((e) => e.includes('Branch "dev" must match')));
 
   const missingIssue = await validatePrGovernance({
     root: REPO_ROOT,

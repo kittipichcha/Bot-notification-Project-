@@ -4,23 +4,34 @@ const path = require('node:path');
 const DEFAULT_ROOT = path.resolve(__dirname, '..');
 const BRANCH_RE = /^(feat|fix|chore|docs|refactor|test|ci)\/(ep[0-9]{2}-[0-9]{2}|[0-9]+)-[a-z0-9][a-z0-9-]*$/;
 
-function validateBranchName(branch) {
+function validateBranchName(branch, { baseBranch = '', allowPromotion = true } = {}) {
   if (typeof branch !== 'string' || !branch.trim()) {
     return { ok: false, error: 'Missing pull request head branch name' };
   }
-  const match = branch.trim().match(BRANCH_RE);
+  const trimmedBranch = branch.trim();
+  const trimmedBase = typeof baseBranch === 'string' ? baseBranch.trim() : '';
+  if (allowPromotion && trimmedBranch === 'dev' && trimmedBase === 'main') {
+    return {
+      ok: true,
+      branch: trimmedBranch,
+      type: 'promotion',
+      kind: 'promotion',
+      issueToken: null,
+    };
+  }
+  const match = trimmedBranch.match(BRANCH_RE);
   if (!match) {
     return {
       ok: false,
       branch,
-      error: `Branch "${branch}" must match ^(feat|fix|chore|docs|refactor|test|ci)/(epXX-YY|<num>)-<slug>$`,
+      error: `Branch "${branch}" must match ^(feat|fix|chore|docs|refactor|test|ci)/(epXX-YY|<num>)-<slug>$ (or be a same-repository "dev" -> "main" promotion PR)`,
     };
   }
   const token = match[2];
   const isEp = token.startsWith('ep');
   return {
     ok: true,
-    branch: branch.trim(),
+    branch: trimmedBranch,
     type: match[1],
     kind: isEp ? 'ep' : 'number',
     issueToken: isEp ? token.toUpperCase() : Number(token),
@@ -110,9 +121,23 @@ async function validatePrGovernance({
 
   const pr = event.pull_request;
   const branch = pr.head?.ref;
+  const baseBranch = pr.base?.ref || '';
   const repoFullName = event.repository?.full_name || process.env.GITHUB_REPOSITORY || '';
+  const isSameRepo = (() => {
+    if (pr.head && Object.prototype.hasOwnProperty.call(pr.head, 'repo')) {
+      const headRepo = pr.head.repo?.full_name ? String(pr.head.repo.full_name).trim().toLowerCase() : '';
+      const baseRepo = pr.base?.repo?.full_name
+        ? String(pr.base.repo.full_name).trim().toLowerCase()
+        : String(repoFullName || '').trim().toLowerCase();
+      return Boolean(headRepo && baseRepo && headRepo === baseRepo);
+    }
+    return true;
+  })();
 
-  const branchResult = validateBranchName(branch);
+  const branchResult = validateBranchName(branch, {
+    baseBranch,
+    allowPromotion: isSameRepo,
+  });
   if (!branchResult.ok) {
     errors.push(branchResult.error);
   }
