@@ -13,3 +13,6 @@ test('invalid modes, flags, address, port and callback are rejected', () => {
   assert.ok(validate({...valid, DISCORD_REDIRECT_URI:'http://example.org/callback'}).errors.includes('DISCORD_REDIRECT_URI'));
   assert.deepEqual(validate({...valid, DISCORD_REDIRECT_URI:'http://127.0.0.1:3000/callback', API_PORT:'0'}).errors, []);
 });
+
+test('deliberate AC4 sample failure', () => { assert.equal(1, 2); });
+

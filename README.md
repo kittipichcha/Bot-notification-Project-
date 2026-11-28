@@ -35,3 +35,4 @@ The API listens on loopback at http://127.0.0.1:3000/health by default. Run `npm
 Prisma, PostgreSQL, and MongoDB are deferred to EP03; Docker deployment is deferred to EP09. BYOK and tracing are opt-in future work and are not implemented.
 
 Shared contract schemas and generation commands are documented in [contracts](packages/contracts/README.md). Platform and budget configuration is validated at startup; it does not enable integrations.
+deliberate trailing spaces   
