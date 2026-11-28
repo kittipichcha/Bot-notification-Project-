@@ -4,6 +4,7 @@ import re
 from pathlib import Path
 import shutil
 import tempfile
+import types
 import unittest
 from typing import get_origin, Union
 
@@ -49,7 +50,8 @@ class ContractsTest(unittest.TestCase):
             root_name = title if re.fullmatch(r"[A-Z][A-Za-z0-9]*", title) and not re.search(r"[0-9][a-z]", title) else "Contract" + name.encode("utf-8").hex().upper()
             self.assertTrue(hasattr(module, root_name))
             if name in {"api", "tool"}:
-                self.assertIs(get_origin(getattr(module, root_name)), Union)
+                root = getattr(module, root_name)
+                self.assertIn(get_origin(getattr(root, "__value__", root)), (Union, types.UnionType))
             for definition in schema.get("definitions", {}):
                 self.assertTrue(hasattr(module, definition), definition)
             if any(item.get("type") == "object" for item in [schema, *schema.get("definitions", {}).values()]):

@@ -8,5 +8,5 @@ members = ["services/*"]
 
 [dependency-groups]
 dev = [
-    "datamodel-code-generator==0.35.0",
+    "datamodel-code-generator==0.64.0",
 ]

@@ -2,17 +2,19 @@
 
 from __future__ import annotations
 
-from typing import List, Literal, NotRequired, TypedDict, Union
+from typing import Literal, NotRequired
 
-RequiredScope = str
+from typing_extensions import TypedDict
+
+type RequiredScope = str
 
 
-class RateLimit(TypedDict):
+class RateLimit(TypedDict, closed=True):
     max_calls: int
     window_ms: int
 
 
-class ToolSpec(TypedDict):
+class ToolSpec(TypedDict, closed=True):
     tool_id: str
     version: Literal['1.0.0']
     provider_action: str
@@ -20,11 +22,11 @@ class ToolSpec(TypedDict):
     adapter: str
     input_schema_ref: str
     result_schema_ref: str
-    required_scopes: List[RequiredScope]
+    required_scopes: list[RequiredScope]
     rate_limit: RateLimit
 
 
-class ToolResult1(TypedDict):
+class ToolResult1(TypedDict, closed=True):
     status: Literal['success']
     data_ref: str
     source: str
@@ -33,7 +35,7 @@ class ToolResult1(TypedDict):
     retryable: Literal[False]
 
 
-class ToolResult2(TypedDict):
+class ToolResult2(TypedDict, closed=True):
     status: Literal['failed']
     data_ref: None
     source: str
@@ -52,10 +54,10 @@ class ToolResult2(TypedDict):
     retryable: bool
 
 
-ToolResult = Union[ToolResult1, ToolResult2]
+type ToolResult = ToolResult1 | ToolResult2
 
 
-ToolContract = Union[ToolSpec, ToolResult]
+type ToolContract = ToolSpec | ToolResult
 
 
 class GeneratorWrapper(TypedDict):
